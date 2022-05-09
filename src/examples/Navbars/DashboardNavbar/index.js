@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect } from "react";
 
 // react-router components
@@ -27,6 +12,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import Icon from "@mui/material/Icon";
+import Switch from "@mui/material/Switch";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -51,14 +37,18 @@ import {
   setTransparentNavbar,
   setMiniSidenav,
   setOpenConfigurator,
+  setDarkMode,
 } from "context";
 
 function DashboardNavbar({ absolute, light, isMini }) {
-  const [navbarType, setNavbarType] = useState();
+  
   const [controller, dispatch] = useMaterialUIController();
+  const [navbarType, setNavbarType] = useState(); 
+  const [disabled, setDisabled] = useState(false);
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
+  const handleDarkMode = () => setDarkMode(dispatch, !darkMode);
 
   useEffect(() => {
     // Setting the navbar type
@@ -177,6 +167,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 <Icon sx={iconsStyle}>notifications</Icon>
               </IconButton>
               {renderMenu()}
+              <Switch checked={darkMode} onChange={handleDarkMode} />
             </MDBox>
           </MDBox>
         )}

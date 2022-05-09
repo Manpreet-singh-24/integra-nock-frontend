@@ -88,7 +88,7 @@ function Configurator() {
     setTransparentSidenav(dispatch, false);
   };
   const handleDarkSidenav = () => {
-    setWhiteSidenav(dispatch, false);
+    setWhiteSidenav(dispatch, false);s
     setTransparentSidenav(dispatch, false);
   };
   const handleFixedNavbar = () => setFixedNavbar(dispatch, !fixedNavbar);

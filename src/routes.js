@@ -30,6 +30,8 @@ import Notifications from "layouts/notifications";
 // import SignIn from "layouts/authentication/sign-in";
 // import SignUp from "layouts/authentication/sign-up";
 import ChainCode from "views/chaincode";
+import Organisation from 'views/organisation/listing'
+import Add from 'views/organisation/add'
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -53,12 +55,28 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
+    name: "Organisation",
+    key: "organisation",
     icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
-    component: <Tables />,
+    route: "/organisation",
+    component: <Organisation />,
   },
+  {
+    // type: "collapse",
+    // name: "Organisation/Add",
+     key: "add",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/organisation/add",
+    component: <Add />,
+  },
+  // {
+  //   type: "collapse",
+  //   name: "Tables",
+  //   key: "tables",
+  //   icon: <Icon fontSize="small">table_view</Icon>,
+  //   route: "/tables",
+  //   component: <Tables />,
+  // },
   {
     type: "collapse",
     name: "Billing",

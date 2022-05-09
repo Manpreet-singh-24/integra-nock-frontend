@@ -1,4 +1,4 @@
-import types from 'store/constants/chainCodeType';
+import types from 'store/constants/organisationType';
 import {all, call, takeLatest, put} from 'redux-saga/effects';
 // import {apiFailed, allData} from './../../actions/category';
 import {get, post, putRequest, patch, deleteRequest} from 'services/ApiService';
@@ -180,6 +180,6 @@ export function* changeStatusReq() {
     yield takeLatest(types.CHANGE_STATUS_REQUEST, changeStatus);
 }
 
-export default function* chainCodeSaga() {
+export default function* organisationSaga() {
     yield all([allRecordReq(), createReq(), editReq(), updateReq(), changeStatusReq(), deleteReq()]);
 }

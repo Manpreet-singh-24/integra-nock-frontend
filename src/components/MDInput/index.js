@@ -1,13 +1,19 @@
-import { forwardRef } from "react";
+import React, { forwardRef } from "react";
 
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
+import { ErrorMessage } from 'formik';
 
 // Custom styles for MDInput
 import MDInputRoot from "components/MDInput/MDInputRoot";
+import MDTextError from 'components/MDTextError/'
 
-const MDInput = forwardRef(({ error, success, disabled, ...rest }, ref) => (
-  <MDInputRoot {...rest} ref={ref} ownerState={{ error, success, disabled }} />
+const MDInput = forwardRef(({ error, success, disabled, name, ...rest }, ref) => 
+console.log("ttttt",name)(
+  <React.Fragment>
+    <MDInputRoot {...rest} ref={ref} ownerState={{ error, success, disabled }} />
+    <ErrorMessage name={name} component={MDTextError} />
+  </React.Fragment>
 ));
 
 // Setting default values for the props of MDInput
@@ -22,6 +28,7 @@ MDInput.propTypes = {
   error: PropTypes.bool,
   success: PropTypes.bool,
   disabled: PropTypes.bool,
+  name: PropTypes.staring,
 };
 
 export default MDInput;

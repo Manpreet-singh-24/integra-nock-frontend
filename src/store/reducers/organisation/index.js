@@ -1,4 +1,4 @@
-import type from 'store/constants/chainCodeType';
+import type from 'store/constants/organisationType';
 
 const initialState = {
     categories: [],
@@ -11,7 +11,7 @@ const initialState = {
     total_count: 0
 };
 
-const chainCodeReducer = (state = initialState, action) => {
+const organisationReducer = (state = initialState, action) => {
     switch (action.type) {
         case type.CLEAR_FORM_FIELD:
             return {
@@ -94,4 +94,4 @@ const chainCodeReducer = (state = initialState, action) => {
     }
 };
 
-export default chainCodeReducer;
+export default organisationReducer;

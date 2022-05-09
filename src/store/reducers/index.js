@@ -1,16 +1,18 @@
 import { combineReducers } from 'redux'
 
 //@@@@@@@@@@@@@@@@ Defalut Theme Reducers @@@@@@@@@@@@@@@@@@@@@@
-import customizationReducer from './common/customizationReducer';
-import snackbarReducer from './common/snackbarReducer';
+import customizationReducer from 'store/reducers/common/customizationReducer';
+import snackbarReducer from 'store/reducers/common/snackbarReducer';
 
 //@@@@@@@@@@@@@@@@ Our Reducers @@@@@@@@@@@@@@@@@@@@@@
-import chainCodeReducer from './chain-code' 
+import chainCodeReducer from 'store/reducers/chain-code'
+import organisationReducer from 'store/reducers/organisation' 
 
 const rootReducer =  combineReducers({
-    chainCode: chainCodeReducer,
     customization: customizationReducer,
-    snackbar: snackbarReducer
+    snackbar: snackbarReducer,
+    chainCode: chainCodeReducer,
+    organisation: organisationReducer
 })
 
 export default rootReducer;
