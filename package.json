@@ -1,9 +1,9 @@
 {
-  "name": "integra-admin",
+  "name": "integra-nock",
   "version": "2.1.0",
   "private": true,
   "author": "Integra Team",
-  "description": "integra admin",
+  "description": "integra nock",
   "engines": {
     "node": "14 || 15 || 16",
     "npm": ">=6"
