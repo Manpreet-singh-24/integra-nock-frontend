@@ -16,6 +16,8 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import RegexTypes from "regex";
 
+const cursorPointer = {cursor: 'pointer'};
+
 const OrganisationForm = (props) => {
   const { submitData, formInitialValue, buttonLabel } = props;
   const initialValues = formInitialValue;
@@ -151,6 +153,7 @@ const OrganisationForm = (props) => {
                                     <DoDisturbOnIcon
                                       color="info"
                                       fontSize="medium"
+                                      style={cursorPointer}
                                       onClick={(index) => remove(index)}
                                     />
                                   )}
@@ -247,6 +250,7 @@ const OrganisationForm = (props) => {
                       <AddCircleIcon
                         color="info"
                         fontSize="medium"
+                        style={cursorPointer}
                         onClick={() =>
                           push({
                             name: "",

@@ -45,123 +45,191 @@ export default function data() {
 
   return {
     columns: [
-      { Header: "Name", accessor: "name", width: "45%", align: "left" },
-      { Header: "function", accessor: "function", align: "left" },
+      { Header: "Name", accessor: "name",  align: "left" },
+      { Header: "Label", accessor: "label", align: "left" },
       { Header: "Version", accessor: "version", align: "center" },
-      { Header: "employed", accessor: "employed", align: "center" },
-      { Header: "action", accessor: "action", align: "center" },
+      { Header: "Status", accessor: "status", align: "center" },
+      { Header: "Created At", accessor: "Created_at", align: "center" },
+
+
+      // { Header: "Name", accessor: "name", width: "45%", align: "left" },
+      // { Header: "function", accessor: "function", align: "left" },
+      // { Header: "Version", accessor: "version", align: "center" },
+      // { Header: "employed", accessor: "employed", align: "center" },
+      // { Header: "action", accessor: "action", align: "center" },
+
     ],
 
     rows: [
       {
-        name: <Author image={team2} name="John Michael" email="john@creative-tim.com" />,
-        function: <Job title="Manager" description="Organization" />,
+        // name: <Author image={team2} name="John Michael" email="john@creative-tim.com" />,
+        // function: <Job title="Manager" description="Organization" />,
+        name:(
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            John Michael
+          </MDTypography>
+        ),
+        label:(
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            John Michael
+          </MDTypography>
+        ),
         version: (
           <MDBox ml={-1}>
-            <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
+            <MDBadge badgeContent="v2" color="success" variant="gradient" size="sm" />
           </MDBox>
         ),
-        employed: (
+        Created_at: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
             23/04/18
           </MDTypography>
         ),
-        action: (
+        status: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
             Edit
           </MDTypography>
         ),
       },
       {
-        name: <Author image={team3} name="Alexa Liras" email="alexa@creative-tim.com" />,
-        function: <Job title="Programator" description="Developer" />,
+        // name: <Author image={team3} name="Alexa Liras" email="alexa@creative-tim.com" />,
+        // function: <Job title="Programator" description="Developer" />,
+        name:(
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Alexa Liras
+          </MDTypography>
+        ),
+        label:(
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Alexa Liras
+          </MDTypography>
+        ),
         version: (
           <MDBox ml={-1}>
-            <MDBadge badgeContent="offline" color="dark" variant="gradient" size="sm" />
+            <MDBadge badgeContent="v1" color="dark" variant="gradient" size="sm" />
           </MDBox>
         ),
-        employed: (
+        Created_at: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
             11/01/19
           </MDTypography>
         ),
-        action: (
+        status: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
             Edit
           </MDTypography>
         ),
       },
       {
-        name: <Author image={team4} name="Laurent Perrier" email="laurent@creative-tim.com" />,
-        function: <Job title="Executive" description="Projects" />,
+        // name: <Author image={team4} name="Laurent Perrier" email="laurent@creative-tim.com" />,
+        // function: <Job title="Executive" description="Projects" />,
+        name:(
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Laurent Perrier
+          </MDTypography>
+        ),
+        label:(
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Laurent Perrier
+          </MDTypography>
+        ),
         version: (
           <MDBox ml={-1}>
-            <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
+            <MDBadge badgeContent="V2" color="success" variant="gradient" size="sm" />
           </MDBox>
         ),
-        employed: (
+        Created_at: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
             19/09/17
           </MDTypography>
         ),
-        action: (
+        status: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
             Edit
           </MDTypography>
         ),
       },
       {
-        name: <Author image={team3} name="Michael Levi" email="michael@creative-tim.com" />,
-        function: <Job title="Programator" description="Developer" />,
+        // name: <Author image={team3} name="Michael Levi" email="michael@creative-tim.com" />,
+        // function: <Job title="Programator" description="Developer" />,
+        name:(
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Michael Levi
+          </MDTypography>
+        ),
+        label:(
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Michael Levi
+          </MDTypography>
+        ),
         version: (
           <MDBox ml={-1}>
-            <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
+            <MDBadge badgeContent="v2" color="success" variant="gradient" size="sm" />
           </MDBox>
         ),
-        employed: (
+        Created_at: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
             24/12/08
           </MDTypography>
         ),
-        action: (
+        status: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
             Edit
           </MDTypography>
         ),
       },
       {
-        name: <Author image={team3} name="Richard Gran" email="richard@creative-tim.com" />,
-        function: <Job title="Manager" description="Executive" />,
+        // name: <Author image={team3} name="Richard Gran" email="richard@creative-tim.com" />,
+        // function: <Job title="Manager" description="Executive" />,
+        name:(
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Richard Gran
+          </MDTypography>
+        ),
+        label:(
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Richard Gran
+          </MDTypography>
+        ),
         version: (
           <MDBox ml={-1}>
-            <MDBadge badgeContent="offline" color="dark" variant="gradient" size="sm" />
+            <MDBadge badgeContent="v1" color="dark" variant="gradient" size="sm" />
           </MDBox>
         ),
-        employed: (
+        Created_at: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
             04/10/21
           </MDTypography>
         ),
-        action: (
+        status: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
             Edit
           </MDTypography>
         ),
       },
       {
-        name: <Author image={team4} name="Miriam Eric" email="miriam@creative-tim.com" />,
-        function: <Job title="Programator" description="Developer" />,
+        // name: <Author image={team4} name="Miriam Eric" email="miriam@creative-tim.com" />,
+        // function: <Job title="Programator" description="Developer" />,
+        name:(
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Miriam Eric
+          </MDTypography>
+        ),
+        label:(
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Miriam Eric
+          </MDTypography>
+        ),
         version: (
           <MDBox ml={-1}>
-            <MDBadge badgeContent="offline" color="dark" variant="gradient" size="sm" />
+            <MDBadge badgeContent="v1" color="dark" variant="gradient" size="sm" />
           </MDBox>
         ),
-        employed: (
+        Created_at: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
             14/09/20
           </MDTypography>
         ),
-        action: (
+        status: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
             Edit
           </MDTypography>
