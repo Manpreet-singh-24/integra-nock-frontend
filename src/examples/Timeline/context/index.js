@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { createContext, useContext } from "react";
 
 // The Timeline main context
@@ -12,5 +13,10 @@ function TimelineProvider({ children, value }) {
 function useTimeline() {
   return useContext(Timeline);
 }
+
+TimelineProvider.propTypes = {
+  children: PropTypes.any,
+  value: PropTypes.any,
+};
 
 export { TimelineProvider, useTimeline };

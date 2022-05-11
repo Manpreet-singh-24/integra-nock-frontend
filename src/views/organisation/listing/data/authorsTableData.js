@@ -1,10 +1,11 @@
 import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDAvatar from "components/MDAvatar";
 import MDBadge from "components/MDBadge";
-import MDButton from "components/MDButton";
+// import MDButton from "components/MDButton";
 import MDModal from "components/MDModal"
 
 // Images
@@ -169,4 +170,16 @@ export default function data() {
     ],
   };
 
+Job.propTypes = {
+  title: PropTypes.any,
+  description: PropTypes.any,
+};
+
+Author.propTypes = {
+  image: PropTypes.any,
+  name: PropTypes.any,
+  email: PropTypes.any,
+};
+
 }
+

@@ -17,15 +17,20 @@ const Add = () => {
     const [formValue, setFormValue] = useState(null);
     
     const initialValues = {
-        name: 'wwwwwww',
-        msp_id: 'dsdsdds',
-        peers_count: 5,
+        name: '',
+        msp_id: '',
+        peers_count: null,
+        peers: [{
+            name:'',
+            url:'',
+            ip: '',
+            certificate: '',
+        }],
         submit: null
     };
 
     const submitData = (data) => {
         console.log(" ============== Submit data ==================== ", data)
-        alert
     }
 
     return (
@@ -50,7 +55,7 @@ const Add = () => {
                   </MDTypography>
 
                             </MDBox>
-                            <MDBox pt={3}>
+                            <MDBox p={3}>
                                 <OrganisationForm 
                                 formInitialValue={formValue || initialValues}
                                 buttonLabel="Add Organisation"

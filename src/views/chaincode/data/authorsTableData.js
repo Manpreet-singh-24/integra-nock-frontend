@@ -1,4 +1,6 @@
 import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
+
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -171,5 +173,15 @@ export default function data() {
       },
     ],
   };
+
+  Job.propTypes = {
+    title: PropTypes.any,
+    description: PropTypes.any,
+  };
   
+  Author.propTypes = {
+    image: PropTypes.any,
+    name: PropTypes.any,
+    email: PropTypes.any,
+  };
 }

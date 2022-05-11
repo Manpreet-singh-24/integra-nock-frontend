@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 // Integra Nock React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -156,5 +158,16 @@ export default function data() {
         ),
       },
     ],
+  };
+
+  Job.propTypes = {
+    title: PropTypes.any,
+    description: PropTypes.any,
+  };
+  
+  Author.propTypes = {
+    image: PropTypes.any,
+    name: PropTypes.any,
+    email: PropTypes.any,
   };
 }
