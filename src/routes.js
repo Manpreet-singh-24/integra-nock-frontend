@@ -29,7 +29,8 @@ import Notifications from "layouts/notifications";
 // import Profile from "layouts/profile";
 // import SignIn from "layouts/authentication/sign-in";
 // import SignUp from "layouts/authentication/sign-up";
-import ChainCode from "views/chaincode";
+import ChainCode from "views/chaincode/listing";
+import ChaincodeEdit from 'views/chaincode/edit';
 import Organisation from 'views/organisation/listing'
 import Add from 'views/organisation/add'
 
@@ -52,6 +53,14 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/chaincode",
     component: <ChainCode />,
+  },
+  {
+    // type: "collapse",
+    // name: "Organisation/Add",
+     key: "chaincode-update",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/chaincode/update",
+    component: <ChaincodeEdit />,
   },
   {
     type: "collapse",
