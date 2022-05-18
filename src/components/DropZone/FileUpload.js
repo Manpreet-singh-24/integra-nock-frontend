@@ -41,10 +41,22 @@ const useStyles = makeStyles((theme) => ({
   cover: {
     width: 151,
   },
+  fileContent: {
+      fontSize: "1.00rem"
+  },
+  uploadIcon: {
+    height:'2em',
+    width: "3em"
+  },
+  dropText: {
+    fontSize: "1.00rem",
+    padding: "0px 0px 8px 0px"  
+  }
 }));
 
 const FileUpload = (props) => {
   const { name, onSelect, allFieldValue, saveImage, fileData, fileValidate } = props;
+
   const [images, setImages] = useState([]);
   const classes = useStyles();
 
@@ -57,6 +69,7 @@ const FileUpload = (props) => {
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     //Here we have create object inside object we have return image previou link and selected file object
     const acceptedFileData = acceptedFiles.map((selectedfile) => {
+      
       let data = {
         file: selectedfile,
         errors: [],
@@ -68,6 +81,7 @@ const FileUpload = (props) => {
 
     //Here we have create object inside object we have return image previou link and selected file object
     const rejectedFileData = rejectedFiles.map((selectedfile) => {
+      alert(' ****** error ****** ');
       let data = {
         file: selectedfile.file,
         errors: selectedfile.errors,
@@ -77,8 +91,8 @@ const FileUpload = (props) => {
       return data;
     });
 
-    setImages((previousState) => [...previousState, ...acceptedFileData, ...rejectedFileData]);
-
+    //setImages((previousState) => [...previousState, ...acceptedFileData, ...rejectedFileData]);
+    setImages((previousState) => [...previousState, ...acceptedFileData ]);
     //files previous state append selected values
     // onSelect(allFieldValue, 'files', [...allFieldValue.files, ...acceptedFileData])
     saveImage(allFieldValue, "file", [
@@ -88,41 +102,42 @@ const FileUpload = (props) => {
   });
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: fileValidate.fileExtension,
+    onDrop, 
+    accept: ['.zip'],
     maxSize: 1024 * 1024 * fileValidate.maxSize,
   });
 
   //   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Image Delete @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  // const onDelete = (deleteData) => {
-  //   let deleteFile = deleteData.imageData;
+  const onDelete = (deleteData) => {
+    let deleteFile = deleteData.imageData;
 
-  //   // return false
-  //   if (deleteData.key === "selectedImages") {
-  //     setImages((currentdata) =>
-  //       currentdata.filter((filterData) => filterData.file !== deleteFile.file)
-  //     );
-  //     //Apply filter on files array ==> allFieldValue.files( all selected files )
-  //     const allImages = allFieldValue.productImages.filter(
-  //       (filterData) => filterData.file !== deleteFile.file
-  //     );
-  //     saveImage(allFieldValue, "file", allImages);
-  //   }
+    // return false
+    if (deleteData.key === "selectedImages") {
+      console.log(deleteData)
+      setImages((currentdata) =>
+        currentdata.filter((filterData) => filterData.file !== deleteFile.file)
+      );
+      //Apply filter on files array ==> allFieldValue.files( all selected files )
+      const allImages = allFieldValue.file.filter(
+        (filterData) => filterData.file !== deleteFile.file
+      );
+      saveImage(allFieldValue, "file", allImages);
+    }
 
-  //   if (deleteData.key === "editImage") {
-  //     // onSelect(allFieldValue, 'deleteImages', deleteFile._id)
+    if (deleteData.key === "editImage") {
+      // onSelect(allFieldValue, 'deleteImages', deleteFile._id)
 
-  //     const allImages = allFieldValue.files.filter(
-  //       (filterData) => filterData._id !== deleteFile._id
-  //     );
-  //     let data = {
-  //       deleteImages: [...allFieldValue.deleteImages, deleteFile._id],
-  //       files: allImages,
-  //     };
+      const allImages = allFieldValue.files.filter(
+        (filterData) => filterData._id !== deleteFile._id
+      );
+      let data = {
+        deleteImages: [...allFieldValue.deleteImages, deleteFile._id],
+        files: allImages,
+      };
 
-  //     onSelect(allFieldValue, data);
-  //   }
-  // };
+      onSelect(allFieldValue, data);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -131,15 +146,15 @@ const FileUpload = (props) => {
         <Card className={classes.root}>
           <div className={classes.details}>
             <CardContent className={classes.content}>
-              <Typography component="h5" variant="h5">
+              <Typography component="h5" variant="h5" className={classes.fileContent}>
                 Live From Space
               </Typography>
               <Typography variant="subtitle1" color="textSecondary">
-                <CloudUploadIcon />
+                <CloudUploadIcon  className={classes.uploadIcon}/>
               </Typography>
             </CardContent>
             <div className={classes.controls}>
-              {isDragActive ? <p>Drop the files here ...</p> : <p>Drag,drop select files here</p>}
+              {isDragActive ? <p className={classes.dropText}>Drop the files here ...</p> : <p className={classes.dropText}>Drag,drop select files here</p>}
             </div>
           </div>
         </Card>
@@ -151,7 +166,7 @@ const FileUpload = (props) => {
       {/* <ul>
                 <li> {images.length > 0 ? JSON.stringify(images) : 'No file selected'}</li>
             </ul> */}
-      <ProductDisplay productImages={images} editFileData={fileData} />
+      <ProductDisplay productImages={images} editFileData={fileData} onDeleteProductImage={onDelete} />
     </React.Fragment>
   );
 };
@@ -163,7 +178,7 @@ FileUpload.propTypes = {
   saveImage: PropTypes.any,
   allFieldValue: PropTypes.any,
   fileValidate: PropTypes.any,
-  // getRootProps: PropTypes.any,
+  onDelete: PropTypes.any,
   // getInputProps: PropTypes.any,
 };
 

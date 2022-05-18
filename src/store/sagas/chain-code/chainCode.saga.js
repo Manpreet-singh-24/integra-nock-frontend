@@ -131,7 +131,7 @@ export function* deleteData(action) {
         const result = yield call(deleteRequest, `category`, action.payload.id);
         console.log(" Delete Category saga result ===== ", result)
        // yield put({type: types.DELETE, payload: result._id});
-        yield put(allData(action.payload.data));
+        //yield put(allData(action.payload.data));
         yield put({type: LOADER_CLOSE});
         yield put({type: SNACKBAR_OPEN, open: true, message: result.message, alertSeverity: 'success', variant: 'alert'});
     } catch (error) {
@@ -159,7 +159,7 @@ export function* changeStatus(action) {
         const result = yield call(patch, `category/changeStatus`, action.payload.id);
         //yield put(saveUserData(result));
         yield put({type: types.CHANGE_STATUS, payload: result});
-        yield put(allData(action.payload.data));
+        //yield put(allData(action.payload.data));
         yield put({type: LOADER_CLOSE});
         yield put({type: SNACKBAR_OPEN, open: true, message: result.message, alertSeverity: 'success', variant: 'alert'});
     } catch (error) {

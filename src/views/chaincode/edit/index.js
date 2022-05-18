@@ -21,7 +21,7 @@ const Edit = () => {
         label: '',
         version: '',
         url: '',    
-        file: '',    
+        file: [],    
         submit: null
     };
 

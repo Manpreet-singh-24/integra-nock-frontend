@@ -29,10 +29,13 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     right: 0,
   },
+  // alertWrapper '& MuiAlert-message' : {
+  //   padding: "0px 0"
+  // }
 }));
 
 const ProductDisplay = (props) => {
-  const { productImages, editFileData } = props;
+  const { productImages, editFileData, onDeleteProductImage } = props;
 
   const [selectedfile, setSelectedFile] = useState("");
   const classes = useStyles();
@@ -43,11 +46,11 @@ const ProductDisplay = (props) => {
     conFirmationDialogRef.current.handleClickOpen();
   };
 
-//   const deleteRecord = () => {
-//     //alert(selectRecordId);
-//     conFirmationDialogRef.current.handleClose();
-//     onDeleteProductImage(selectedfile);
-//   };
+  const deleteRecord = (type, image) => {
+    console.log("block 1", selectedfile)
+    setSelectedFile({key: type, imageData:image });
+    onDeleteProductImage({key: type, imageData:image });
+  };
 
   //   @@@@@@@@@@@@@@@@@@@@@@@@@@@@ Image Previou @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
   const previouImages = () => {
@@ -63,9 +66,9 @@ const ProductDisplay = (props) => {
             className={`${classes.productContainer} outerWrapper `}
           >
             <Paper className={classes.paper}>
-              <Alert severity="success" variant="outlined">
+              <Alert severity="success" variant="outlined"  className="alertWrapper">
                 {image.file.name}
-                {/* <DeleteForeverIcon  fontSize="medium" /> */}
+                <DeleteForeverIcon  fontSize="medium" onClick={() => deleteRecord("selectedImages", image)}/>
               </Alert>
               {/* <img src={image.previousFile} className="selected" alt="productPhoto"/> */}{" "}
               {image.errors.length > 0 ? (
@@ -171,7 +174,7 @@ const ProductDisplay = (props) => {
 
 ProductDisplay.propTypes = {
   productImages: PropTypes.any,
-  //onDeleteProductImage: PropTypes.any,
+  onDeleteProductImage: PropTypes.any,
   editFileData: PropTypes.any,
   // allFieldValue: PropTypes.any,
   // fileValidate: PropTypes.any,

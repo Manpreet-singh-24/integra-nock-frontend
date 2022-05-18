@@ -21,6 +21,7 @@ const ChaincodeForm = (props) => {
   const [initialValues, setInitialValues] = useState(formInitialValue);
   
   //  const initialValues = formInitialValue;
+
   const validation = Yup.object({
     name: Yup.string()
       .trim()
@@ -43,15 +44,16 @@ const ChaincodeForm = (props) => {
       .trim()
       .matches(RegexTypes.UrlRegex, "Enter a valid URL ")
       .required("URL is required"),
+    file:Yup.array().min(1, 'File is required'),  
   });
 
   const setFileData = (allFieldValue, data) => {
-    setFormValue({ ...allFieldValue, deleteImages: data.deleteImages, file: data.files });
+   // setFormValue({ ...allFieldValue, deleteImages: data.deleteImages, file: data.files });
   };
 
   const setInputValue = (allFieldValue, key, value) => {
     if (typeof value === "object" || value === "") {
-      setInitialValues({ ...allFieldValue, [key]: value });
+      setInitialValues({ ...formInitialValue, [key]: value });
     }
   };
 
@@ -143,7 +145,7 @@ const ChaincodeForm = (props) => {
                 allFieldValue={values}
                 fileValidate={{
                   maxSize: 1,
-                  fileExtension: [".png", ".jpg", ".jpeg"],
+                  fileExtension: [".zip"],
                 }}
               />
             </MDBox>
