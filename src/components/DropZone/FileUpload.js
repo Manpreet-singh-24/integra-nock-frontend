@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -91,21 +91,29 @@ const FileUpload = (props) => {
       return data;
     });
 
-    //setImages((previousState) => [...previousState, ...acceptedFileData, ...rejectedFileData]);
-    setImages((previousState) => [...previousState, ...acceptedFileData ]);
+    setImages((previousState) => [...previousState, ...acceptedFileData, ...rejectedFileData]);
+    //setImages((previousState) => [...previousState, ...acceptedFileData ]);
     //files previous state append selected values
     // onSelect(allFieldValue, 'files', [...allFieldValue.files, ...acceptedFileData])
     saveImage(allFieldValue, "file", [
       ...allFieldValue.file,
-      ...acceptedFileData,
+      //...acceptedFileData,
     ]);
   });
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop, 
-    accept: ['.zip'],
-    maxSize: 1024 * 1024 * fileValidate.maxSize,
-  });
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({
+    onDrop,
+    //accept: ['.png', '.jpg', '.jpeg'],
+    //accept: ['.png']
+    // maxSize: 1024 *1024 * 5
+    //maxSize: 1024 *1024 * 5
+
+    accept: fileValidate.fileExtension,
+    //accept: ['.png']
+    // maxSize: 1024 *1024 * 5
+    maxSize: 1024 *1024 * fileValidate.maxSize
+
+});
 
   //   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Image Delete @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
   const onDelete = (deleteData) => {
@@ -159,7 +167,7 @@ const FileUpload = (props) => {
           </div>
         </Card>
       </div>
-      <ErrorMessage name="file" component={MDTextError} />
+      <ErrorMessage name={name} component={MDTextError} />
       {/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Display selected file @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */}
       {/* {images.length > 0 && previouImages()} */}
       {/* @@@@@@@@@@@@@@@ */}

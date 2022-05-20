@@ -53,11 +53,10 @@ const ChaincodeForm = (props) => {
 
   const setInputValue = (allFieldValue, key, value) => {
     if (typeof value === "object" || value === "") {
-      setInitialValues({ ...formInitialValue, [key]: value });
+      setInitialValues({ ...allFieldValue, [key]: value });
     }
   };
 
-  console.log("################################### ", initialValues)
   return (
     <Formik
       initialValues={initialValues}

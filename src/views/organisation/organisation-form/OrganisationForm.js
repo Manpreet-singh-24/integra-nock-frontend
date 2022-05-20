@@ -79,7 +79,7 @@ const OrganisationForm = (props) => {
         }
       }}
     >
-      {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+      {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values, setFieldValue }) => (
         <Form noValidate onSubmit={handleSubmit}>
           <MDBox component="div">
             <MDBox mb={2}>
@@ -154,7 +154,14 @@ const OrganisationForm = (props) => {
                                       color="info"
                                       fontSize="medium"
                                       style={cursorPointer}
-                                      onClick={(index) => remove(index)}
+                                      onClick={() => { 
+                                    //  peers.splice(index, 1);
+                                    //   console.log(" ++++++++++++++++ ", peers)
+                                    //   setFieldValue('peers', peers)
+                                    
+                                        remove(index)
+                                      }
+                                    }
                                     />
                                   )}
                                 </MDTypography>
@@ -168,6 +175,7 @@ const OrganisationForm = (props) => {
                             <MDInput
                               type="text"
                               label="Name"
+                              value={peer.name}
                               name={`peers.${index}.name`}
                               onBlur={handleBlur}
                               onChange={handleChange}
@@ -187,6 +195,7 @@ const OrganisationForm = (props) => {
                             <MDInput
                               type="text"
                               label="URL"
+                              value={peer.url}
                               name={`peers.${index}.url`}
                               onBlur={handleBlur}
                               onChange={handleChange}
@@ -207,6 +216,7 @@ const OrganisationForm = (props) => {
                             <MDInput
                               type="text"
                               label="IP Address"
+                              value={peer.ip}
                               name={`peers.${index}.ip`}
                               onBlur={handleBlur}
                               onChange={handleChange}
@@ -226,6 +236,7 @@ const OrganisationForm = (props) => {
                             <MDInput
                               type="text"
                               label="Certificate"
+                              value={peer.certificate}
                               name={`peers.${index}.certificate`}
                               onBlur={handleBlur}
                               onChange={handleChange}

@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import PropTypes from "prop-types";
+
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -12,20 +14,20 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
-import PropTypes from "prop-types";
-
 // Data
 import authorsTableData from "./data/authorsTableData";
 import { connect } from 'react-redux'
 //import projectsTableData from "layouts/tables/data/projectsTableData";
 
-import { allRecord } from 'store/actions/chain-code'
+import { listing } from 'store/actions/chain-code'
+import DummyTable from './list'
 
 const ChainCode = (props) => {
-  const { getChainCode } = props
+  const { getChainCode, listData } = props
 
   const { columns, rows } = authorsTableData();
   // const { columns: pColumns, rows: pRows } = projectsTableData();
+console.log("########################## ", listData)
 
   useEffect(() => {
     const data = {
@@ -58,7 +60,7 @@ const ChainCode = (props) => {
                   Chaincode Table
                 </MDTypography>
               </MDBox>
-              <MDBox pt={3}>
+              {/* <MDBox pt={3}>
                 <DataTable
                   table={{ columns, rows }}
                   isSorted={false}
@@ -66,7 +68,8 @@ const ChainCode = (props) => {
                   showTotalEntries={false}
                   noEndBorder
                 />
-              </MDBox>
+              </MDBox> */}
+              <DummyTable />
             </Card>
           </Grid>
         </Grid>
@@ -77,16 +80,16 @@ const ChainCode = (props) => {
 }
 
 const mapStateToProps = (state) => {
-  //console.log(state)
   return {
     // loaded: state.category.loaded,
-    isDataLoaded: state.category,
+    listData: state.chainCode.data
   };
 }
+
 const mapDispatchToProps = (dispatch) => {
   return {
     getChainCode: (data) => {
-      dispatch(allRecord(data));
+      dispatch(listing(data));
     }
   }
 

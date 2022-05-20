@@ -1,7 +1,7 @@
 import types from './../../constants/chainCodeType'
 
 //Direct update value to redux store
-export const allRecord = (data) => {
+export const listing = (data) => {
     return {
         type: types.ALL_REQUEST,
         payload: data

@@ -58,6 +58,7 @@ const Add = () => {
                             <MDBox p={3}>
                                 <OrganisationForm 
                                 formInitialValue={formValue || initialValues}
+                                updateFormData={setFormValue}
                                 buttonLabel="Add Organisation"
                                 submitData={submitData} />
                 </MDBox>

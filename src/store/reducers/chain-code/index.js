@@ -1,7 +1,7 @@
 import type from 'store/constants/chainCodeType';
 
 const initialState = {
-    categories: [],
+    data:[],
     categoryDropOptions: [],
     category: {},
     isDataLoaded: false,
@@ -34,11 +34,10 @@ const chainCodeReducer = (state = initialState, action) => {
         case type.ALL_DATA:
             return {
                 ...state,
-                //loaded:true,
                 loading: false,
-                categories: action.payload.data,
-                total_count: action.payload.total_count,
-                isDataLoaded: true
+                data: action.payload 
+                //data: action.payload.data,
+                //total_count: action.payload.total_count,
             };
 
         case type.DROP_OPTION:
@@ -71,14 +70,13 @@ const chainCodeReducer = (state = initialState, action) => {
                 ...state,
                 loaded: true,
                 loading: false
-                //categories: action.payload,
             };
 
         case type.DELETE:
             return {
                 ...state,
                 loading: false,
-                categories: state.categories.filter((category) => category.id !== action.payload)
+                data: state.data.filter((category) => category.id !== action.payload)
             };
 
         case type.API_FAILED:

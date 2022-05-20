@@ -8,6 +8,7 @@ import MDAvatar from "components/MDAvatar";
 import MDBadge from "components/MDBadge";
 import MDButton from "components/MDButton";
 import MDModal from "components/MDModal"
+import { useSelector } from 'react-redux'
 
 // Images
 // import team2 from "assets/images/team-2.jpg";
