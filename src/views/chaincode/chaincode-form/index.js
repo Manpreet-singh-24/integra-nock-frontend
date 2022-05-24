@@ -16,10 +16,10 @@ import RegexTypes from "regex";
 
 const ChaincodeForm = (props) => {
   const { submitData, formInitialValue, buttonLabel } = props;
-//   const initialValues = formInitialValue;
+  //   const initialValues = formInitialValue;
   const scriptedRef = useScriptRef();
   const [initialValues, setInitialValues] = useState(formInitialValue);
-  
+
   //  const initialValues = formInitialValue;
 
   const validation = Yup.object({
@@ -44,23 +44,26 @@ const ChaincodeForm = (props) => {
       .trim()
       .matches(RegexTypes.UrlRegex, "Enter a valid URL ")
       .required("URL is required"),
-    file:Yup.array().min(1, 'File is required'),  
+    //file:Yup.array().min(1, 'File is required'),  
   });
 
   const setFileData = (allFieldValue, data) => {
-   // setFormValue({ ...allFieldValue, deleteImages: data.deleteImages, file: data.files });
+    // setFormValue({ ...allFieldValue, deleteImages: data.deleteImages, file: data.files });
   };
 
   const setInputValue = (allFieldValue, key, value) => {
+
     if (typeof value === "object" || value === "") {
       setInitialValues({ ...allFieldValue, [key]: value });
     }
+
   };
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validation}
+      enableReinitialize={true}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
           if (scriptedRef.current) {
@@ -144,7 +147,7 @@ const ChaincodeForm = (props) => {
                 allFieldValue={values}
                 fileValidate={{
                   maxSize: 1,
-                  fileExtension: [".zip"],
+                  fileExtension: 'application/zip',
                 }}
               />
             </MDBox>

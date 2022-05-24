@@ -15,13 +15,13 @@ import ChaincodeForm from 'views/chaincode/chaincode-form'
 
 const Edit = () => {
     const [formValue, setFormValue] = useState(null);
-    
+
     const initialValues = {
         name: '',
         label: '',
         version: '',
-        url: '',    
-        file: [],    
+        url: '',
+        file: [],
         submit: null
     };
 
@@ -29,8 +29,8 @@ const Edit = () => {
         console.log(" ============== Submit data ==================== ", data)
     }
 
-  return (
-    <DashboardLayout>
+    return (
+        <DashboardLayout>
             <DashboardNavbar />
             <MDBox pt={6} pb={3}>
                 <Grid container spacing={6}>
@@ -52,18 +52,18 @@ const Edit = () => {
 
                             </MDBox>
                             <MDBox p={3}>
-                                <ChaincodeForm 
-                                formInitialValue={formValue || initialValues}
-                                buttonLabel="Update Chaincode"
-                                submitData={submitData} />
-                </MDBox>
+                                <ChaincodeForm
+                                    formInitialValue={formValue || initialValues}
+                                    buttonLabel="Update Chaincode"
+                                    submitData={submitData} />
+                            </MDBox>
                         </Card>
                     </Grid>
                 </Grid>
             </MDBox>
             <Footer />
         </DashboardLayout>
-  )
+    )
 }
 
 export default Edit

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -8,6 +8,9 @@ import PropTypes from "prop-types";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
+import MDBadge from "components/MDBadge";
+import MDButton from "components/MDButton";
+import MDModal from "components/MDModal"
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -15,19 +18,26 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 // Data
-import authorsTableData from "./data/authorsTableData";
+// import authorsTableData from "./data/authorsTableData";
 import { connect } from 'react-redux'
 //import projectsTableData from "layouts/tables/data/projectsTableData";
 
 import { listing } from 'store/actions/chain-code'
-import DummyTable from './list'
+// import DummyTable from './list'
 
 const ChainCode = (props) => {
-  const { getChainCode, listData } = props
+  const { getChainCode, listData } = props;
+  const chainCodeModalRef = useRef(null);
+  // const { rows } = authorsTableData();
 
-  const { columns, rows } = authorsTableData();
-  // const { columns: pColumns, rows: pRows } = projectsTableData();
-console.log("########################## ", listData)
+  const tableHeading =  [
+    { Header: "Name", accessor: "name",  align: "left" },
+    { Header: "Label", accessor: "label", align: "left" },
+    { Header: "Version", accessor: "version", align: "center" },
+    { Header: "Status", accessor: "status", align: "center" },
+    { Header: "Created At", accessor: "Created_at", align: "center" },
+    { Header: "action", accessor: "action", align: "center" },
+  ];
 
   useEffect(() => {
     const data = {
@@ -38,6 +48,55 @@ console.log("########################## ", listData)
     }
     getChainCode(data)
   }, [])
+
+  const renderList = (data) => {
+    return data && data.map((item, index) => {
+      return {
+        name:(
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            {item.chaincodename}
+          </MDTypography>
+        ),
+        label:(
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            {item.label}
+          </MDTypography>
+        ),
+        version: (
+          <MDBox ml={-1}>
+            <MDBadge badgeContent={item.version} color="success" variant="gradient" size="sm" />
+          </MDBox>
+        ),
+        Created_at: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            23/04/18
+          </MDTypography>
+        ),
+        status: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            {item.status}
+          </MDTypography>
+        ),
+          action: <Job title="Check For Update"/>,
+        }
+        
+    })
+  }
+
+  const onModalOpen = () => { 
+    chainCodeModalRef.current.modalOpen();
+  }
+
+  const Job = ({ title, description }) => (
+    <MDBox lineHeight={1} textAlign="left">
+       <MDButton variant="gradient" color="dark" onClick={() => onModalOpen()}>
+             {title}
+       </MDButton>
+
+      <MDModal ref={chainCodeModalRef} />
+      
+    </MDBox>
+  );
 
   return (
     <DashboardLayout>
@@ -60,16 +119,16 @@ console.log("########################## ", listData)
                   Chaincode Table
                 </MDTypography>
               </MDBox>
-              {/* <MDBox pt={3}>
-                <DataTable
-                  table={{ columns, rows }}
+              <MDBox pt={3}>
+                <DataTable    
+                  table={{ columns:tableHeading , rows:renderList(listData) }}
                   isSorted={false}
                   entriesPerPage={false}
                   showTotalEntries={false}
                   noEndBorder
                 />
-              </MDBox> */}
-              <DummyTable />
+              </MDBox>
+              {/* <DummyTable /> */}
             </Card>
           </Grid>
         </Grid>

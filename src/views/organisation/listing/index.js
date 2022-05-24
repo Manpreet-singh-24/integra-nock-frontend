@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
+import MDBadge from "components/MDBadge";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -18,26 +19,64 @@ import DataTable from "examples/Tables/DataTable";
 import PropTypes from "prop-types";
 
 // Data
-import authorsTableData from "./data/authorsTableData";
 import { connect } from "react-redux";
 //import projectsTableData from "layouts/tables/data/projectsTableData";
 
-import { listing } from "store/actions/chain-code";
+import { listing } from "store/actions/organisation";
 
 const Organisation = (props) => {
   const { getChainCode } = props;
-
-  const { columns, rows } = authorsTableData();
   // const { columns: pColumns, rows: pRows } = projectsTableData();
+  const tableHeading = [
+    { Header: "Name", accessor: "name", align: "left" },
+    { Header: "Label", accessor: "label", align: "left" },
+    { Header: "Version", accessor: "version", align: "center" },
+    { Header: "Status", accessor: "status", align: "center" },
+    { Header: "Created At", accessor: "Created_at", align: "center" },
+  ]
 
-  useEffect(() => {
-    const data = {
-      per_page: 10,
-      page_no: 1,
-      search_by: "ffffff",
-    };
-    getChainCode(data);
-  }, []);
+    useEffect(() => {
+      const data = {
+        per_page: 10,
+        page_no: 1,
+        search_by: "ffffff",
+      };
+      getChainCode(data);
+    }, []);
+
+
+  const renderList = () => {
+    //return data && data.map((item, index) => {
+      return [{
+        name:(
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            John Michael
+          </MDTypography>
+        ),
+        label:(
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            John Michael
+          </MDTypography>
+        ),
+        version: (
+          <MDBox ml={-1}>
+            <MDBadge badgeContent="v2" color="success" variant="gradient" size="sm" />
+          </MDBox>
+        ),
+        Created_at: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            23/04/18
+          </MDTypography>
+        ),
+        status: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Edit
+          </MDTypography>
+        ),
+        }]
+        
+   // })
+  }
 
   return (
     <DashboardLayout>
@@ -63,7 +102,7 @@ const Organisation = (props) => {
                     </MDTypography>
                   </Grid>
                   <Grid item xs={6} sm={6} md={6} style={{ textAlign: "end" }}>
-                  <Link to="/organisation/add">
+                    <Link to="/organisation/add">
                       <MDButton variant="gradient" color="dark">
                         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                         &nbsp;Add New Organisation
@@ -78,7 +117,7 @@ const Organisation = (props) => {
               </MDBox>
               <MDBox pt={3}>
                 <DataTable
-                  table={{ columns, rows }}
+                  table={{ columns: tableHeading, rows: renderList() }}
                   isSorted={true}
                   entriesPerPage={true}
                   showTotalEntries={true}

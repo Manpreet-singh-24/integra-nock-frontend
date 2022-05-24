@@ -231,7 +231,7 @@ export default function EnhancedTable() {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <TableContainer>
           <Table
-            sx={{ minWidth: 750 }}
+           // sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
             size={'medium'}
           >
@@ -261,13 +261,14 @@ export default function EnhancedTable() {
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
-                        <Checkbox
+                        {/* <Checkbox
                           color="primary"
                           checked={isItemSelected}
                           inputProps={{
                             'aria-labelledby': labelId,
-                          }}
-                        />
+                          }}*/}
+                          ddsdsdsdsds
+                        /> 
                       </TableCell>
                       <TableCell
                         component="th"

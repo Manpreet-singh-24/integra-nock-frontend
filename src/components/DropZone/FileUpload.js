@@ -1,23 +1,26 @@
 import React, { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
+import PropTypes from "prop-types";
+import { ErrorMessage } from "formik";
+
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-
-import { ErrorMessage } from "formik";
 import { makeStyles } from '@material-ui/styles';
 
 import MDTextError from "components/MDTextError/";
 import ProductDisplay from './ProductDisplay';
 
-import PropTypes from "prop-types";
+import { SNACKBAR_OPEN } from 'store/actions/common/actions';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
     outline: "none",
     border: "none",
     width: "350px",
+    margin: "0px 0px 8px 0px"
   },
   root: {
     display: "flex",
@@ -42,16 +45,20 @@ const useStyles = makeStyles((theme) => ({
     width: 151,
   },
   fileContent: {
-      fontSize: "1.00rem"
+    fontSize: "1.00rem"
   },
   uploadIcon: {
-    height:'2em',
+    height: '2em',
     width: "3em"
   },
   dropText: {
     fontSize: "1.00rem",
-    padding: "0px 0px 8px 0px"  
+    padding: "0px 0px 8px 0px"
+  },
+  inputWrapper: {
+    background: 'red'
   }
+
 }));
 
 const FileUpload = (props) => {
@@ -59,17 +66,20 @@ const FileUpload = (props) => {
 
   const [images, setImages] = useState([]);
   const classes = useStyles();
+  const dispatch = useDispatch();
 
-//   useEffect(() => {
-//     if (isClearDisplayFiles) {
-//       setImages([]);
-//     }
-//   }, [isClearDisplayFiles]);
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
+
+    let count = 0;
     //Here we have create object inside object we have return image previou link and selected file object
     const acceptedFileData = acceptedFiles.map((selectedfile) => {
-      
+
+      if (selectedfile.type != fileValidate.fileExtension) {
+        count = 1;
+        dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Invalid file ', alertSeverity: 'error', variant: 'alert' });
+        return false;
+      }
       let data = {
         file: selectedfile,
         errors: [],
@@ -77,43 +87,16 @@ const FileUpload = (props) => {
         previousFile: URL.createObjectURL(selectedfile),
       };
       return data;
-    });
 
-    //Here we have create object inside object we have return image previou link and selected file object
-    const rejectedFileData = rejectedFiles.map((selectedfile) => {
-      alert(' ****** error ****** ');
-      let data = {
-        file: selectedfile.file,
-        errors: selectedfile.errors,
-        //previousFile ==> used for previous images. here we have create image into base64
-        previousFile: URL.createObjectURL(selectedfile.file),
-      };
-      return data;
     });
+    if (count === 0) {
+      // setImages((previousState) => [...previousState, ...acceptedFileData]);
+      setImages(acceptedFileData);
+      saveImage(allFieldValue, "file", acceptedFileData);
+    }
 
-    setImages((previousState) => [...previousState, ...acceptedFileData, ...rejectedFileData]);
-    //setImages((previousState) => [...previousState, ...acceptedFileData ]);
-    //files previous state append selected values
-    // onSelect(allFieldValue, 'files', [...allFieldValue.files, ...acceptedFileData])
-    saveImage(allFieldValue, "file", [
-      ...allFieldValue.file,
-      //...acceptedFileData,
-    ]);
   });
 
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({
-    onDrop,
-    //accept: ['.png', '.jpg', '.jpeg'],
-    //accept: ['.png']
-    // maxSize: 1024 *1024 * 5
-    //maxSize: 1024 *1024 * 5
-
-    accept: fileValidate.fileExtension,
-    //accept: ['.png']
-    // maxSize: 1024 *1024 * 5
-    maxSize: 1024 *1024 * fileValidate.maxSize
-
-});
 
   //   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Image Delete @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
   const onDelete = (deleteData) => {
@@ -147,10 +130,16 @@ const FileUpload = (props) => {
     }
   };
 
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    maxSize: 1024 * 1024 * fileValidate.maxSize
+
+  });
+
   return (
     <React.Fragment>
       <div {...getRootProps()} className={classes.wrapper}>
-        <input {...getInputProps()} />
+        <input {...getInputProps()} className={classes.inputWrapper }/>
         <Card className={classes.root}>
           <div className={classes.details}>
             <CardContent className={classes.content}>
@@ -158,7 +147,7 @@ const FileUpload = (props) => {
                 Live From Space
               </Typography>
               <Typography variant="subtitle1" color="textSecondary">
-                <CloudUploadIcon  className={classes.uploadIcon}/>
+                <CloudUploadIcon className={classes.uploadIcon} />
               </Typography>
             </CardContent>
             <div className={classes.controls}>

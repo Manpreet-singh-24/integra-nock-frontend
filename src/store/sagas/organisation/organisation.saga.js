@@ -3,13 +3,13 @@ import {all, call, takeLatest, put} from 'redux-saga/effects';
 // import {apiFailed, allData} from './../../actions/category';
 import {get, post, putRequest, patch, deleteRequest} from 'services/ApiService';
 import {SNACKBAR_OPEN, LOADER_OPEN, LOADER_CLOSE} from 'store/actions/common/actions';
-import history from 'store/redirect/history';
-const prefix = '/admin'
+//import history from 'store/redirect/history';
+//const prefix = '/admin'
 
 ////// NOTE ====> Make sure each WATCHER FUNCTION is imported inside root-saga file
 
 //All category
-export function* allRecord(action) {
+export function* listing(action) {
     try {
 
         yield put({type: LOADER_OPEN});
@@ -22,7 +22,7 @@ export function* allRecord(action) {
             action.payload.data
         );
         //yield put(saveUserData(result));
-       // yield put({type: types.ALL_DATA, payload: result});
+        yield put({type: types.ALL_DATA, payload: result});
         yield put({type: LOADER_CLOSE});
     } catch (error) {
         yield put({type: LOADER_CLOSE});
@@ -38,15 +38,15 @@ export function* allRecord(action) {
 }
 
 //Function generator (watcher )
-export function* allRecordReq() {
-    yield takeLatest(types.ALL_REQUEST, allRecord);
+export function* listingReq() {
+    yield takeLatest(types.ALL_REQUEST, listing);
 }
 
 //Create category
 export function* create(action) {
     try {
         yield put({type: LOADER_OPEN});
-        const result = yield call(post, 'category', action.payload);
+        const result = yield call(post, 'organization', action.payload);
         //yield put(saveUserData(result));
         yield put({type: types.ADD, payload: result});
         yield put({type: LOADER_CLOSE});
@@ -181,5 +181,5 @@ export function* changeStatusReq() {
 }
 
 export default function* organisationSaga() {
-    yield all([allRecordReq(), createReq(), editReq(), updateReq(), changeStatusReq(), deleteReq()]);
+    yield all([listingReq(), createReq(), editReq(), updateReq(), changeStatusReq(), deleteReq()]);
 }
