@@ -1,7 +1,7 @@
 import type from 'store/constants/organisationType';
 
 const initialState = {
-    categories: [],
+    data: [],
     categoryDropOptions: [],
     category: {},
     isDataLoaded: false,
@@ -36,7 +36,7 @@ const organisationReducer = (state = initialState, action) => {
                 ...state,
                 //loaded:true,
                 loading: false,
-                categories: action.payload.data,
+                data: action.payload.data,
                 total_count: action.payload.total_count,
                 isDataLoaded: true
             };
@@ -71,14 +71,14 @@ const organisationReducer = (state = initialState, action) => {
                 ...state,
                 loaded: true,
                 loading: false
-                //categories: action.payload,
+                //data: action.payload,
             };
 
         case type.DELETE:
             return {
                 ...state,
                 loading: false,
-                categories: state.categories.filter((category) => category.id !== action.payload)
+                data: state.data.filter((category) => category.id !== action.payload)
             };
 
         case type.API_FAILED:

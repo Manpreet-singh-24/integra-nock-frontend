@@ -74,7 +74,6 @@ const FileUpload = (props) => {
     let count = 0;
     //Here we have create object inside object we have return image previou link and selected file object
     const acceptedFileData = acceptedFiles.map((selectedfile) => {
-
       if (selectedfile.type != fileValidate.fileExtension) {
         count = 1;
         dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Invalid file ', alertSeverity: 'error', variant: 'alert' });
@@ -92,7 +91,7 @@ const FileUpload = (props) => {
     if (count === 0) {
       // setImages((previousState) => [...previousState, ...acceptedFileData]);
       setImages(acceptedFileData);
-      saveImage(allFieldValue, "file", acceptedFileData);
+      saveImage(allFieldValue, "file", acceptedFileData[0].file);
     }
 
   });
@@ -108,11 +107,12 @@ const FileUpload = (props) => {
       setImages((currentdata) =>
         currentdata.filter((filterData) => filterData.file !== deleteFile.file)
       );
-      //Apply filter on files array ==> allFieldValue.files( all selected files )
-      const allImages = allFieldValue.file.filter(
-        (filterData) => filterData.file !== deleteFile.file
-      );
-      saveImage(allFieldValue, "file", allImages);
+      // console.log(" TTTTTTTTTTTTTTTTTTTTTT ", allFieldValue.imageData.file )
+      // //Apply filter on files array ==> allFieldValue.files( all selected files )
+      // const allImages = allFieldValue.imageData.file.filter(
+      //   (filterData) => filterData.file !== deleteFile.file
+      // );
+      saveImage(allFieldValue, "file", []);
     }
 
     if (deleteData.key === "editImage") {

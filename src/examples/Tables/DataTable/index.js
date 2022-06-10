@@ -191,7 +191,7 @@ function DataTable({
             prepareRow(row);
             return (
               <TableRow {...row.getRowProps()} key={`key${key}`}>
-                {row.cells.map((cell,innerIndex) => (
+                {row.cells.map((cell, innerIndex) => (
                   <DataTableBodyCell
                     noBorder={noEndBorder && rows.length - 1 === key}
                     align={cell.column.align ? cell.column.align : "left"}
@@ -204,6 +204,7 @@ function DataTable({
               </TableRow>
             );
           })}
+
         </TableBody>
       </Table>
 
@@ -214,6 +215,11 @@ function DataTable({
         alignItems={{ xs: "flex-start", sm: "center" }}
         p={!showTotalEntries && pageOptions.length === 1 ? 0 : 3}
       >
+
+        {page.length <= 0 && <MDTypography component="p" variant="caption" color="text" fontWeight="medium" style={{width:'100%', textAlign:'center', fontSize:'14px'}}>
+          No data found
+          </MDTypography>}
+
         {showTotalEntries && (
           <MDBox mb={{ xs: 3, sm: 0 }}>
             <MDTypography variant="button" color="secondary" fontWeight="regular">
@@ -240,8 +246,8 @@ function DataTable({
                 />
               </MDBox>
             ) : (
-              renderPagination
-            )}
+                renderPagination
+              )}
             {canNextPage && (
               <MDPagination item onClick={() => nextPage()}>
                 <Icon sx={{ fontWeight: "bold" }}>chevron_right</Icon>

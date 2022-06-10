@@ -25,37 +25,37 @@ import { connect } from "react-redux";
 import { listing } from "store/actions/organisation";
 
 const Organisation = (props) => {
-  const { getChainCode } = props;
+  const { getChainCode, listData } = props;
   // const { columns: pColumns, rows: pRows } = projectsTableData();
   const tableHeading = [
     { Header: "Name", accessor: "name", align: "left" },
-    { Header: "Label", accessor: "label", align: "left" },
+    { Header: "MSP ID", accessor: "mspId", align: "left" },
     { Header: "Version", accessor: "version", align: "center" },
-    { Header: "Status", accessor: "status", align: "center" },
+    { Header: "Peer Count", accessor: "peerCount", align: "center" },
     { Header: "Created At", accessor: "Created_at", align: "center" },
   ]
 
-    useEffect(() => {
-      const data = {
-        per_page: 10,
-        page_no: 1,
-        search_by: "ffffff",
-      };
-      getChainCode(data);
-    }, []);
+  useEffect(() => {
+    const data = {
+      per_page: 10,
+      page_no: 1,
+      search_by: "ffffff",
+    };
+    getChainCode(data);
+  }, []);
 
 
-  const renderList = () => {
-    //return data && data.map((item, index) => {
-      return [{
-        name:(
+  const renderList = (data) => {
+    return data && data.map((item, index) => {
+      return {
+        name: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            John Michael
+            {item.name}
           </MDTypography>
         ),
-        label:(
+        mspId: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            John Michael
+            {item.msp_id}
           </MDTypography>
         ),
         version: (
@@ -68,14 +68,14 @@ const Organisation = (props) => {
             23/04/18
           </MDTypography>
         ),
-        status: (
+        peerCount: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            Edit
+            {item.peers_count}
           </MDTypography>
         ),
-        }]
-        
-   // })
+      }
+
+    })
   }
 
   return (
@@ -117,7 +117,7 @@ const Organisation = (props) => {
               </MDBox>
               <MDBox pt={3}>
                 <DataTable
-                  table={{ columns: tableHeading, rows: renderList() }}
+                  table={{ columns: tableHeading, rows: renderList(listData) }}
                   isSorted={true}
                   entriesPerPage={true}
                   showTotalEntries={true}
@@ -134,10 +134,9 @@ const Organisation = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  //console.log(state)
   return {
     // loaded: state.category.loaded,
-    isDataLoaded: state.category,
+    listData: state.organisation.data,
   };
 };
 const mapDispatchToProps = (dispatch) => {

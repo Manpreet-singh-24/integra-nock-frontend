@@ -22,9 +22,9 @@ const Add = (props) => {
     const [formValue, setFormValue] = useState(null);
     
     const initialValues = {
-        name: '/getting-started',
-        msp_id: '/getting-started',
-        peers_count: 3,
+        name: 'Org3',
+        msp_id: 'OrgMsp3',
+        file: [],
         peers: [{
             name:'test user',
             url:'https://mui.com/material-ui/getting-started/installation/',
@@ -35,8 +35,8 @@ const Add = (props) => {
     };
 
     const submitData = (data) => {
-        onSubmit(data)
         console.log(" ============== Submit data ==================== ", data)
+        onSubmit(data)
     }
 
     return (
