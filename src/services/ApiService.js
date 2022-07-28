@@ -1,5 +1,5 @@
 import Axios from './Axios';
-import config from './../config';
+import config from 'config';
 //const baseURL = 'https://jsonplaceholder.typicode.com'
 const backendURL = config.baseURL;
 

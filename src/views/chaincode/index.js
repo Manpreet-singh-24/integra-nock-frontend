@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import React, { useEffect, useRef } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -6,6 +6,9 @@ import Card from "@mui/material/Card";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
+import MDBadge from "components/MDBadge";
+import MDButton from "components/MDButton";
+import MDModal from "components/MDModal";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -14,28 +17,78 @@ import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 import PropTypes from "prop-types";
 
-// Data
-import authorsTableData from "./data/authorsTableData";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 //import projectsTableData from "layouts/tables/data/projectsTableData";
 
-import { allRecord } from 'store/actions/chain-code'
+import { listing, checkUpdate } from "store/actions/chain-code";
+import MomentHelper from "helpers/MomentHelper";
+
+const columns = [
+  { Header: "Name", accessor: "name", align: "left" },
+  { Header: "Label", accessor: "label", align: "left" },
+  { Header: "Version", accessor: "version", align: "center" },
+  { Header: "Sequence", accessor: "sequence", align: "center" },
+  { Header: "Created At", accessor: "created_at", align: "center" },
+  // { Header: "action", accessor: "action", align: "center" },
+];
 
 const ChainCode = (props) => {
-  const { getChainCode } = props
+  const { listingData, getChainCode, onCheckUpdate } = props;
+  const chainCodeModalRef = useRef(null);
 
-  const { columns, rows } = authorsTableData();
-  // const { columns: pColumns, rows: pRows } = projectsTableData();
+  const onModalOpen = () => {
+    onCheckUpdate();
+    chainCodeModalRef.current.modalOpen();
+  };
 
   useEffect(() => {
     const data = {
       per_page: 10,
       page_no: 1,
-      search_by: 'ffffff'
+      search_by: "ffffff",
+    };
+    getChainCode(data);
+  }, []);
 
-    }
-    getChainCode(data)
-  }, [])
+  const renderList = (data) => {
+    return (
+      data &&
+      data.map((item, index) => {
+        return {
+          name: (
+            <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+              {item.name}
+            </MDTypography>
+          ),
+          label: (
+            <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+              {item.label}
+            </MDTypography>
+          ),
+          version: (
+            <MDBox ml={-1}>
+              <MDBadge badgeContent={item.version} color="success" variant="gradient" size="sm" />
+            </MDBox>
+          ),
+          created_at: (
+            <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+              <MomentHelper date={item.created_at} />
+            </MDTypography>
+          ),
+          sequence: (
+            <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+              {item.sequence}
+            </MDTypography>
+          ),
+          // action: (
+          //   <MDButton variant="gradient" color="dark" onClick={() => onModalOpen()}>
+          //     Check for update
+          //   </MDButton>
+          // ),
+        };
+      })
+    );
+  };
 
   return (
     <DashboardLayout>
@@ -55,12 +108,15 @@ const ChainCode = (props) => {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" color="white">
-                  Chaincode Table
+                  Chaincode Listing
                 </MDTypography>
+                <MDButton variant="gradient" color="dark" onClick={() => onModalOpen()}>
+              Check for update
+            </MDButton>
               </MDBox>
               <MDBox pt={3}>
                 <DataTable
-                  table={{ columns, rows }}
+                  table={{ columns, rows: renderList(listingData) }}
                   isSorted={false}
                   entriesPerPage={false}
                   showTotalEntries={false}
@@ -71,29 +127,36 @@ const ChainCode = (props) => {
           </Grid>
         </Grid>
       </MDBox>
+      {/* /*
+       * modal
+       * */}
+      <MDModal ref={chainCodeModalRef} />
       <Footer />
     </DashboardLayout>
   );
-}
+};
 
 const mapStateToProps = (state) => {
-  //console.log(state)
   return {
-    // loaded: state.category.loaded,
-    isDataLoaded: state.category,
+    listingData: state.chainCode.listingData,
   };
-}
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     getChainCode: (data) => {
-      dispatch(allRecord(data));
-    }
-  }
+      dispatch(listing(data));
+    },
 
-}
+    onCheckUpdate: () => {
+      dispatch(checkUpdate())
+    }
+  };
+};
 
 ChainCode.propTypes = {
-  getChainCode: PropTypes.func
-}
+  getChainCode: PropTypes.func,
+  onCheckUpdate: PropTypes.func,
+  listingData: PropTypes.any,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChainCode);

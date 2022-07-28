@@ -6,7 +6,7 @@ const config = {
     borderRadius: 12,
     theme: 'light',
     i18n: 'en', // 'en' - English, 'fr' - French, 'ro' - Romanian, 'zh' - Chinese
-    baseURL: 'https://jsonplaceholder.typicode.com/',
+    baseURL: 'http://localhost:4000',
     backendImagePath:'uploads',
 };
 

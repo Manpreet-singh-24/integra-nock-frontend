@@ -5,6 +5,7 @@ import { useLocation, Link } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 // @material-ui core components
 import AppBar from "@mui/material/AppBar";
@@ -21,6 +22,9 @@ import MDInput from "components/MDInput";
 // Material Dashboard 2 React example components
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
+
+//Action
+import { userDetail } from 'store/actions/user'
 
 // Custom styles for DashboardNavbar
 import {
@@ -40,7 +44,7 @@ import {
   setDarkMode,
 } from "context";
 
-function DashboardNavbar({ absolute, light, isMini }) {
+function DashboardNavbar({ absolute, light, isMini, onUserDetail }) {
   
   const [controller, dispatch] = useMaterialUIController();
   const [navbarType, setNavbarType] = useState(); 
@@ -49,6 +53,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   const handleDarkMode = () => setDarkMode(dispatch, !darkMode);
+
+  /** 
+   * Get user detail
+   */
+  useEffect(() => { 
+    onUserDetail()
+  }, [])
 
   useEffect(() => {
     // Setting the navbar type
@@ -75,6 +86,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
     // Remove event listener on cleanup
     return () => window.removeEventListener("scroll", handleTransparentNavbar);
   }, [dispatch, fixedNavbar]);
+
 
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
@@ -183,11 +195,20 @@ DashboardNavbar.defaultProps = {
   isMini: false,
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onUserDetail: () => {
+      dispatch(userDetail());
+    },
+  };
+};
+
 // Typechecking props for the DashboardNavbar
 DashboardNavbar.propTypes = {
   absolute: PropTypes.bool,
   light: PropTypes.bool,
   isMini: PropTypes.bool,
+  onUserDetail: PropTypes.func,
 };
 
-export default DashboardNavbar;
+export default connect(null, mapDispatchToProps)(DashboardNavbar);

@@ -22,7 +22,7 @@ import authorsTableData from "./data/authorsTableData";
 import { connect } from "react-redux";
 //import projectsTableData from "layouts/tables/data/projectsTableData";
 
-import { allRecord } from "store/actions/chain-code";
+import { listing } from "store/actions/chain-code";
 
 const Organisation = (props) => {
   const { getChainCode } = props;
@@ -104,7 +104,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getChainCode: (data) => {
-      dispatch(allRecord(data));
+      dispatch(listing(data));
     },
   };
 };
