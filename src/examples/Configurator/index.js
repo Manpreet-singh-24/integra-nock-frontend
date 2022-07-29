@@ -1,5 +1,8 @@
+<<<<<<< HEAD
  
 
+=======
+>>>>>>> 51c326869c8f666d7c09e65033c9aa4e0c2c75bc
 import { useState, useEffect } from "react";
 
 // react-github-btn
@@ -75,7 +78,7 @@ function Configurator() {
     setTransparentSidenav(dispatch, false);
   };
   const handleDarkSidenav = () => {
-    setWhiteSidenav(dispatch, false);s
+    setWhiteSidenav(dispatch, false);
     setTransparentSidenav(dispatch, false);
   };
   const handleFixedNavbar = () => setFixedNavbar(dispatch, !fixedNavbar);

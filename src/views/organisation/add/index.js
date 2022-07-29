@@ -13,24 +13,30 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import OrganisationForm from 'views/organisation/organisation-form/OrganisationForm'
 
-const Add = () => {
+import { connect } from 'react-redux'
+import { create } from 'store/actions/organisation'
+
+
+const Add = (props) => {
+    const { onSubmit } = props
     const [formValue, setFormValue] = useState(null);
     
     const initialValues = {
-        name: '',
-        msp_id: '',
-        peers_count: null,
+        name: 'Org3',
+        msp_id: 'OrgMsp3',
+        file: [],
         peers: [{
-            name:'',
-            url:'',
-            ip: '',
-            certificate: '',
+            name:'test user',
+            url:'https://mui.com/material-ui/getting-started/installation/',
+            ip: '192.168.0.1',
+            certificate: 'certificates',
         }],
         submit: null
     };
 
     const submitData = (data) => {
         console.log(" ============== Submit data ==================== ", data)
+        onSubmit(data)
     }
 
     return (
@@ -58,6 +64,7 @@ const Add = () => {
                             <MDBox p={3}>
                                 <OrganisationForm 
                                 formInitialValue={formValue || initialValues}
+                                updateFormData={setFormValue}
                                 buttonLabel="Add Organisation"
                                 submitData={submitData} />
                 </MDBox>
@@ -70,4 +77,13 @@ const Add = () => {
     )
 }
 
-export default Add
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      onSubmit: (data) => {
+        dispatch(create(data));
+      }
+    }
+  
+  }
+  
+export default connect(null, mapDispatchToProps)(Add)

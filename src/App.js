@@ -44,6 +44,8 @@ import brandDark from "assets/images/favicon.ico";
 
 import { useSelector } from 'react-redux';
 
+import "style.css";
+
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
   const isBackdropOpen = useSelector((state) => state.customization.isLoader);

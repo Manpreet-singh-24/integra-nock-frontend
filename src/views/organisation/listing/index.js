@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
+import MDBadge from "components/MDBadge";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -18,17 +19,25 @@ import DataTable from "examples/Tables/DataTable";
 import PropTypes from "prop-types";
 
 // Data
-import authorsTableData from "./data/authorsTableData";
 import { connect } from "react-redux";
 //import projectsTableData from "layouts/tables/data/projectsTableData";
 
+<<<<<<< HEAD
 import { listing } from "store/actions/chain-code";
+=======
+import { listing } from "store/actions/organisation";
+>>>>>>> 51c326869c8f666d7c09e65033c9aa4e0c2c75bc
 
 const Organisation = (props) => {
-  const { getChainCode } = props;
-
-  const { columns, rows } = authorsTableData();
+  const { getChainCode, listData } = props;
   // const { columns: pColumns, rows: pRows } = projectsTableData();
+  const tableHeading = [
+    { Header: "Name", accessor: "name", align: "left" },
+    { Header: "MSP ID", accessor: "mspId", align: "left" },
+    { Header: "Version", accessor: "version", align: "center" },
+    { Header: "Peer Count", accessor: "peerCount", align: "center" },
+    { Header: "Created At", accessor: "Created_at", align: "center" },
+  ]
 
   useEffect(() => {
     const data = {
@@ -38,6 +47,40 @@ const Organisation = (props) => {
     };
     getChainCode(data);
   }, []);
+
+
+  const renderList = (data) => {
+    return data && data.map((item, index) => {
+      return {
+        name: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            {item.name}
+          </MDTypography>
+        ),
+        mspId: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            {item.msp_id}
+          </MDTypography>
+        ),
+        version: (
+          <MDBox ml={-1}>
+            <MDBadge badgeContent="v2" color="success" variant="gradient" size="sm" />
+          </MDBox>
+        ),
+        Created_at: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            23/04/18
+          </MDTypography>
+        ),
+        peerCount: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            {item.peers_count}
+          </MDTypography>
+        ),
+      }
+
+    })
+  }
 
   return (
     <DashboardLayout>
@@ -63,7 +106,7 @@ const Organisation = (props) => {
                     </MDTypography>
                   </Grid>
                   <Grid item xs={6} sm={6} md={6} style={{ textAlign: "end" }}>
-                  <Link to="/organisation/add">
+                    <Link to="/organisation/add">
                       <MDButton variant="gradient" color="dark">
                         <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                         &nbsp;Add New Organisation
@@ -78,10 +121,10 @@ const Organisation = (props) => {
               </MDBox>
               <MDBox pt={3}>
                 <DataTable
-                  table={{ columns, rows }}
-                  isSorted={false}
-                  entriesPerPage={false}
-                  showTotalEntries={false}
+                  table={{ columns: tableHeading, rows: renderList(listData) }}
+                  isSorted={true}
+                  entriesPerPage={true}
+                  showTotalEntries={true}
                   noEndBorder
                 />
               </MDBox>
@@ -95,10 +138,9 @@ const Organisation = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  //console.log(state)
   return {
     // loaded: state.category.loaded,
-    isDataLoaded: state.category,
+    listData: state.organisation.data,
   };
 };
 const mapDispatchToProps = (dispatch) => {

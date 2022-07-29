@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import * as Yup from "yup";
 import { Formik, Form, getIn, ErrorMessage, FieldArray } from "formik";
@@ -11,16 +11,17 @@ import MDButton from "components/MDButton";
 import useScriptRef from "hooks/useScriptRef";
 import MDTextError from "components/MDTextError/";
 import MDTypography from "components/MDTypography";
+import FileUpload from "components/DropZone/FileUpload";
 import DoDisturbOnIcon from "@mui/icons-material/DoDisturbOn";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import RegexTypes from "regex";
 
-const cursorPointer = {cursor: 'pointer'};
+const cursorPointer = { cursor: 'pointer' };
 
 const OrganisationForm = (props) => {
   const { submitData, formInitialValue, buttonLabel } = props;
-  const initialValues = formInitialValue;
+  const [initialValues, setInitialValues] = useState(formInitialValue);
   const scriptedRef = useScriptRef();
 
   //  const initialValues = formInitialValue;
@@ -29,18 +30,18 @@ const OrganisationForm = (props) => {
       .trim()
       .matches(RegexTypes.checkSpacialCharacter, "Name can not contain special character")
       .max(35, "Name must be no longer than 35 characters")
-      .min(5, "Name must be at least 5 character long")
+      .min(3, "Name must be at least 3 character long")
       .required("Name is required"),
     msp_id: Yup.string()
       .trim()
       .matches(RegexTypes.checkSpacialCharacter, "MSP ID can not contain special character")
       .max(35, "MSP ID must be no longer than 35 characters")
-      .min(5, "MSP ID must be at least 5 character long")
+      .min(3, "MSP ID must be at least 3 character long")
       .required("MSP ID is required"),
-    peers_count: Yup.number()
-      .integer()
-      .typeError("Please enter only numeric value")
-      .required("Peer count is required"),
+    // peers_count: Yup.number()
+    //   .integer()
+    //   .typeError("Please enter only numeric value")
+    //   .required("Peer count is required"),
     peers: Yup.array().of(
       Yup.object().shape({
         name: Yup.string()
@@ -58,16 +59,44 @@ const OrganisationForm = (props) => {
     ),
   });
 
+
+  const setFileData = (allFieldValue, data) => {
+    // setFormValue({ ...allFieldValue, deleteImages: data.deleteImages, file: data.files });
+  };
+
+  const setInputValue = (allFieldValue, key, value) => {
+    if (typeof value === "object" || value === "") {
+      setInitialValues({ ...allFieldValue, [key]: value });
+    }
+  };
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validation}
+      enableReinitialize={true}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
           if (scriptedRef.current) {
             setStatus({ success: true });
             setSubmitting(false);
-            submitData(values);
+
+            if (values.file <= 0) {
+              setErrors({ file: 'Please Select file' });
+              return false;
+            }
+
+            console.log(" TTTTTTTTTTTTTTTTTTTT ", values)
+
+            let formData = new FormData();
+
+            formData.append('name', values.name);
+            formData.append('msp_id', values.msp_id);
+            formData.append('file', values.file);
+            formData.append('peers', values.peers);
+
+            submitData(formData);
+
           }
         } catch (error) {
           console.error(error);
@@ -79,7 +108,7 @@ const OrganisationForm = (props) => {
         }
       }}
     >
-      {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+      {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values, setFieldValue }) => (
         <Form noValidate onSubmit={handleSubmit}>
           <MDBox component="div">
             <MDBox mb={2}>
@@ -109,7 +138,7 @@ const OrganisationForm = (props) => {
               <ErrorMessage name="msp_id" component={MDTextError} />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput
+              {/* <MDInput
                 fullWidth
                 type="text"
                 label="Peers Count"
@@ -118,12 +147,23 @@ const OrganisationForm = (props) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={touched.peers_count && errors.peers_count ? true : false}
+              /> */}
+              <FileUpload
+                name="file"
+                fileData={values.file}
+                onSelect={setFileData}
+                saveImage={setInputValue}
+                allFieldValue={values}
+                fileValidate={{
+                  maxSize: 1,
+                  fileExtension: 'application/json',
+                }}
               />
               <ErrorMessage name="peers_count" component={MDTextError} />
             </MDBox>
             <Grid container>
               <Grid item xs={12} sm={12} md={12}>
-                <MDTypography variant="h6" sx={{ pb: 2 }}>
+                <MDTypography variant="h6" sx={{ pb: 2, mt: 2 }}>
                   Add Peer
                 </MDTypography>
               </Grid>
@@ -154,7 +194,14 @@ const OrganisationForm = (props) => {
                                       color="info"
                                       fontSize="medium"
                                       style={cursorPointer}
-                                      onClick={(index) => remove(index)}
+                                      onClick={() => {
+                                        //  peers.splice(index, 1);
+                                        //   console.log(" ++++++++++++++++ ", peers)
+                                        //   setFieldValue('peers', peers)
+
+                                        remove(index)
+                                      }
+                                      }
                                     />
                                   )}
                                 </MDTypography>
@@ -168,12 +215,13 @@ const OrganisationForm = (props) => {
                             <MDInput
                               type="text"
                               label="Name"
+                              value={peer.name}
                               name={`peers.${index}.name`}
                               onBlur={handleBlur}
                               onChange={handleChange}
                               error={
                                 getIn(form.touched, `peers.${index}.name`) &&
-                                getIn(errors, `peers.${index}.name`)
+                                  getIn(errors, `peers.${index}.name`)
                                   ? true
                                   : false
                               }
@@ -187,12 +235,13 @@ const OrganisationForm = (props) => {
                             <MDInput
                               type="text"
                               label="URL"
+                              value={peer.url}
                               name={`peers.${index}.url`}
                               onBlur={handleBlur}
                               onChange={handleChange}
                               error={
                                 getIn(form.touched, `peers.${index}.url`) &&
-                                getIn(errors, `peers.${index}.url`)
+                                  getIn(errors, `peers.${index}.url`)
                                   ? true
                                   : false
                               }
@@ -207,12 +256,13 @@ const OrganisationForm = (props) => {
                             <MDInput
                               type="text"
                               label="IP Address"
+                              value={peer.ip}
                               name={`peers.${index}.ip`}
                               onBlur={handleBlur}
                               onChange={handleChange}
                               error={
                                 getIn(form.touched, `peers.${index}.ip`) &&
-                                getIn(errors, `peers.${index}.ip`)
+                                  getIn(errors, `peers.${index}.ip`)
                                   ? true
                                   : false
                               }
@@ -226,12 +276,13 @@ const OrganisationForm = (props) => {
                             <MDInput
                               type="text"
                               label="Certificate"
+                              value={peer.certificate}
                               name={`peers.${index}.certificate`}
                               onBlur={handleBlur}
                               onChange={handleChange}
                               error={
                                 getIn(form.touched, `peers.${index}.certificate`) &&
-                                getIn(errors, `peers.${index}.certificate`)
+                                  getIn(errors, `peers.${index}.certificate`)
                                   ? true
                                   : false
                               }

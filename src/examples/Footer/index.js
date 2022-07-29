@@ -1,5 +1,8 @@
+<<<<<<< HEAD
  
 
+=======
+>>>>>>> 51c326869c8f666d7c09e65033c9aa4e0c2c75bc
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 

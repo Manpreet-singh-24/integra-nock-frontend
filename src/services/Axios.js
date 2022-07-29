@@ -1,13 +1,13 @@
 import axios from 'axios';
 // import {put} from 'redux-saga/effects';
 // import {REDIRECT_TO} from './../store/actions';
-import history from './../store/redirect/history';
+import history from 'store/redirect/history';
 import LocalStorageService from './LocalStorageService';
-import Store from './../store/store';
-// import {SNACKBAR_OPEN} from './../store/actions';
+import Store from 'store/store';
+import {SNACKBAR_OPEN} from 'store/actions/common/actions';
 
 //const baseURL = process.env.API_URL;
-const baseURL = 'http://localhost:5000/';
+//const baseURL = 'http://localhost:5000/';
 
 axios.interceptors.request.use(
     (config) => {
@@ -22,7 +22,8 @@ axios.interceptors.request.use(
         //config.headers["Accept"] = "application/json";
         // config.headers["X-Token"] = LocalStorageService.getAuth();
         // config.headers["lang"] = LocalStorageService.getLocale();
-        config.baseURL = baseURL;
+   
+        // config.baseURL = baseURL;
         return config;
     },
     (error) => {
