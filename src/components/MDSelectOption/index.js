@@ -2,6 +2,7 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 import PropTypes from "prop-types";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 
 const MDSelectOption = (props) => {
   const { name, options, ...rest } = props;
@@ -9,7 +10,10 @@ const MDSelectOption = (props) => {
     <React.Fragment>
       <Grid container spacing={2}>
         <Grid item xs={4}>
-          <label>Chaincode:</label>
+        <Typography id="transition-modal-title" variant="h6" component="h6" align="center">
+        Chaincode: 
+            </Typography>
+          {/* <p>Chaincode: </p> */}
         </Grid>
         <Grid item xs={8}>
           <TextField name={name} {...rest}>

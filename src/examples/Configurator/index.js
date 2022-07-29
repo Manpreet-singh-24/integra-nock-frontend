@@ -1,8 +1,5 @@
-<<<<<<< HEAD
  
 
-=======
->>>>>>> 51c326869c8f666d7c09e65033c9aa4e0c2c75bc
 import { useState, useEffect } from "react";
 
 // react-github-btn

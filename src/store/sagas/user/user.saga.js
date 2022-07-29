@@ -17,7 +17,7 @@ export function* login(action) {
         const result = yield call(post, 'user/login', action.payload);
         LocalStorageService.setToken(result.data)
         //yield put(saveUserData(result));
-        // yield put({type: types.ADD, payload: result});
+        yield put({type: types.LOGIN, payload: {}});
         yield put({type: LOADER_CLOSE});
         yield put({type: SNACKBAR_OPEN, open: true, message: result.message, alertSeverity: 'success', variant: 'alert'});
     } catch (error) {

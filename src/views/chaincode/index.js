@@ -32,7 +32,7 @@ const columns = [
   // { Header: "action", accessor: "action", align: "center" },
 ];
 
-const ChainCode = (props) => {
+const Listing = (props) => {
   const { listingData, getChainCode, onCheckUpdate } = props;
   const chainCodeModalRef = useRef(null);
 
@@ -56,27 +56,56 @@ const ChainCode = (props) => {
       data.map((item, index) => {
         return {
           name: (
-            <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            <MDTypography
+              component="a"
+              href="#"
+              variant="caption"
+              color="text"
+              fontWeight="medium"
+            >
               {item.name}
             </MDTypography>
           ),
           label: (
-            <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            <MDTypography
+              component="a"
+              href="#"
+              variant="caption"
+              color="text"
+              fontWeight="medium"
+            >
               {item.label}
             </MDTypography>
           ),
           version: (
             <MDBox ml={-1}>
-              <MDBadge badgeContent={item.version} color="success" variant="gradient" size="sm" />
+              <MDBadge
+                badgeContent={item.version}
+                color="success"
+                variant="gradient"
+                size="sm"
+              />
             </MDBox>
           ),
           created_at: (
-            <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            <MDTypography
+              component="a"
+              href="#"
+              variant="caption"
+              color="text"
+              fontWeight="medium"
+            >
               <MomentHelper date={item.created_at} />
             </MDTypography>
           ),
           sequence: (
-            <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            <MDTypography
+              component="a"
+              href="#"
+              variant="caption"
+              color="text"
+              fontWeight="medium"
+            >
               {item.sequence}
             </MDTypography>
           ),
@@ -107,12 +136,22 @@ const ChainCode = (props) => {
                 borderRadius="lg"
                 coloredShadow="info"
               >
-                <MDTypography variant="h6" color="white">
-                  Chaincode Listing
-                </MDTypography>
-                <MDButton variant="gradient" color="dark" onClick={() => onModalOpen()}>
-              Check for update
-            </MDButton>
+                <Grid container>
+                  <Grid item xs={6} sm={6} md={6}>
+                    <MDTypography variant="h6" color="white">
+                      Chaincode Listing
+                    </MDTypography>
+                  </Grid>
+                  <Grid item xs={6} sm={6} md={6} style={{ textAlign: "end" }}>
+                    <MDButton
+                      variant="gradient"
+                      color="dark"
+                      onClick={() => onModalOpen()}
+                    >
+                      Check for update
+                    </MDButton>
+                  </Grid>
+                </Grid>
               </MDBox>
               <MDBox pt={3}>
                 <DataTable
@@ -148,15 +187,15 @@ const mapDispatchToProps = (dispatch) => {
     },
 
     onCheckUpdate: () => {
-      dispatch(checkUpdate())
-    }
+      dispatch(checkUpdate());
+    },
   };
 };
 
-ChainCode.propTypes = {
+Listing.propTypes = {
   getChainCode: PropTypes.func,
   onCheckUpdate: PropTypes.func,
   listingData: PropTypes.any,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChainCode);
+export default connect(mapStateToProps, mapDispatchToProps)(Listing);

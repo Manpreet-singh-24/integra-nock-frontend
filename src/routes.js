@@ -4,15 +4,10 @@ import Tables from "layouts/tables";
 import Billing from "layouts/billing";
 // import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
-<<<<<<< HEAD
 // import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
-=======
-import Profile from "layouts/profile";
-// import SignIn from "layouts/authentication/sign-in";
->>>>>>> 51c326869c8f666d7c09e65033c9aa4e0c2c75bc
 // import SignUp from "layouts/authentication/sign-up";
-import ChainCode from "views/chaincode/listing";
+import ChainCode from "views/chaincode/";
 import ChaincodeEdit from 'views/chaincode/edit';
 import Organisation from 'views/organisation/listing';
 import Add from 'views/organisation/add';
@@ -21,14 +16,14 @@ import Add from 'views/organisation/add';
 import Icon from "@mui/material/Icon";
 
 const routes = [
-  {
-    type: "collapse",
-    name: "Dashboard",
-    key: "dashboard",
-    icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/dashboard",
-    component: <Dashboard />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Dashboard",
+  //   key: "dashboard",
+  //   icon: <Icon fontSize="small">dashboard</Icon>,
+  //   route: "/dashboard",
+  //   component: <Dashboard />,
+  // },
   {
     type: "collapse",
     name: "Chaincodes",
@@ -69,14 +64,14 @@ const routes = [
   //   route: "/tables",
   //   component: <Tables />,
   // },
-  {
-    type: "collapse",
-    name: "Billing",
-    key: "billing",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/billing",
-    component: <Billing />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Billing",
+  //   key: "billing",
+  //   icon: <Icon fontSize="small">receipt_long</Icon>,
+  //   route: "/billing",
+  //   component: <Billing />,
+  // },
   // {
   //   type: "collapse",
   //   name: "RTL",
@@ -85,15 +80,14 @@ const routes = [
   //   route: "/rtl",
   //   component: <RTL />,
   // },
-  {
-    type: "collapse",
-    name: "Notifications",
-    key: "notifications",
-    icon: <Icon fontSize="small">notifications</Icon>,
-    route: "/notifications",
-    component: <Notifications />,
-  },
-<<<<<<< HEAD
+  // {
+  //   type: "collapse",
+  //   name: "Notifications",
+  //   key: "notifications",
+  //   icon: <Icon fontSize="small">notifications</Icon>,
+  //   route: "/notifications",
+  //   component: <Notifications />,
+  // },
   // {
   //   type: "collapse",
   //   name: "Profile",
@@ -103,31 +97,13 @@ const routes = [
   //   component: <Profile />,
   // },
   {
-    type: "collapse",
-    name: "Sign In",
+    // type: "collapse",
+    // name: "Sign In",
     key: "sign-in",
     icon: <Icon fontSize="small">login</Icon>,
     route: "/authentication/sign-in",
     component: <SignIn />,
   },
-=======
-  {
-    type: "collapse",
-    name: "Profile",
-    key: "profile",
-    icon: <Icon fontSize="small">person</Icon>,
-    route: "/profile",
-    component: <Profile />,
-  },
-  // {
-  //   type: "collapse",
-  //   name: "Sign In",
-  //   key: "sign-in",
-  //   icon: <Icon fontSize="small">login</Icon>,
-  //   route: "/authentication/sign-in",
-  //   component: <SignIn />,
-  // },
->>>>>>> 51c326869c8f666d7c09e65033c9aa4e0c2c75bc
   // {
   //   type: "collapse",
   //   name: "Sign Up",

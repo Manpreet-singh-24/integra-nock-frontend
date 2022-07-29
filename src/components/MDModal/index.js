@@ -8,8 +8,6 @@ import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 
 import MDBox from "components/MDBox";
-import MDInput from "components/MDInput";
-import MDButton from "components/MDButton";
 import CheckUpdateForm from 'views/chaincode/CheckUpdateForm'
 
 const style = {
@@ -55,25 +53,13 @@ const MDModal = (props, ref) => {
       >
         <Fade in={open}>
           <Box sx={style}>
-            {/* <Typography id="transition-modal-title" variant="h6" component="h2" align="center">
+            <Typography id="transition-modal-title" variant="h6" component="h6" align="center">
               Check Chaincode Update
             </Typography>
             <MDBox pt={4} pb={3} px={3}>
-              <MDBox component="form" role="form">
-                <MDBox mb={2}>
-                  <MDInput type="text" label="Email" fullWidth />
-                </MDBox>
-                <MDBox mb={2}>
-                  <MDInput type="password" label="Password" fullWidth />
-                </MDBox>
-                <MDBox mt={4} mb={1}>
-                  <MDButton variant="gradient" color="info" fullWidth>
-                    check Update
-                  </MDButton>
-                </MDBox>
-              </MDBox>
-            </MDBox> */}
+             
             <CheckUpdateForm />
+              </MDBox>
           </Box>
         </Fade>
       </Modal>

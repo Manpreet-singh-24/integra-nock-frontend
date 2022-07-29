@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // react-router-dom components
 // import { Link } from "react-router-dom";
@@ -6,6 +6,8 @@ import { useState } from "react";
 // @mui material components
 import Card from "@mui/material/Card";
 import { connect } from "react-redux";
+import {useNavigate} from 'react-router-dom';
+
 // import Switch from "@mui/material/Switch";
 // import Grid from "@mui/material/Grid";
 // import MuiLink from "@mui/material/Link";
@@ -39,7 +41,8 @@ import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 import { loginRequest } from 'store/actions/user'
 
 function Basic(props) {
-  const { onloginRequest } = props
+  const { onloginRequest, isLoginSuccess } = props
+  const navigate = useNavigate();
   // const [rememberMe, setRememberMe] = useState(false);
   // const handleSetRememberMe = () => setRememberMe(!rememberMe);
   const scriptedRef = useScriptRef();
@@ -65,6 +68,12 @@ function Basic(props) {
       .min(8, "Password  must be at least 8 character long")
       .required("Password  is required"),
   });
+
+  useEffect(() => {
+    if(isLoginSuccess) {
+      navigate('/chaincode');
+    }
+  }, [isLoginSuccess])
 
   return (
     <BasicLayout image={bgImage}>
@@ -204,6 +213,11 @@ function Basic(props) {
     </BasicLayout>
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    isLoginSuccess: state.user.isLoginSuccess,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -218,4 +232,4 @@ Basic.propTypes = {
 };
 
 
-export default connect(null, mapDispatchToProps)(Basic);
+export default connect(mapStateToProps, mapDispatchToProps)(Basic);

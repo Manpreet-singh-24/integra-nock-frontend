@@ -91,9 +91,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onCheckUpdate: (data) => {
-      dispatch(checkUpdate(data));
-    },
+    // onCheckUpdate: (data) => {
+    //   dispatch(checkUpdate(data));
+    // },
 
     onInstallChainCode: (data) => {
       dispatch(installChainCode(data));

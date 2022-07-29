@@ -22,11 +22,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 //import projectsTableData from "layouts/tables/data/projectsTableData";
 
-<<<<<<< HEAD
 import { listing } from "store/actions/chain-code";
-=======
-import { listing } from "store/actions/organisation";
->>>>>>> 51c326869c8f666d7c09e65033c9aa4e0c2c75bc
 
 const Organisation = (props) => {
   const { getChainCode, listData } = props;

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 // @mui material components
 import { Breadcrumbs as MuiBreadcrumbs } from "@mui/material";
@@ -12,9 +13,9 @@ import Icon from "@mui/material/Icon";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
-function Breadcrumbs({ icon, title, route, light }) {
+function Breadcrumbs({ icon, title, route, light, organisationName }) {
   const routes = route.slice(0, -1);
-
+  // console.log("=========================", organisationName.org_name)
   return (
     <MDBox mr={{ xs: 0, xl: 8 }}>
       <MuiBreadcrumbs
@@ -24,7 +25,8 @@ function Breadcrumbs({ icon, title, route, light }) {
           },
         }}
       >
-        <Link to="/">
+        {/* <Link to="/"> */}
+        <Link to="/chaincode">
           <MDTypography
             component="span"
             variant="body2"
@@ -67,7 +69,8 @@ function Breadcrumbs({ icon, title, route, light }) {
         color={light ? "white" : "dark"}
         noWrap
       >
-        {title.replace("-", " ")}
+        {/* {title.replace("-", " ")}  */}
+        {organisationName.org_name ? organisationName.org_name : ""}
       </MDTypography>
     </MDBox>
   );
@@ -84,6 +87,15 @@ Breadcrumbs.propTypes = {
   title: PropTypes.string.isRequired,
   route: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
   light: PropTypes.bool,
+  organisationName: PropTypes.any
 };
 
-export default Breadcrumbs;
+
+const mapStateToProps = (state) => {
+  return {
+    organisationName: state.user.user,
+  };
+};
+
+
+export default connect(mapStateToProps, null)(Breadcrumbs)
