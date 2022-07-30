@@ -35,7 +35,6 @@ const Add = (props) => {
     };
 
     const submitData = (data) => {
-        console.log(" ============== Submit data ==================== ", data)
         onSubmit(data)
     }
 

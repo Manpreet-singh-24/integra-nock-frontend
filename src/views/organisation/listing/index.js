@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
-import MDBadge from "components/MDBadge";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -22,26 +21,20 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 //import projectsTableData from "layouts/tables/data/projectsTableData";
 
-import { listing } from "store/actions/chain-code";
+import { listing, signChainCodeReq } from "store/actions/organisation";
 
 const Organisation = (props) => {
-  const { getChainCode, listData } = props;
+  const { organisationList, listData, signOrganisation } = props;
   // const { columns: pColumns, rows: pRows } = projectsTableData();
   const tableHeading = [
     { Header: "Name", accessor: "name", align: "left" },
     { Header: "MSP ID", accessor: "mspId", align: "left" },
-    { Header: "Version", accessor: "version", align: "center" },
-    { Header: "Peer Count", accessor: "peerCount", align: "center" },
     { Header: "Created At", accessor: "Created_at", align: "center" },
+    { Header: "action", accessor: "action", align: "center" },
   ]
 
   useEffect(() => {
-    const data = {
-      per_page: 10,
-      page_no: 1,
-      search_by: "ffffff",
-    };
-    getChainCode(data);
+    organisationList();
   }, []);
 
 
@@ -50,31 +43,25 @@ const Organisation = (props) => {
       return {
         name: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            {item.name}
+            {item.org_name}
           </MDTypography>
         ),
         mspId: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            {item.msp_id}
+            {item.org_msp}
           </MDTypography>
-        ),
-        version: (
-          <MDBox ml={-1}>
-            <MDBadge badgeContent="v2" color="success" variant="gradient" size="sm" />
-          </MDBox>
         ),
         Created_at: (
           <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
             23/04/18
           </MDTypography>
         ),
-        peerCount: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            {item.peers_count}
-          </MDTypography>
-        ),
+        action: (<React.Fragment>
+          {item.signedby_org === false ? <MDButton variant="gradient" color="dark" onClick={() => signOrganisation(item.org_id)}>
+        Sign </MDButton> : "----" } 
+        </React.Fragment>)
       }
-
+      
     })
   }
 
@@ -98,7 +85,7 @@ const Organisation = (props) => {
                 <Grid container>
                   <Grid item xs={6} sm={6} md={6}>
                     <MDTypography variant="h6" color="white">
-                      Chaincode Table
+                      Organisation Table
                     </MDTypography>
                   </Grid>
                   <Grid item xs={6} sm={6} md={6} style={{ textAlign: "end" }}>
@@ -118,9 +105,9 @@ const Organisation = (props) => {
               <MDBox pt={3}>
                 <DataTable
                   table={{ columns: tableHeading, rows: renderList(listData) }}
-                  isSorted={true}
-                  entriesPerPage={true}
-                  showTotalEntries={true}
+                  isSorted={false}
+                  entriesPerPage={false}
+                  showTotalEntries={false}
                   noEndBorder
                 />
               </MDBox>
@@ -136,14 +123,17 @@ const Organisation = (props) => {
 const mapStateToProps = (state) => {
   return {
     // loaded: state.category.loaded,
-    listData: state.organisation.data,
+    listData: state.organisation.listingData,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    getChainCode: (data) => {
+    organisationList: (data) => {
       dispatch(listing(data));
     },
+    signOrganisation: (id) => {
+      dispatch(signChainCodeReq(id))
+    }
   };
 };
 

@@ -61,7 +61,6 @@ export function* installChainCode(action) {
         yield put({type: LOADER_OPEN});
         // yield put({type: types.DATA_LOADED_STATUS});
         const result = yield call(post,`chaincode/update/${action.payload.chaincode}`);
-        console.log(" --------------------------- ========== ", result)
        // yield put({type: types.CHECK_UPDATE, payload: result.data });
         //yield put(saveUserData(result));
         yield put({type: LOADER_CLOSE});

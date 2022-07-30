@@ -77,6 +77,9 @@ function Basic(props) {
 
   return (
     <BasicLayout image={bgImage}>
+    <MDTypography variant="h4" fontWeight="medium" color="white" mt={1} style={{lineHeight: 4 , color: "#fff", display: 'table', margin:"0 auto"}}>
+            Integra-NOCK 
+          </MDTypography>
       <Card>
         <MDBox
           variant="gradient"

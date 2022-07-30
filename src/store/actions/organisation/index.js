@@ -1,10 +1,11 @@
-import types from './../../constants/organisationType'
+import types from 'store/constants/organisationType'
+
 
 //Direct update value to redux store
-export const listing = (data) => {
+export const listing = () => {
     return {
-        type: types.ALL_REQUEST,
-        payload: data
+        type: types.ALL_DATA_REQUEST,
+        // payload: data
     };
 };
 
@@ -15,48 +16,26 @@ export const create = (data) => {
     };
 };
 
-export const edit = (data) => {
+export const checkUpdate = () => {
     return {
-        type: types.EDIT_REQUEST,
+        type: types.CHECK_UPDATE_REQUEST,
+    };
+};
+
+export const installChainCode = (data) => {
+    return {
+        type: types.INSTALL_CHAINCODE_REQUEST,
         payload: data
     };
 };
 
-export const update = (id, data) => {
+export const signChainCodeReq = (id) => {
     return {
-        type: types.UPDATE_REQUEST,
-        payload: {id, data}
+        type: types.SIGN_ORGANISATION_REQUEST,
+        payload: id
     };
 };
 
-export const deleteRecord = (id, data) => {
-    return {
-        type: types.DELETE_REQUEST,
-        payload: {id, data}
-    };
-};
 
-export const changeStatus = (id, data) => {
-    return {
-        type: types.CHANGE_STATUS_REQUEST,
-        payload: {id,data}
-    };
-};
 
-export const clearFormFields = () => {
-    return {
-        type: types.CLEAR_FORM_FIELD,
-    };
-};
-
-export const clearError = () => {
-    return {
-        type: types.CLEAR_ERROR
-    }
-}
-
-export const apiFailed = (data) => ({
-    type: types.API_FAILED,
-    payload: data
-});
 

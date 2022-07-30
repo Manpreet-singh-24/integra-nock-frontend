@@ -51,7 +51,7 @@ axios.interceptors.response.use(
         if (error.response.status === 403) {
 
             //Invalid token
-            history.push('/login');
+            history.push('/authentication/sign-in');
 
             Store.dispatch({
                 type: SNACKBAR_OPEN,
@@ -66,7 +66,7 @@ axios.interceptors.response.use(
         if (error.response.status === 401) {
 
             //No token provided
-            history.push('/login');
+            history.push('/authentication/sign-in');
 
             Store.dispatch({
                 type: SNACKBAR_OPEN,
