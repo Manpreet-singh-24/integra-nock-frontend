@@ -1,14 +1,21 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+/**
+ * Dialog
+ */
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Dialog from '@mui/material/Dialog';
+import { styled } from '@mui/material/styles';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDBadge from "components/MDBadge";
 import MDButton from "components/MDButton";
-import MDModal from "components/MDModal";
+import MDDialog from "components/MD-Dialog";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -20,8 +27,17 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 //import projectsTableData from "layouts/tables/data/projectsTableData";
 
-import { listing, checkUpdate } from "store/actions/chain-code";
+import { releasesListing, deleteRelease } from "store/actions/chain-code";
 import MomentHelper from "helpers/MomentHelper";
+
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialogContent-root': {
+    padding: theme.spacing(2),
+  },
+  '& .MuiDialogActions-root': {
+    padding: theme.spacing(1),
+  },
+}));
 
 const columns = [
   { Header: "Name", accessor: "name", align: "left" },
@@ -29,16 +45,20 @@ const columns = [
   { Header: "Version", accessor: "version", align: "center" },
   { Header: "Sequence", accessor: "sequence", align: "center" },
   { Header: "Created At", accessor: "created_at", align: "center" },
-  // { Header: "action", accessor: "action", align: "center" },
+  { Header: "Status", accessor: "status", align: "center" },
+  { Header: "action", accessor: "action", align: "center" },
 ];
 
 const Listing = (props) => {
-  const { listingData, getChainCode, onCheckUpdate } = props;
-  const chainCodeModalRef = useRef(null);
+  const { releasesList, getRelease, onDeleteRelease } = props;
+  const [open, setOpen] = React.useState(false);
 
-  const onModalOpen = () => {
-    onCheckUpdate();
-    chainCodeModalRef.current.modalOpen();
+  const onDialogOpen = () => {
+    setOpen(true);
+  };
+
+  const onDialogClose = () => {
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -47,7 +67,7 @@ const Listing = (props) => {
       page_no: 1,
       search_by: "ffffff",
     };
-    getChainCode(data);
+    getRelease(data);
   }, []);
 
   const renderList = (data) => {
@@ -63,7 +83,7 @@ const Listing = (props) => {
               color="text"
               fontWeight="medium"
             >
-              {item.name}
+              {item.name ? item.name : "----"}
             </MDTypography>
           ),
           label: (
@@ -74,13 +94,13 @@ const Listing = (props) => {
               color="text"
               fontWeight="medium"
             >
-              {item.label}
+              {item.label ? item.label : "----"}
             </MDTypography>
           ),
           version: (
             <MDBox ml={-1}>
               <MDBadge
-                badgeContent={item.version}
+                badgeContent={item.version ? item.version : "----"}
                 color="success"
                 variant="gradient"
                 size="sm"
@@ -106,14 +126,38 @@ const Listing = (props) => {
               color="text"
               fontWeight="medium"
             >
-              {item.sequence}
+              {item.sequence ? item.sequence : "----"}
             </MDTypography>
           ),
-          // action: (
-          //   <MDButton variant="gradient" color="dark" onClick={() => onModalOpen()}>
-          //     Check for update
-          //   </MDButton>
-          // ),
+          status: (
+            <MDTypography
+              component="a"
+              href="#"
+              variant="caption"
+              color="text"
+              fontWeight="medium"
+            >
+              1
+            </MDTypography>
+          ),
+          action: (
+            <>
+              <MDButton
+                variant="gradient"
+                color="dark"
+                onClick={() => onDialogOpen()}
+              >
+                Logs
+              </MDButton>
+              <MDButton
+                variant="gradient"
+                color="dark"
+                onClick={() => onDeleteRelease()}
+              >
+                Delete
+              </MDButton>
+            </>
+          ),
         };
       })
     );
@@ -139,23 +183,16 @@ const Listing = (props) => {
                 <Grid container>
                   <Grid item xs={6} sm={6} md={6}>
                     <MDTypography variant="h6" color="white">
-                      Chaincode List
+                      Releases List
                     </MDTypography>
                   </Grid>
                   <Grid item xs={6} sm={6} md={6} style={{ textAlign: "end" }}>
-                    <MDButton
-                      variant="gradient"
-                      color="dark"
-                      onClick={() => onModalOpen()}
-                    >
-                      Check for update
-                    </MDButton>
                   </Grid>
                 </Grid>
               </MDBox>
               <MDBox pt={3}>
                 <DataTable
-                  table={{ columns, rows: renderList(listingData) }}
+                  table={{ columns, rows: renderList(releasesList) }}
                   isSorted={false}
                   entriesPerPage={false}
                   showTotalEntries={false}
@@ -167,9 +204,36 @@ const Listing = (props) => {
         </Grid>
       </MDBox>
       {/* /*
-       * modal
+       * Dialog box
        * */}
-      <MDModal ref={chainCodeModalRef} />
+      <BootstrapDialog
+        onClose={onDialogClose}
+        aria-labelledby="customized-dialog-title"
+        open={open}
+      >
+        <MDDialog id="customized-dialog-title" onClose={onDialogClose}>
+          Logs Detail
+        </MDDialog>
+        <DialogContent dividers>
+          <MDTypography gutterBottom>
+            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
+            ac consectetur ac, vestibulum at eros.
+          </MDTypography>
+          <MDTypography gutterBottom>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
+            auctor.
+          </MDTypography>
+          <MDTypography gutterBottom>
+            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo
+            cursus magna, vel scelerisque nisl consectetur et. Donec sed odio
+            dui. Donec ullamcorper nulla non metus auctor fringilla.
+          </MDTypography>
+        </DialogContent>
+        <DialogActions>
+        </DialogActions>
+      </BootstrapDialog>
       <Footer />
     </DashboardLayout>
   );
@@ -177,25 +241,25 @@ const Listing = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    listingData: state.chainCode.listingData,
+    releasesList: state.chainCode.releasesList,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    getChainCode: (data) => {
-      dispatch(listing(data));
+    getRelease: (data) => {
+      dispatch(releasesListing(data));
     },
 
-    onCheckUpdate: () => {
-      dispatch(checkUpdate());
+    onDeleteRelease: () => {
+      dispatch(deleteRelease());
     },
   };
 };
 
 Listing.propTypes = {
-  getChainCode: PropTypes.func,
-  onCheckUpdate: PropTypes.func,
-  listingData: PropTypes.any,
+  getRelease: PropTypes.func,
+  onDeleteRelease: PropTypes.func,
+  releasesList: PropTypes.any,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Listing);

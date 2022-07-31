@@ -75,6 +75,86 @@ export function* installChainCodeRequest() {
     yield takeLatest(types.INSTALL_CHAINCODE_REQUEST, installChainCode);
 }
 
+/**
+ * @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ * @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ * Admin Code 
+ */
+
+//Releases Listing
+export function* releaseListing(action) {
+    // history.push(`category/list`)
+    try {
+        yield put({type: LOADER_OPEN});
+        // yield put({type: types.DATA_LOADED_STATUS});
+        const result = yield call(get,`chaincode/list`);
+        //yield put(saveUserData(result));
+        yield put({type: types.RELEASE_LIST, payload: result.data });
+        yield put({type: LOADER_CLOSE});
+    } catch (error) {
+        yield put({ type: LOADER_CLOSE });
+        if (error.status === 422) {
+          
+            return false;
+        }
+        // yield put({type: SNACKBAR_OPEN, open: true, message: error.data.error.message, alertSeverity: 'error', variant: 'alert'});
+    }
+}
+
+//Function generator (watcher )
+export function* releaseListingReq() {
+    yield takeLatest(types.RELEASE_LIST_REQUEST, releaseListing);
+}
+
+//Releases Listing
+export function* deleteRelease(action) {
+    // history.push(`category/list`)
+    try {
+        yield put({type: LOADER_OPEN});
+        // yield put({type: types.DATA_LOADED_STATUS});
+        const result = yield call(get,`chaincode/list`);
+        //yield put(saveUserData(result));
+        yield put({type: types.RELEASE_LIST, payload: result.data });
+        yield put({type: LOADER_CLOSE});
+    } catch (error) {
+        yield put({ type: LOADER_CLOSE });
+        if (error.status === 422) {
+          
+            return false;
+        }
+        // yield put({type: SNACKBAR_OPEN, open: true, message: error.data.error.message, alertSeverity: 'error', variant: 'alert'});
+    }
+}
+
+//Function generator (watcher )
+export function* deleteReleaseReq() {
+    yield takeLatest(types.DELETE_CHAINCODE_REQUEST, deleteRelease);
+}
+
+//Releases add
+export function* createRelease(action) {
+    // history.push(`category/list`)
+    try {
+        yield put({type: LOADER_OPEN});
+        // yield put({type: types.DATA_LOADED_STATUS});
+        const result = yield call(get,`chaincode/list`);
+       // yield put({type: types.RELEASE_LIST, payload: result.data });
+        yield put({type: LOADER_CLOSE});
+    } catch (error) {
+        yield put({ type: LOADER_CLOSE });
+        if (error.status === 422) {
+          
+            return false;
+        }
+        // yield put({type: SNACKBAR_OPEN, open: true, message: error.data.error.message, alertSeverity: 'error', variant: 'alert'});
+    }
+}
+
+//Function generator (watcher )
+export function* createReleaseReq() {
+    yield takeLatest(types.ADD_NEW_RELEASE_REQUEST, createRelease);
+}
+
 export default function* chainCodeSaga() {
-    yield all([ listingReq(), checkUpdateRequest(), installChainCodeRequest() ]);
+    yield all([ listingReq(), checkUpdateRequest(), installChainCodeRequest(), releaseListingReq(), deleteReleaseReq(), createReleaseReq() ]);
 }

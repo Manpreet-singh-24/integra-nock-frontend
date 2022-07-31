@@ -4,9 +4,12 @@ import { connect } from "react-redux";
 import * as Yup from "yup";
 import { Formik, Form, ErrorMessage } from "formik";
 import useScriptRef from "hooks/useScriptRef";
+import PropTypes from "prop-types";
+import Grid from "@mui/material/Grid";
+
 // import RegexTypes from "regex";
 import MDTextError from "components/MDTextError/";
-import PropTypes from "prop-types";
+import MDTypography from "components/MDTypography";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -24,8 +27,7 @@ const CheckUpdateForm = (props) => {
 
   //  const initialValues = formInitialValue;
   const validation = Yup.object({
-    chaincode: Yup.string()
-      .required("Name is required"),
+    chaincode: Yup.string().required("Name is required"),
   });
 
   console.log(" ------------------------------ ", updateList);
@@ -40,8 +42,8 @@ const CheckUpdateForm = (props) => {
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);
-              console.log(" =------------------------- ", values)
-              onInstallChainCode(values)
+              console.log(" =------------------------- ", values);
+              onInstallChainCode(values);
               //onloginRequest(values);
             }
           } catch (error) {
@@ -54,25 +56,53 @@ const CheckUpdateForm = (props) => {
           }
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+        {({
+          errors,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          touched,
+          values,
+        }) => (
           <Form noValidate onSubmit={handleSubmit}>
             <MDBox mb={2}>
-              <MDSelectOption
-                control="select"
-                fullWidth
-                label="chaincode"
-                name="chaincode"
-                select
-                SelectProps={{ native: true }}
-                value={values.chaincode || ""}
-                variant="outlined"
-                onChange={handleChange}
-                options={updateList}
-              />
-              <ErrorMessage name="chaincode" component={MDTextError} />
+              <Grid container spacing={2}>
+                <Grid item xs={4}>
+                  <MDTypography
+                    id="transition-modal-title"
+                    variant="h6"
+                    component="h6"
+                    align="center"
+                  >
+                    Chaincode:
+                  </MDTypography>
+                </Grid>
+                <Grid item xs={8}>
+                  <MDSelectOption
+                    control="select"
+                    fullWidth
+                    label="chaincode"
+                    name="chaincode"
+                    select
+                    SelectProps={{ native: true }}
+                    value={values.chaincode || ""}
+                    variant="outlined"
+                    onChange={handleChange}
+                    options={updateList}
+                  />
+                  <ErrorMessage name="chaincode" component={MDTextError} />
+                </Grid>
+              </Grid>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton disableElevation variant="gradient" color="info" type="submit" fullWidth>
+              <MDButton
+                disableElevation
+                variant="gradient"
+                color="info"
+                type="submit"
+                fullWidth
+              >
                 Install
               </MDButton>
             </MDBox>

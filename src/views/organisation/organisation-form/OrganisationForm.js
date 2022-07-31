@@ -17,7 +17,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import RegexTypes from "regex";
 
-const cursorPointer = { cursor: 'pointer' };
+const cursorPointer = { cursor: "pointer" };
 
 const OrganisationForm = (props) => {
   const { submitData, formInitialValue, buttonLabel } = props;
@@ -28,13 +28,19 @@ const OrganisationForm = (props) => {
   const validation = Yup.object({
     name: Yup.string()
       .trim()
-      .matches(RegexTypes.checkSpacialCharacter, "Name can not contain special character")
+      .matches(
+        RegexTypes.checkSpacialCharacter,
+        "Name can not contain special character"
+      )
       .max(35, "Name must be no longer than 35 characters")
       .min(3, "Name must be at least 3 character long")
       .required("Name is required"),
     msp_id: Yup.string()
       .trim()
-      .matches(RegexTypes.checkSpacialCharacter, "MSP ID can not contain special character")
+      .matches(
+        RegexTypes.checkSpacialCharacter,
+        "MSP ID can not contain special character"
+      )
       .max(35, "MSP ID must be no longer than 35 characters")
       .min(3, "MSP ID must be at least 3 character long")
       .required("MSP ID is required"),
@@ -59,7 +65,6 @@ const OrganisationForm = (props) => {
     ),
   });
 
-
   const setFileData = (allFieldValue, data) => {
     // setFormValue({ ...allFieldValue, deleteImages: data.deleteImages, file: data.files });
   };
@@ -82,21 +87,18 @@ const OrganisationForm = (props) => {
             setSubmitting(false);
 
             if (values.file <= 0) {
-              setErrors({ file: 'Please Select file' });
+              setErrors({ file: "Please Select file" });
               return false;
             }
 
-            console.log(" TTTTTTTTTTTTTTTTTTTT ", values)
-
             let formData = new FormData();
 
-            formData.append('name', values.name);
-            formData.append('msp_id', values.msp_id);
-            formData.append('file', values.file);
-            formData.append('peers', values.peers);
+            formData.append("name", values.name);
+            formData.append("msp_id", values.msp_id);
+            formData.append("file", values.file);
+            formData.append("peers", values.peers);
 
             submitData(formData);
-
           }
         } catch (error) {
           console.error(error);
@@ -108,7 +110,16 @@ const OrganisationForm = (props) => {
         }
       }}
     >
-      {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values, setFieldValue }) => (
+      {({
+        errors,
+        handleBlur,
+        handleChange,
+        handleSubmit,
+        isSubmitting,
+        touched,
+        values,
+        setFieldValue,
+      }) => (
         <Form noValidate onSubmit={handleSubmit}>
           <MDBox component="div">
             <MDBox mb={2}>
@@ -156,7 +167,7 @@ const OrganisationForm = (props) => {
                 allFieldValue={values}
                 fileValidate={{
                   maxSize: 1,
-                  fileExtension: 'application/json',
+                  fileExtension: "application/json",
                 }}
               />
               <ErrorMessage name="peers_count" component={MDTextError} />
@@ -187,7 +198,13 @@ const OrganisationForm = (props) => {
                                   peer {index + 1}
                                 </MDTypography>
                               </Grid>
-                              <Grid item xs={6} sm={6} md={6} style={{ textAlign: "end" }}>
+                              <Grid
+                                item
+                                xs={6}
+                                sm={6}
+                                md={6}
+                                style={{ textAlign: "end" }}
+                              >
                                 <MDTypography variant="h6" color="white">
                                   {index >= 1 && (
                                     <DoDisturbOnIcon
@@ -199,9 +216,8 @@ const OrganisationForm = (props) => {
                                         //   console.log(" ++++++++++++++++ ", peers)
                                         //   setFieldValue('peers', peers)
 
-                                        remove(index)
-                                      }
-                                      }
+                                        remove(index);
+                                      }}
                                     />
                                   )}
                                 </MDTypography>
@@ -221,13 +237,16 @@ const OrganisationForm = (props) => {
                               onChange={handleChange}
                               error={
                                 getIn(form.touched, `peers.${index}.name`) &&
-                                  getIn(errors, `peers.${index}.name`)
+                                getIn(errors, `peers.${index}.name`)
                                   ? true
                                   : false
                               }
                               fullWidth
                             />
-                            <ErrorMessage name={`peers.${index}.name`} component={MDTextError} />
+                            <ErrorMessage
+                              name={`peers.${index}.name`}
+                              component={MDTextError}
+                            />
                           </MDBox>
                         </Grid>
                         <Grid item xs={6} sm={6} md={6}>
@@ -241,13 +260,16 @@ const OrganisationForm = (props) => {
                               onChange={handleChange}
                               error={
                                 getIn(form.touched, `peers.${index}.url`) &&
-                                  getIn(errors, `peers.${index}.url`)
+                                getIn(errors, `peers.${index}.url`)
                                   ? true
                                   : false
                               }
                               fullWidth
                             />
-                            <ErrorMessage name={`peers.${index}.url`} component={MDTextError} />
+                            <ErrorMessage
+                              name={`peers.${index}.url`}
+                              component={MDTextError}
+                            />
                           </MDBox>
                         </Grid>
 
@@ -262,13 +284,16 @@ const OrganisationForm = (props) => {
                               onChange={handleChange}
                               error={
                                 getIn(form.touched, `peers.${index}.ip`) &&
-                                  getIn(errors, `peers.${index}.ip`)
+                                getIn(errors, `peers.${index}.ip`)
                                   ? true
                                   : false
                               }
                               fullWidth
                             />
-                            <ErrorMessage name={`peers.${index}.ip`} component={MDTextError} />
+                            <ErrorMessage
+                              name={`peers.${index}.ip`}
+                              component={MDTextError}
+                            />
                           </MDBox>
                         </Grid>
                         <Grid item xs={6} sm={6} md={6}>
@@ -281,8 +306,10 @@ const OrganisationForm = (props) => {
                               onBlur={handleBlur}
                               onChange={handleChange}
                               error={
-                                getIn(form.touched, `peers.${index}.certificate`) &&
-                                  getIn(errors, `peers.${index}.certificate`)
+                                getIn(
+                                  form.touched,
+                                  `peers.${index}.certificate`
+                                ) && getIn(errors, `peers.${index}.certificate`)
                                   ? true
                                   : false
                               }
@@ -297,7 +324,13 @@ const OrganisationForm = (props) => {
                       </Grid>
                     ))}
 
-                    <Grid item xs={12} sm={12} md={12} style={{ textAlign: "end" }}>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      style={{ textAlign: "end" }}
+                    >
                       <AddCircleIcon
                         color="info"
                         fontSize="medium"
@@ -318,7 +351,13 @@ const OrganisationForm = (props) => {
             </FieldArray>
 
             <MDBox mt={4} mb={1}>
-              <MDButton disableElevation variant="gradient" color="info" type="submit" fullWidth>
+              <MDButton
+                disableElevation
+                variant="gradient"
+                color="info"
+                type="submit"
+                fullWidth
+              >
                 {/* Add Organisation  */}
                 {buttonLabel}
               </MDButton>

@@ -21,3 +21,26 @@ export const installChainCode = (data) => {
         payload: data
     };
 };
+/**
+ * 
+ * Admin code
+ */
+//releasesListing
+export const releasesListing = (data) => {
+    return {
+        type: types.RELEASE_LIST_REQUEST,
+        payload: data
+    };
+};
+export const deleteRelease = (data) => {
+    return {
+        type: types.DELETE_CHAINCODE_REQUEST,
+        payload: data
+    };
+};
+export const addRelease = (data) => {
+    return {
+        type: types.ADD_NEW_RELEASE_REQUEST,
+        payload: data
+    };
+};

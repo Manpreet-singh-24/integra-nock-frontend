@@ -1,9 +1,9 @@
 // Integra Nock layouts
 import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
-import Billing from "layouts/billing";
+// import Tables from "layouts/tables";
+// import Billing from "layouts/billing";
 // import RTL from "layouts/rtl";
-import Notifications from "layouts/notifications";
+// import Notifications from "layouts/notifications";
 // import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 // import SignUp from "layouts/authentication/sign-up";
@@ -11,6 +11,8 @@ import ChainCode from "views/chaincode/";
 import ChaincodeEdit from 'views/chaincode/edit';
 import Organisation from 'views/organisation/listing';
 import Add from 'views/organisation/add';
+import UpdateChaincodeList from 'views/release-chaincode/Listing';
+import ReleaseCreate from 'views/release-chaincode/create'
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -31,6 +33,22 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/chaincode",
     component: <ChainCode />,
+  },
+  {
+    // type: "collapse",
+    // name: "Chaincodes",
+    key: "updateChaicode",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/chaincode/release/list",
+    component: <UpdateChaincodeList />,
+  },
+  {
+    // type: "collapse",
+    // name: "Chaincodes",
+    key: "updateChaicode",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/chaincode/release/create",
+    component: <ReleaseCreate />,
   },
   {
     // type: "collapse",
