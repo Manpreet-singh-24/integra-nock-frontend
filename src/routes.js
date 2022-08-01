@@ -8,14 +8,15 @@ import Dashboard from "layouts/dashboard";
 import SignIn from "layouts/authentication/sign-in";
 // import SignUp from "layouts/authentication/sign-up";
 import ChainCode from "views/chaincode/";
-import ChaincodeEdit from 'views/chaincode/edit';
-import Organisation from 'views/organisation/listing';
-import Add from 'views/organisation/add';
-import UpdateChaincodeList from 'views/release-chaincode/Listing';
-import ReleaseCreate from 'views/release-chaincode/create'
+import ChaincodeEdit from "views/chaincode/edit";
+import Organisation from "views/organisation/listing";
+import Add from "views/organisation/add";
+import UpdateChaincodeList from "views/release-chaincode/Listing";
+import ReleaseCreate from "views/release-chaincode/create";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import Private from "gaurds/Private";
 
 const routes = [
   {
@@ -24,7 +25,7 @@ const routes = [
     key: "dashboard",
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
-    component: <Dashboard />,
+    component: <Private component={Dashboard} />,
   },
   {
     type: "collapse",
@@ -32,7 +33,7 @@ const routes = [
     key: "chaincode",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/chaincode",
-    component: <ChainCode />,
+    component: <Private component={ChainCode} />,
   },
   {
     // type: "collapse",
@@ -40,7 +41,7 @@ const routes = [
     key: "updateChaicode",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/chaincode/release/list",
-    component: <UpdateChaincodeList />,
+    component: <Private component={UpdateChaincodeList} />,
   },
   {
     // type: "collapse",
@@ -48,15 +49,15 @@ const routes = [
     key: "updateChaicode",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/chaincode/release/create",
-    component: <ReleaseCreate />,
+    component: <Private component={ReleaseCreate} />,
   },
   {
     // type: "collapse",
     // name: "Organisation/Add",
-     key: "chaincode-update",
+    key: "chaincode-update",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/chaincode/update",
-    component: <ChaincodeEdit />,
+    component: <Private component={ChaincodeEdit} />,
   },
   {
     type: "collapse",
@@ -64,15 +65,15 @@ const routes = [
     key: "organisation",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/organisation",
-    component: <Organisation />,
+    component: <Private component={Organisation} />,
   },
   {
     // type: "collapse",
     // name: "Organisation/Add",
-     key: "add",
+    key: "add",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/organisation/add",
-    component: <Add />,
+    component: <Private component={Add} />,
   },
   // {
   //   type: "collapse",
