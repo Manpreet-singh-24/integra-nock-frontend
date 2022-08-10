@@ -33,7 +33,7 @@ const columns = [
 ];
 
 const Listing = (props) => {
-  const { listingData, getChainCode, onCheckUpdate } = props;
+  const { listingData = [], getChainCode, onCheckUpdate } = props;
   const chainCodeModalRef = useRef(null);
 
   const onModalOpen = () => {

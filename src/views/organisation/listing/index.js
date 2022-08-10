@@ -23,47 +23,82 @@ import { connect } from "react-redux";
 
 import { listing, signChainCodeReq } from "store/actions/organisation";
 
+import LocalStorageService from "services/LocalStorageService";
+import { ADMIN } from "constants/userRoles";
+
 const Organisation = (props) => {
   const { organisationList, listData, signOrganisation } = props;
+  const userRole = LocalStorageService.getUserRole();
+
   // const { columns: pColumns, rows: pRows } = projectsTableData();
   const tableHeading = [
     { Header: "Name", accessor: "name", align: "left" },
     { Header: "MSP ID", accessor: "mspId", align: "left" },
     { Header: "Created At", accessor: "Created_at", align: "center" },
     { Header: "action", accessor: "action", align: "center" },
-  ]
+  ];
 
   useEffect(() => {
     organisationList();
   }, []);
 
-
   const renderList = (data) => {
-    return data && data.map((item, index) => {
-      return {
-        name: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            {item.org_name}
-          </MDTypography>
-        ),
-        mspId: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            {item.org_msp}
-          </MDTypography>
-        ),
-        Created_at: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            23/04/18
-          </MDTypography>
-        ),
-        action: (<React.Fragment>
-          {item.signedby_org === false ? <MDButton variant="gradient" color="dark" onClick={() => signOrganisation(item.org_id)}>
-        Sign </MDButton> : "----" } 
-        </React.Fragment>)
-      }
-      
-    })
-  }
+    return (
+      data &&
+      data.map((item, index) => {
+        return {
+          name: (
+            <MDTypography
+              component="a"
+              href="#"
+              variant="caption"
+              color="text"
+              fontWeight="medium"
+            >
+              {item.org_name || item.name}
+            </MDTypography>
+          ),
+          mspId: (
+            <MDTypography
+              component="a"
+              href="#"
+              variant="caption"
+              color="text"
+              fontWeight="medium"
+            >
+              {item.org_msp || item.msp_id}
+            </MDTypography>
+          ),
+          Created_at: (
+            <MDTypography
+              component="a"
+              href="#"
+              variant="caption"
+              color="text"
+              fontWeight="medium"
+            >
+              {item.created_at}
+            </MDTypography>
+          ),
+          action: (
+            <React.Fragment>
+              {item.signedby_org === false ? (
+                <MDButton
+                  variant="gradient"
+                  color="dark"
+                  onClick={() => signOrganisation(item.org_id)}
+                >
+                  Sign{" "}
+                </MDButton>
+              ) : (
+                "----"
+              )}
+            </React.Fragment>
+          ),
+        };
+      })
+    );
+  };
 
   return (
     <DashboardLayout>
@@ -88,18 +123,22 @@ const Organisation = (props) => {
                       Organisation Table
                     </MDTypography>
                   </Grid>
-                  <Grid item xs={6} sm={6} md={6} style={{ textAlign: "end" }}>
-                    <Link to="/organisation/add">
-                      <MDButton variant="gradient" color="dark">
-                        <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                        &nbsp;Add New Organisation
-                      </MDButton>
-
-                      {/* <MDTypography variant="h6" color="white">
-                        Add New Organisation
-                </MDTypography> */}
-                    </Link>
-                  </Grid>
+                  {userRole === ADMIN && (
+                    <Grid
+                      item
+                      xs={6}
+                      sm={6}
+                      md={6}
+                      style={{ textAlign: "end" }}
+                    >
+                      <Link to="/organisation/add">
+                        <MDButton variant="gradient" color="dark">
+                          <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+                          &nbsp;Add New Organisation
+                        </MDButton>
+                      </Link>
+                    </Grid>
+                  )}
                 </Grid>
               </MDBox>
               <MDBox pt={3}>
@@ -132,8 +171,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(listing(data));
     },
     signOrganisation: (id) => {
-      dispatch(signChainCodeReq(id))
-    }
+      dispatch(signChainCodeReq(id));
+    },
   };
 };
 

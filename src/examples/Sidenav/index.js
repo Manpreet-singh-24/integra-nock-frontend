@@ -41,6 +41,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const location = useLocation();
   const navigate = useNavigate();
   const collapseName = location.pathname.replace("/", "");
+  const userRole = LocalStorageService.getUserRole();
 
   let textColor = "white";
 
@@ -80,61 +81,62 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(
-    ({ type, name, icon, title, noCollapse, key, href, route }) => {
+    ({ type, name, icon, title, noCollapse, key, href, route, roles }) => {
       let returnValue;
-
-      if (type === "collapse") {
-        returnValue = href ? (
-          <Link
-            href={href}
-            key={key}
-            target="_blank"
-            rel="noreferrer"
-            sx={{ textDecoration: "none" }}
-          >
-            <SidenavCollapse
-              name={name}
-              icon={icon}
-              active={key === collapseName}
-              noCollapse={noCollapse}
+      if (roles.includes(userRole)) {
+        if (type === "collapse") {
+          returnValue = href ? (
+            <Link
+              href={href}
+              key={key}
+              target="_blank"
+              rel="noreferrer"
+              sx={{ textDecoration: "none" }}
+            >
+              <SidenavCollapse
+                name={name}
+                icon={icon}
+                active={key === collapseName}
+                noCollapse={noCollapse}
+              />
+            </Link>
+          ) : (
+            <NavLink key={key} to={route}>
+              <SidenavCollapse
+                name={name}
+                icon={icon}
+                active={key === collapseName}
+              />
+            </NavLink>
+          );
+        } else if (type === "title") {
+          returnValue = (
+            <MDTypography
+              key={key}
+              color={textColor}
+              display="block"
+              variant="caption"
+              fontWeight="bold"
+              textTransform="uppercase"
+              pl={3}
+              mt={2}
+              mb={1}
+              ml={1}
+            >
+              {title}
+            </MDTypography>
+          );
+        } else if (type === "divider") {
+          returnValue = (
+            <Divider
+              key={key}
+              light={
+                (!darkMode && !whiteSidenav && !transparentSidenav) ||
+                (darkMode && !transparentSidenav && whiteSidenav)
+              }
             />
-          </Link>
-        ) : (
-          <NavLink key={key} to={route}>
-            <SidenavCollapse
-              name={name}
-              icon={icon}
-              active={key === collapseName}
-            />
-          </NavLink>
-        );
-      } else if (type === "title") {
-        returnValue = (
-          <MDTypography
-            key={key}
-            color={textColor}
-            display="block"
-            variant="caption"
-            fontWeight="bold"
-            textTransform="uppercase"
-            pl={3}
-            mt={2}
-            mb={1}
-            ml={1}
-          >
-            {title}
-          </MDTypography>
-        );
-      } else if (type === "divider") {
-        returnValue = (
-          <Divider
-            key={key}
-            light={
-              (!darkMode && !whiteSidenav && !transparentSidenav) ||
-              (darkMode && !transparentSidenav && whiteSidenav)
-            }
-          />
-        );
+          );
+        }
       }
 
       return returnValue;
@@ -192,18 +194,28 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         }
       />
       <List>{renderRoutes}</List>
-      <List style={{ bottom: "0", position: "absolute", padding: "10px 30px", color:"#fff",display: "flex" }}>
-        <LogoutIcon style={{height: "26.1px"}}>
-        </LogoutIcon>
+      <List
+        style={{
+          bottom: "0",
+          position: "absolute",
+          padding: "10px 30px",
+          color: "#fff",
+          display: "flex",
+        }}
+      >
+        <LogoutIcon style={{ height: "26.1px" }}></LogoutIcon>
         <MDTypography
-            variant="h6"
-            color="secondary"
-            onClick={() => onLogout()}
-            style={{ cursor: "pointer",margin: "0px 0px 0px 18px", color: "#fff" }}
-          >
-            Logout
-          </MDTypography>
-
+          variant="h6"
+          color="secondary"
+          onClick={() => onLogout()}
+          style={{
+            cursor: "pointer",
+            margin: "0px 0px 0px 18px",
+            color: "#fff",
+          }}
+        >
+          Logout
+        </MDTypography>
       </List>
     </SidenavRoot>
   );

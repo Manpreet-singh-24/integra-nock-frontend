@@ -13,6 +13,7 @@ import Organisation from "views/organisation/listing";
 import Add from "views/organisation/add";
 import UpdateChaincodeList from "views/release-chaincode/Listing";
 import ReleaseCreate from "views/release-chaincode/create";
+import { ADMIN, CLIENT } from "constants/userRoles";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -23,57 +24,66 @@ const routes = [
     type: "collapse",
     name: "Dashboard",
     key: "dashboard",
+    roles: [ADMIN, CLIENT],
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
-    component: <Private component={Dashboard} />,
+    component: <Private component={Dashboard} roles={[ADMIN, CLIENT]} />,
   },
   {
     type: "collapse",
     name: "Chaincodes",
     key: "chaincode",
+    roles: [ADMIN, CLIENT],
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/chaincode",
-    component: <Private component={ChainCode} />,
+    component: <Private component={ChainCode} roles={[ADMIN, CLIENT]} />,
   },
-  {
-    // type: "collapse",
-    // name: "Chaincodes",
-    key: "updateChaicode",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/chaincode/release/list",
-    component: <Private component={UpdateChaincodeList} />,
-  },
-  {
-    // type: "collapse",
-    // name: "Chaincodes",
-    key: "updateChaicode",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/chaincode/release/create",
-    component: <Private component={ReleaseCreate} />,
-  },
-  {
-    // type: "collapse",
-    // name: "Organisation/Add",
-    key: "chaincode-update",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/chaincode/update",
-    component: <Private component={ChaincodeEdit} />,
-  },
+
   {
     type: "collapse",
     name: "Organisation",
     key: "organisation",
+    roles: [ADMIN, CLIENT],
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/organisation",
-    component: <Private component={Organisation} />,
+    component: <Private component={Organisation} roles={[ADMIN, CLIENT]} />,
   },
   {
     // type: "collapse",
     // name: "Organisation/Add",
     key: "add",
+    roles: [ADMIN],
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/organisation/add",
-    component: <Private component={Add} />,
+    component: <Private component={Add} roles={[ADMIN]} />,
+  },
+  {
+    type: "collapse",
+    name: "Releases",
+    key: "updateChaicode",
+    roles: [ADMIN],
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/chaincode/release/list",
+    component: <Private component={UpdateChaincodeList} roles={[ADMIN]} />,
+  },
+  {
+    // type: "collapse",
+    // name: "Organisation/Add",
+    key: "chaincode-update",
+    roles: [ADMIN],
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/chaincode/release",
+    component: <Private component={ChaincodeEdit} roles={[ADMIN]} />,
+  },
+
+  {
+    // type: "collapse",
+    // name: "Chaincodes",
+    key: "updateChaicode",
+    roles: [ADMIN],
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/chaincode/release/create",
+    component: <Private component={ReleaseCreate} roles={[ADMIN]} />,
   },
   // {
   //   type: "collapse",
@@ -119,6 +129,7 @@ const routes = [
     // type: "collapse",
     // name: "Sign In",
     key: "sign-in",
+    roles: [ADMIN, CLIENT],
     icon: <Icon fontSize="small">login</Icon>,
     route: "/authentication/sign-in",
     component: <SignIn />,

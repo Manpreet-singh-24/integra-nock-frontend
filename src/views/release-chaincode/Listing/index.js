@@ -2,13 +2,14 @@ import React, { useEffect } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import Icon from "@mui/material/Icon";
 /**
  * Dialog
  */
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-import Dialog from '@mui/material/Dialog';
-import { styled } from '@mui/material/styles';
+import Dialog from "@mui/material/Dialog";
+import { styled } from "@mui/material/styles";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -29,12 +30,13 @@ import { connect } from "react-redux";
 
 import { releasesListing, deleteRelease } from "store/actions/chain-code";
 import MomentHelper from "helpers/MomentHelper";
+import { Link } from "react-router-dom";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  '& .MuiDialogContent-root': {
+  "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
   },
-  '& .MuiDialogActions-root': {
+  "& .MuiDialogActions-root": {
     padding: theme.spacing(1),
   },
 }));
@@ -187,6 +189,12 @@ const Listing = (props) => {
                     </MDTypography>
                   </Grid>
                   <Grid item xs={6} sm={6} md={6} style={{ textAlign: "end" }}>
+                    <Link to="/chaincode/release/create">
+                      <MDButton variant="gradient" color="dark">
+                        <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+                        &nbsp;Add New Release
+                      </MDButton>
+                    </Link>
                   </Grid>
                 </Grid>
               </MDBox>
@@ -231,8 +239,7 @@ const Listing = (props) => {
             dui. Donec ullamcorper nulla non metus auctor fringilla.
           </MDTypography>
         </DialogContent>
-        <DialogActions>
-        </DialogActions>
+        <DialogActions></DialogActions>
       </BootstrapDialog>
       <Footer />
     </DashboardLayout>
