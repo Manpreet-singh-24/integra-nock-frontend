@@ -1,5 +1,8 @@
 import { useEffect } from "react";
 
+//react-redux hooks
+import { useDispatch } from "react-redux";
+
 // react-router-dom components
 import { useLocation, NavLink, useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -33,8 +36,10 @@ import {
   setTransparentSidenav,
   setWhiteSidenav,
 } from "context";
+import types from "store/constants/userTypes";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
+  const ReduxDispatch = useDispatch();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode } =
     controller;
@@ -145,7 +150,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
   const onLogout = () => {
     LocalStorageService.clearToken();
-    // navigate("/authentication/sign-in");
+    navigate("/authentication/sign-in");
+    ReduxDispatch({ type: types.LOGIN, payload: false });
   };
 
   return (

@@ -8,7 +8,6 @@ import {
   LOADER_CLOSE,
 } from "store/actions/common/actions";
 //import history from 'store/redirect/history';
-
 //All category
 export function* listing(action) {
   try {
@@ -50,11 +49,32 @@ export function* signOrganisationRequest() {
 
 //Create Organisation
 export function* createOrganisation(action) {
+  let formData = new FormData();
+  const peers = action.payload.peers;
+  console.log(peers, "peers");
+  formData.append("name", action.payload.name);
+  formData.append("msp_id", action.payload.msp_id);
+  formData.append("file", action.payload.file);
+
   // history.push(`category/list`)
   try {
     yield put({ type: LOADER_OPEN });
     // yield put({type: types.DATA_LOADED_STATUS});
-    const result = yield call(post, `organization`, action.payload.data);
+    const result = yield call(post, `organization`, formData, {
+      "Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
+    });
+
+    if (result.status === 200) {
+      const data = {
+        org_id: result.data.id,
+        org_name: result.data.name,
+        peers: peers,
+      };
+      peers.org_id = result.data.id;
+
+      const res = yield call(post, `organization/peers`, data);
+    }
+
     //yield put(saveUserData(result));
     yield put({ type: LOADER_CLOSE });
   } catch (error) {

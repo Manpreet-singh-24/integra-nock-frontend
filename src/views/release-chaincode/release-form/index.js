@@ -16,7 +16,13 @@ import MDSelectOption from "components/MDSelectOption";
 import RegexTypes from "regex";
 
 const ReleaseForm = (props) => {
-  const { submitData, formInitialValue, buttonLabel } = props;
+  const {
+    submitData,
+    formInitialValue,
+    buttonLabel,
+    chainCodeList = [],
+  } = props;
+
   //   const initialValues = formInitialValue;
   const scriptedRef = useScriptRef();
   const [initialValues, setInitialValues] = useState(formInitialValue);
@@ -100,20 +106,20 @@ const ReleaseForm = (props) => {
             <Grid container spacing={2}>
               <Grid item xs={6} sm={6} md={6}>
                 <MDBox mb={2}>
-              <MDSelectOption
-                control="select"
-                fullWidth
-                label="chaincode"
-                name="chaincode"
-                select
-                SelectProps={{ native: true }}
-                value={values.chaincode || ""}
-                variant="outlined"
-                onChange={handleChange}
-                // options={updateList}
-                options={[]}
-              />
-              <ErrorMessage name="chaincode" component={MDTextError} />
+                  <MDSelectOption
+                    control="select"
+                    fullWidth
+                    label="chaincode"
+                    name="chaincode"
+                    select
+                    SelectProps={{ native: true }}
+                    value={values.chaincode || ""}
+                    variant="outlined"
+                    onChange={handleChange}
+                    // options={updateList}
+                    options={chainCodeList}
+                  />
+                  <ErrorMessage name="chaincode" component={MDTextError} />
                 </MDBox>
               </Grid>
               <Grid item xs={6} sm={6} md={6}>

@@ -60,7 +60,7 @@ const routes = [
   {
     type: "collapse",
     name: "Releases",
-    key: "updateChaicode",
+    key: "chaincode/release/list",
     roles: [ADMIN],
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/chaincode/release/list",

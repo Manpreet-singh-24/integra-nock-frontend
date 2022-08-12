@@ -8,7 +8,7 @@ import {
   LOADER_OPEN,
   LOADER_CLOSE,
 } from "store/actions/common/actions";
-import { ADMIN } from "constants/userRoles";
+import { ADMIN, CLIENT } from "constants/userRoles";
 // import history from 'store/redirect/history';
 const prefix = "/admin";
 
@@ -21,9 +21,10 @@ export function* login(action) {
     const result = yield call(post, "user/login", action.payload);
     LocalStorageService.setToken(result.data);
     LocalStorageService.setUserRole(result.role);
+
     //yield put(saveUserData(result));
     yield put({ type: types.USER_ROLE, payload: result.role });
-    yield put({ type: types.LOGIN, payload: {} });
+    yield put({ type: types.LOGIN, payload: true });
     yield put({ type: LOADER_CLOSE });
     yield put({
       type: SNACKBAR_OPEN,

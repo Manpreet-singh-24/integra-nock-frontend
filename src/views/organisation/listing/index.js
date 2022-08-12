@@ -90,6 +90,14 @@ const Organisation = (props) => {
                 >
                   Sign{" "}
                 </MDButton>
+              ) : item.join_status === 1 ? (
+                <MDButton
+                  variant="gradient"
+                  color="dark"
+                  // onClick={() => signOrganisation(item.org_id)}
+                >
+                  Join{" "}
+                </MDButton>
               ) : (
                 "----"
               )}

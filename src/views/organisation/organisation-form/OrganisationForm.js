@@ -91,14 +91,7 @@ const OrganisationForm = (props) => {
               return false;
             }
 
-            let formData = new FormData();
-
-            formData.append("name", values.name);
-            formData.append("msp_id", values.msp_id);
-            formData.append("file", values.file);
-            formData.append("peers", values.peers);
-
-            submitData(formData);
+            submitData(values);
           }
         } catch (error) {
           console.error(error);

@@ -1,11 +1,11 @@
 import LocalStorageService from "services/LocalStorageService";
 import { ADMIN } from "constants/userRoles";
-const userRole = LocalStorageService.getUserRole();
 
-const URL =
-  userRole === ADMIN
-    ? "https://nockadmin.loca.lt"
-    : "https://nockclient.loca.lt";
+const URL = () => {
+  return LocalStorageService.getUserRole() === ADMIN
+    ? "https://testadmin.loca.lt"
+    : "https://clienttest.loca.lt";
+};
 
 const config = {
   theme: "light",

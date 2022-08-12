@@ -24,12 +24,12 @@ const chainCodeReducer = (state = initialState, action) => {
         // total_count: action.payload.total_count,
       };
 
-      case type.RELEASE_LIST:
-        return {
-          ...state,
-          rekeasesList: action.payload,
-          // total_count: action.payload.total_count,
-        };
+    case type.RELEASE_LIST:
+      return {
+        ...state,
+        releasesList: action.payload,
+        // total_count: action.payload.total_count,
+      };
 
     default:
       return state;

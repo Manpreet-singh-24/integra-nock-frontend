@@ -95,7 +95,7 @@ export function* releaseListing(action) {
   try {
     yield put({ type: LOADER_OPEN });
     // yield put({type: types.DATA_LOADED_STATUS});
-    const result = yield call(get, `chaincode/list`);
+    const result = yield call(get, `releases/list`);
     //yield put(saveUserData(result));
     yield put({ type: types.RELEASE_LIST, payload: result.data });
     yield put({ type: LOADER_CLOSE });
@@ -140,10 +140,17 @@ export function* deleteReleaseReq() {
 //Releases add
 export function* createRelease(action) {
   // history.push(`category/list`)
+  const chainCodeId = action.payload.chaincode;
+
+  delete action.payload.chainCodeId;
   try {
     yield put({ type: LOADER_OPEN });
     // yield put({type: types.DATA_LOADED_STATUS});
-    const result = yield call(get, `chaincode/list`);
+    const result = yield call(
+      post,
+      `chaincode/createupdates/${chainCodeId}`,
+      action.payload
+    );
     // yield put({type: types.RELEASE_LIST, payload: result.data });
     yield put({ type: LOADER_CLOSE });
   } catch (error) {
