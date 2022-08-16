@@ -10,7 +10,7 @@ const MDSelectOption = (props) => {
         {options.map((option) => (
           <option
             key={option.id}
-            value={option.id}
+            value={option.id || option.Id}
             disabled={option.value === "" ? true : false}
           >
             {option.name}

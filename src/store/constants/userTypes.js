@@ -6,6 +6,11 @@ const Types = {
   DETAIL_REQUEST: `${namespaces}/DETAIL_REQUEST`,
   DETAIL_DATA: `${namespaces}/DETAIL_DATA`,
   USER_ROLE: `${namespaces}/USER_ROLE`,
+  ALL_DATA: `${namespaces}/ALL_DATA`,
+  ALL_USERS_REQUEST: `${namespaces}/ALL_USERS_REQUEST`,
+  ENABLE_USER: `${namespaces}/ENABLE_USER`,
+  DISABLE_USER: `${namespaces}/DISABLE_USER`,
+  ADD_REQUEST: `${namespaces}/ADD_REQUEST`,
 };
 
 export default Types;

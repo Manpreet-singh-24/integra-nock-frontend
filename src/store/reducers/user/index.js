@@ -4,6 +4,7 @@ const initialState = {
   user: {},
   isLoginSuccess: false,
   userRole: "",
+  listingData: [],
 };
 
 const userReducer = (state = initialState, action) => {
@@ -23,6 +24,11 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         userRole: action.payload,
+      };
+    case type.ALL_DATA:
+      return {
+        ...state,
+        listingData: action.payload,
       };
 
     default:

@@ -131,8 +131,30 @@ export function* installChainCode(action) {
 }
 
 //Function generator (watcher )
+
 export function* installChainCodeRequest() {
   yield takeLatest(types.INSTALL_CHAINCODE_REQUEST, installChainCode);
+}
+
+//JOIN CHANNEL REQUEST
+
+export function* joinChannel(action) {
+  try {
+    yield put({ type: LOADER_OPEN });
+    // yield put({type: types.DATA_LOADED_STATUS});
+    const result = yield call(post, `organization/joinChannel`);
+    // yield put({type: types.CHECK_UPDATE, payload: result.data });
+    //yield put(saveUserData(result));
+    yield put({ type: LOADER_CLOSE });
+  } catch (error) {
+    yield put({ type: LOADER_CLOSE });
+    // yield put({type: SNACKBAR_OPEN, open: true, message: error.data.error.message, alertSeverity: 'error', variant: 'alert'});
+  }
+}
+
+//Function generator (watcher )
+export function* joinChannelRequest() {
+  yield takeLatest(types.JOIN_CHANNEL_REQUEST, joinChannel);
 }
 
 export default function* organisationSaga() {
@@ -142,5 +164,6 @@ export default function* organisationSaga() {
     createOrganisationReq(),
     checkUpdateRequest(),
     installChainCodeRequest(),
+    joinChannelRequest(),
   ]);
 }

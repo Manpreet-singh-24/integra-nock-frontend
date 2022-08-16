@@ -3,8 +3,8 @@ import { ADMIN } from "constants/userRoles";
 
 const URL = () => {
   return LocalStorageService.getUserRole() === ADMIN
-    ? "https://testadmin.loca.lt"
-    : "https://clienttest.loca.lt";
+    ? "https://nockadmin.loca.lt"
+    : "https://nockclient.loca.lt";
 };
 
 const config = {

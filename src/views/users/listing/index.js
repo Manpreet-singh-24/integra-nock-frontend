@@ -17,33 +17,39 @@ import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 import PropTypes from "prop-types";
 
+import { listing, enableUser, disableUser } from "store/actions/user";
+
 // Data
 import { connect } from "react-redux";
 //import projectsTableData from "layouts/tables/data/projectsTableData";
 
-import {
-  listing,
-  signChainCodeReq,
-  joinChannelRequest,
-} from "store/actions/organisation";
-
 import LocalStorageService from "services/LocalStorageService";
 import { ADMIN } from "constants/userRoles";
+import { DISABLED } from "constants/userStatus";
 
-const Organisation = (props) => {
-  const { organisationList, listData, signOrganisation, joinChannel } = props;
+const UserManagemenet = (props) => {
+  const {
+    listUsers,
+    enable,
+    disable,
+    usersList = [],
+    signOrganisation,
+  } = props;
+
   const userRole = LocalStorageService.getUserRole();
 
   // const { columns: pColumns, rows: pRows } = projectsTableData();
   const tableHeading = [
     { Header: "Name", accessor: "name", align: "left" },
-    { Header: "MSP ID", accessor: "mspId", align: "left" },
-    { Header: "Created At", accessor: "Created_at", align: "center" },
+    { Header: "Role", accessor: "user_role", align: "left" },
+    { Header: "Organization Id", accessor: "org_id", align: "center" },
+    { Header: "Organization Name", accessor: "org_name", align: "left" },
+    { Header: "Organization MSP", accessor: "org_msp", align: "center" },
     { Header: "action", accessor: "action", align: "center" },
   ];
 
   useEffect(() => {
-    organisationList();
+    listUsers();
   }, []);
 
   const renderList = (data) => {
@@ -59,10 +65,10 @@ const Organisation = (props) => {
               color="text"
               fontWeight="medium"
             >
-              {item.org_name || item.name}
+              {item.user_name}
             </MDTypography>
           ),
-          mspId: (
+          user_role: (
             <MDTypography
               component="a"
               href="#"
@@ -70,10 +76,10 @@ const Organisation = (props) => {
               color="text"
               fontWeight="medium"
             >
-              {item.org_msp || item.msp_id}
+              {item.role}
             </MDTypography>
           ),
-          Created_at: (
+          org_name: (
             <MDTypography
               component="a"
               href="#"
@@ -81,29 +87,49 @@ const Organisation = (props) => {
               color="text"
               fontWeight="medium"
             >
-              {item.created_at}
+              {item.org_name}
+            </MDTypography>
+          ),
+          org_msp: (
+            <MDTypography
+              component="a"
+              href="#"
+              variant="caption"
+              color="text"
+              fontWeight="medium"
+            >
+              {item.org_msp}
+            </MDTypography>
+          ),
+          org_id: (
+            <MDTypography
+              component="a"
+              href="#"
+              variant="caption"
+              color="text"
+              fontWeight="medium"
+            >
+              {item.org_id}
             </MDTypography>
           ),
           action: (
             <React.Fragment>
-              {item.signedby_org === false ? (
+              {item.status === DISABLED ? (
                 <MDButton
                   variant="gradient"
                   color="dark"
-                  onClick={() => signOrganisation(item.org_id)}
+                  onClick={() => enable(item.id)}
                 >
-                  Sign{" "}
-                </MDButton>
-              ) : item.join_status === 1 ? (
-                <MDButton
-                  variant="gradient"
-                  color="dark"
-                  onClick={() => joinChannel()}
-                >
-                  Join{" "}
+                  enable{" "}
                 </MDButton>
               ) : (
-                "----"
+                <MDButton
+                  variant="gradient"
+                  color="dark"
+                  onClick={() => disable(item.id)}
+                >
+                  disable{" "}
+                </MDButton>
               )}
             </React.Fragment>
           ),
@@ -132,7 +158,7 @@ const Organisation = (props) => {
                 <Grid container>
                   <Grid item xs={6} sm={6} md={6}>
                     <MDTypography variant="h6" color="white">
-                      Organisation Table
+                      Users Table
                     </MDTypography>
                   </Grid>
                   {userRole === ADMIN && (
@@ -143,10 +169,10 @@ const Organisation = (props) => {
                       md={6}
                       style={{ textAlign: "end" }}
                     >
-                      <Link to="/organisation/add">
+                      <Link to="/user/create">
                         <MDButton variant="gradient" color="dark">
                           <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                          &nbsp;Add New Organisation
+                          &nbsp;Add New User
                         </MDButton>
                       </Link>
                     </Grid>
@@ -155,7 +181,7 @@ const Organisation = (props) => {
               </MDBox>
               <MDBox pt={3}>
                 <DataTable
-                  table={{ columns: tableHeading, rows: renderList(listData) }}
+                  table={{ columns: tableHeading, rows: renderList(usersList) }}
                   isSorted={false}
                   entriesPerPage={false}
                   showTotalEntries={false}
@@ -173,26 +199,25 @@ const Organisation = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    // loaded: state.category.loaded,
-    listData: state.organisation.listingData,
+    usersList: state.user.listingData,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    organisationList: (data) => {
-      dispatch(listing(data));
+    listUsers: () => {
+      dispatch(listing());
     },
-    signOrganisation: (id) => {
-      dispatch(signChainCodeReq(id));
+    enable: (id) => {
+      dispatch(enableUser(id));
     },
-    joinChannel: () => {
-      dispatch(joinChannelRequest());
+    disable: (id) => {
+      dispatch(disableUser(id));
     },
   };
 };
 
-Organisation.propTypes = {
-  getChainCode: PropTypes.func,
-};
+// UserManagemenet.propTypes = {
+//   getChainCode: PropTypes.func,
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Organisation);
+export default connect(mapStateToProps, mapDispatchToProps)(UserManagemenet);

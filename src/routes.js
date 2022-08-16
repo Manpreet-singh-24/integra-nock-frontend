@@ -13,6 +13,8 @@ import Organisation from "views/organisation/listing";
 import Add from "views/organisation/add";
 import UpdateChaincodeList from "views/release-chaincode/Listing";
 import ReleaseCreate from "views/release-chaincode/create";
+import UserManagement from "views/users/listing";
+import Createuser from "views/users/add";
 import { ADMIN, CLIENT } from "constants/userRoles";
 
 // @mui icons
@@ -84,6 +86,25 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/chaincode/release/create",
     component: <Private component={ReleaseCreate} roles={[ADMIN]} />,
+  },
+
+  {
+    type: "collapse",
+    name: "User Management",
+    key: "user-management",
+    roles: [ADMIN],
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/user-management",
+    component: <Private component={UserManagement} roles={[ADMIN]} />,
+  },
+  {
+    // type: "collapse",
+    // name: "Organisation/Add",
+    key: "add",
+    roles: [ADMIN],
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/user/create",
+    component: <Private component={Createuser} roles={[ADMIN]} />,
   },
   // {
   //   type: "collapse",
