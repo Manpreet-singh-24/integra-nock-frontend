@@ -8,10 +8,8 @@ import {
   LOADER_OPEN,
   LOADER_CLOSE,
 } from "store/actions/common/actions";
-import { ADMIN, CLIENT } from "constants/userRoles";
-// import history from 'store/redirect/history';
-const prefix = "/admin";
 
+// import history from 'store/redirect/history';
 ////// NOTE ====> Make sure each WATCHER FUNCTION is imported inside root-saga file
 
 //Login
@@ -115,7 +113,7 @@ export function* enableUser(action) {
     yield put({ type: LOADER_OPEN });
     // yield put({type: types.DATA_LOADED_STATUS});
     const result = yield call(post, `enable/user/${action.payload}`);
-
+    yield put({ type: types.ALL_USERS_REQUEST });
     yield put({ type: LOADER_CLOSE });
   } catch (error) {
     yield put({ type: LOADER_CLOSE });
@@ -137,7 +135,7 @@ export function* disableUser(action) {
     yield put({ type: LOADER_OPEN });
     // yield put({type: types.DATA_LOADED_STATUS});
     const result = yield call(post, `disable/user/${action.payload}`);
-    listingReq();
+    yield put({ type: types.ALL_USERS_REQUEST });
     yield put({ type: LOADER_CLOSE });
   } catch (error) {
     yield put({ type: LOADER_CLOSE });
@@ -161,6 +159,7 @@ export function* createNewUser(action) {
     yield put({ type: LOADER_OPEN });
     // yield put({type: types.DATA_LOADED_STATUS});
     const result = yield call(post, `user/register`, action.payload);
+
     yield put({ type: LOADER_CLOSE });
   } catch (error) {
     yield put({ type: LOADER_CLOSE });

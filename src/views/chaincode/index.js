@@ -22,6 +22,8 @@ import { connect } from "react-redux";
 
 import { listing, checkUpdate } from "store/actions/chain-code";
 import MomentHelper from "helpers/MomentHelper";
+import LocalStorageService from "services/LocalStorageService";
+import { CLIENT } from "constants/userRoles";
 
 const columns = [
   { Header: "Name", accessor: "name", align: "left" },
@@ -35,6 +37,7 @@ const columns = [
 const Listing = (props) => {
   const { listingData = [], getChainCode, onCheckUpdate } = props;
   const chainCodeModalRef = useRef(null);
+  const userRole = LocalStorageService.getUserRole();
 
   const onModalOpen = () => {
     onCheckUpdate();
@@ -142,15 +145,24 @@ const Listing = (props) => {
                       Chaincode List
                     </MDTypography>
                   </Grid>
-                  <Grid item xs={6} sm={6} md={6} style={{ textAlign: "end" }}>
-                    <MDButton
-                      variant="gradient"
-                      color="dark"
-                      onClick={() => onModalOpen()}
+
+                  {userRole === CLIENT && (
+                    <Grid
+                      item
+                      xs={6}
+                      sm={6}
+                      md={6}
+                      style={{ textAlign: "end" }}
                     >
-                      Check for update
-                    </MDButton>
-                  </Grid>
+                      <MDButton
+                        variant="gradient"
+                        color="dark"
+                        onClick={() => onModalOpen()}
+                      >
+                        Check for update
+                      </MDButton>
+                    </Grid>
+                  )}
                 </Grid>
               </MDBox>
               <MDBox pt={3}>

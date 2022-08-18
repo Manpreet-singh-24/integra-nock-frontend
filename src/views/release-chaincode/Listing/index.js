@@ -3,11 +3,10 @@ import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
+
 /**
  * Dialog
  */
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
 import Dialog from "@mui/material/Dialog";
 import { styled } from "@mui/material/styles";
 
@@ -16,7 +15,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDBadge from "components/MDBadge";
 import MDButton from "components/MDButton";
-import MDDialog from "components/MD-Dialog";
+import ViewLogDialog from "views/release-chaincode/viewLogPopup";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -28,18 +27,14 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 //import projectsTableData from "layouts/tables/data/projectsTableData";
 
-import { releasesListing, deleteRelease } from "store/actions/chain-code";
+import {
+  releasesListing,
+  deleteRelease,
+  viewReleaseLogReq,
+  chaincodeCommitReq,
+} from "store/actions/chain-code";
 import MomentHelper from "helpers/MomentHelper";
 import { Link } from "react-router-dom";
-
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
-    padding: theme.spacing(2),
-  },
-  "& .MuiDialogActions-root": {
-    padding: theme.spacing(1),
-  },
-}));
 
 const columns = [
   { Header: "Name", accessor: "name", align: "left" },
@@ -52,8 +47,18 @@ const columns = [
 ];
 
 const Listing = (props) => {
-  const { releasesList, getRelease, onDeleteRelease } = props;
+  const {
+    releasesList,
+    getRelease,
+    viewReleaseLog,
+    onDeleteRelease,
+    releaseLogData,
+    commitStatus,
+    requestCommit,
+    releaseLogLoading,
+  } = props;
   const [open, setOpen] = React.useState(false);
+  const [selectedChainCode, setChainCode] = React.useState({});
 
   const onDialogOpen = () => {
     setOpen(true);
@@ -71,6 +76,7 @@ const Listing = (props) => {
     };
     getRelease(data);
   }, []);
+  const rows = [];
 
   const renderList = (data) => {
     return (
@@ -147,7 +153,16 @@ const Listing = (props) => {
               <MDButton
                 variant="gradient"
                 color="dark"
-                onClick={() => onDialogOpen()}
+                onClick={() => {
+                  viewReleaseLog(item.id);
+                  onDialogOpen();
+                  setChainCode({
+                    name: item.name,
+                    version: item.version,
+                    releaseId: item.id,
+                  });
+                }}
+                sx={{ marginRight: "5px" }}
               >
                 Logs
               </MDButton>
@@ -214,33 +229,15 @@ const Listing = (props) => {
       {/* /*
        * Dialog box
        * */}
-      <BootstrapDialog
-        onClose={onDialogClose}
-        aria-labelledby="customized-dialog-title"
+      <ViewLogDialog
         open={open}
-      >
-        <MDDialog id="customized-dialog-title" onClose={onDialogClose}>
-          Logs Detail
-        </MDDialog>
-        <DialogContent dividers>
-          <MDTypography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros.
-          </MDTypography>
-          <MDTypography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
-            auctor.
-          </MDTypography>
-          <MDTypography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo
-            cursus magna, vel scelerisque nisl consectetur et. Donec sed odio
-            dui. Donec ullamcorper nulla non metus auctor fringilla.
-          </MDTypography>
-        </DialogContent>
-        <DialogActions></DialogActions>
-      </BootstrapDialog>
+        onDialogClose={onDialogClose}
+        selectedChainCode={selectedChainCode}
+        releaseLogData={releaseLogData}
+        commitStatus={commitStatus}
+        requestCommit={() => requestCommit(selectedChainCode.releaseId)}
+        loading={releaseLogLoading}
+      />
       <Footer />
     </DashboardLayout>
   );
@@ -249,6 +246,9 @@ const Listing = (props) => {
 const mapStateToProps = (state) => {
   return {
     releasesList: state.chainCode.releasesList,
+    releaseLogData: state.chainCode.releaseLog.list,
+    commitStatus: state.chainCode.releaseLog.commit_status,
+    releaseLogLoading: state.customization.isLoader,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -259,6 +259,12 @@ const mapDispatchToProps = (dispatch) => {
 
     onDeleteRelease: () => {
       dispatch(deleteRelease());
+    },
+    viewReleaseLog: (data) => {
+      dispatch(viewReleaseLogReq(data));
+    },
+    requestCommit: (data) => {
+      dispatch(chaincodeCommitReq({ release_id: data }));
     },
   };
 };

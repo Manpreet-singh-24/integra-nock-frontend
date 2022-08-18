@@ -8,7 +8,9 @@ import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 
 import MDBox from "components/MDBox";
-import CheckUpdateForm from 'views/chaincode/CheckUpdateForm'
+import CheckUpdateForm from "views/chaincode/CheckUpdateForm";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 
 const style = {
   position: "absolute",
@@ -53,13 +55,30 @@ const MDModal = (props, ref) => {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h6" align="center">
+            <Typography
+              id="transition-modal-title"
+              variant="h6"
+              component="h6"
+              align="center"
+            >
               Check Chaincode Update
             </Typography>
+            <Box>
+              <IconButton
+                aria-label="close"
+                onClick={() => setOpen(false)}
+                sx={{
+                  position: "absolute",
+                  right: 6,
+                  top: 4,
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Box>
             <MDBox pt={4} pb={3} px={3}>
-             
-            <CheckUpdateForm />
-              </MDBox>
+              <CheckUpdateForm />
+            </MDBox>
           </Box>
         </Fade>
       </Modal>

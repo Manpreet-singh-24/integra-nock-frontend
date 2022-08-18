@@ -24,10 +24,10 @@ const CreateUser = (props) => {
     username: "",
     password: "",
     confirmPassword: "",
-    role: "",
   };
 
   const submitData = (data) => {
+    data.role = "user";
     console.log(" ============== Submit data ==================== ", data);
     onSubmit(data);
   };

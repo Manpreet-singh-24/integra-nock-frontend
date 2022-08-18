@@ -1,5 +1,3 @@
- 
-
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
@@ -15,7 +13,7 @@ import MDBox from "components/MDBox";
 import typography from "assets/theme/base/typography";
 
 function Footer() {
- // const { href, name } = company;
+  // const { href, name } = company;
   const { size } = typography;
 
   // const renderLinks = () =>
@@ -47,8 +45,8 @@ function Footer() {
         fontSize={size.sm}
         px={1.5}
       >
-        &copy; {new Date().getFullYear()},Integra Blockchain Explorer. All rights reserved
-{/* 
+        &copy; {new Date().getFullYear()},Integra NOCK. All rights reserved
+        {/* 
         <MDBox fontSize={size.md} color="text" mb={-0.5} mx={0.25}>
           <Icon color="inherit" fontSize="inherit">
             favorite

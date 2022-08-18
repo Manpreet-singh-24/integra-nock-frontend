@@ -4,7 +4,7 @@ const initialState = {
   listingData: [],
   total_count: 0,
   updateList: [],
-
+  releaseLog: {},
   releasesList: [{}],
 };
 
@@ -29,6 +29,11 @@ const chainCodeReducer = (state = initialState, action) => {
         ...state,
         releasesList: action.payload,
         // total_count: action.payload.total_count,
+      };
+    case type.RELEASE_LOG_DATA:
+      return {
+        ...state,
+        releaseLog: action.payload,
       };
 
     default:

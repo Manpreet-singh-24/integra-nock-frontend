@@ -204,24 +204,18 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         style={{
           bottom: "0",
           position: "absolute",
-          padding: "10px 30px",
+          padding: "10px 0px",
           color: "#fff",
           display: "flex",
         }}
       >
-        <LogoutIcon style={{ height: "26.1px" }}></LogoutIcon>
-        <MDTypography
-          variant="h6"
-          color="secondary"
-          onClick={() => onLogout()}
-          style={{
-            cursor: "pointer",
-            margin: "0px 0px 0px 18px",
-            color: "#fff",
-          }}
-        >
-          Logout
-        </MDTypography>
+        <div onClick={() => onLogout()}>
+          <SidenavCollapse
+            name={"Logout"}
+            icon={<LogoutIcon style={{ height: "26.1px" }} />}
+            // active={key === collapseName}
+          />
+        </div>
       </List>
     </SidenavRoot>
   );

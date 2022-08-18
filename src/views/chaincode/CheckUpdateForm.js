@@ -27,7 +27,7 @@ const CheckUpdateForm = (props) => {
 
   //  const initialValues = formInitialValue;
   const validation = Yup.object({
-    chaincode: Yup.string().required("Name is required"),
+    chaincode: Yup.number().required("Name is required"),
   });
 
   console.log(" ------------------------------ ", updateList);

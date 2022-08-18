@@ -13,6 +13,7 @@ import MDTextError from "components/MDTextError/";
 import MDSelectOption from "components/MDSelectOption";
 
 import RegexTypes from "regex";
+import { generatePassword } from "helpers/GenrateRandomPassword";
 
 const AddNewUserForm = (props) => {
   const { submitData, formInitialValue, buttonLabel, orgList = [] } = props;
@@ -31,9 +32,9 @@ const AddNewUserForm = (props) => {
         "Name can not contain special character"
       )
       .max(35, "Name must be no longer than 35 characters")
-      .min(5, "Name must be at least 5 character long")
+      .min(3, "Name must be at least 5 character long")
       .required("Name is required"),
-    // org_name: Yup.string().required("Name is required"),
+    org_name: Yup.string().required("Name is required"),
     password: Yup.string()
       .trim()
       .min(6, "Password must be at least 6 character long")
@@ -50,6 +51,12 @@ const AddNewUserForm = (props) => {
     setFieldValue("org_id", selectedOrg[0].Id);
     setFieldValue("org_name", selectedOrg[0].name);
     setFieldValue("org_msp", selectedOrg[0].msp_id);
+  };
+
+  const genratePassword = (setFieldValue) => {
+    const password = generatePassword();
+    setFieldValue("password", password);
+    setFieldValue("confirmPassword", password);
   };
 
   return (
@@ -96,7 +103,7 @@ const AddNewUserForm = (props) => {
                     name="org_name"
                     select
                     SelectProps={{ native: true }}
-                    value={values.org_name || ""}
+                    value={values.org_id || ""}
                     variant="outlined"
                     onChange={(event) => handleSelect(event, setFieldValue)}
                     options={orgList}
@@ -133,6 +140,16 @@ const AddNewUserForm = (props) => {
                   />
                   <ErrorMessage name="password" component={MDTextError} />
                 </MDBox>
+                <MDButton
+                  disableElevation
+                  variant="gradient"
+                  color="info"
+                  type="submit"
+                  //   fullWidth
+                  onClick={() => genratePassword(setFieldValue)}
+                >
+                  Genrate Password
+                </MDButton>
               </Grid>
               <Grid item xs={6} sm={6} md={6}>
                 <MDBox mb={2}>
@@ -156,28 +173,9 @@ const AddNewUserForm = (props) => {
                   />
                 </MDBox>
               </Grid>
-              <Grid item xs={6} sm={6} md={6}>
-                <MDBox mb={2}>
-                  <MDSelectOption
-                    control="select"
-                    fullWidth
-                    label="role"
-                    name="role"
-                    select
-                    SelectProps={{ native: true }}
-                    value={values.role || ""}
-                    variant="outlined"
-                    onChange={handleChange}
-                    options={[
-                      { id: "admin", name: "admin" },
-                      { id: "user", name: "user" },
-                    ]}
-                  />
-                  <ErrorMessage name="role" component={MDTextError} />
-                </MDBox>
-              </Grid>
+              {/* <Grid item xs={6} sm={6} md={6}></Grid> */}
 
-              <MDBox width={"100%"} mt={4} mb={1} ml={2}>
+              <MDBox width={"100%"} mt={4} mb={1} ml={2} textAlign={"end"}>
                 <MDButton
                   disableElevation
                   variant="gradient"

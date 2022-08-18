@@ -42,7 +42,6 @@ const UserManagemenet = (props) => {
   const tableHeading = [
     { Header: "Name", accessor: "name", align: "left" },
     { Header: "Role", accessor: "user_role", align: "left" },
-    { Header: "Organization Id", accessor: "org_id", align: "center" },
     { Header: "Organization Name", accessor: "org_name", align: "left" },
     { Header: "Organization MSP", accessor: "org_msp", align: "center" },
     { Header: "action", accessor: "action", align: "center" },
@@ -101,17 +100,7 @@ const UserManagemenet = (props) => {
               {item.org_msp}
             </MDTypography>
           ),
-          org_id: (
-            <MDTypography
-              component="a"
-              href="#"
-              variant="caption"
-              color="text"
-              fontWeight="medium"
-            >
-              {item.org_id}
-            </MDTypography>
-          ),
+
           action: (
             <React.Fragment>
               {item.status === DISABLED ? (

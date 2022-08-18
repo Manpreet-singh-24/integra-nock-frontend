@@ -7,6 +7,7 @@ const MDSelectOption = (props) => {
   return (
     <React.Fragment>
       <TextField name={name} {...rest}>
+        <option disabled></option>
         {options.map((option) => (
           <option
             key={option.id}

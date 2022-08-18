@@ -9,7 +9,7 @@ import {
 } from "store/actions/common/actions";
 import LocalStorageService from "services/LocalStorageService";
 import { ADMIN } from "constants/userRoles";
-// import history from 'store/redirect/history';
+import history from "store/redirect/history";
 
 ////// NOTE ====> Make sure each WATCHER FUNCTION is imported inside root-saga file
 
@@ -151,6 +151,7 @@ export function* createRelease(action) {
       `chaincode/createupdates/${chainCodeId}`,
       action.payload
     );
+    history.push(`/chaincode/release/list`);
     // yield put({type: types.RELEASE_LIST, payload: result.data });
     yield put({ type: LOADER_CLOSE });
   } catch (error) {
@@ -167,6 +168,59 @@ export function* createReleaseReq() {
   yield takeLatest(types.ADD_NEW_RELEASE_REQUEST, createRelease);
 }
 
+//view log
+
+export function* viewReleaseLog(action) {
+  // history.push(`category/list`)
+  try {
+    yield put({ type: LOADER_OPEN });
+    // yield put({type: types.DATA_LOADED_STATUS});
+    const result = yield call(get, `releases/logs/${action.payload}`);
+    yield put({
+      type: types.RELEASE_LOG_DATA,
+      payload: {
+        list: result.data,
+        commit_status: result.commit_status,
+      },
+    });
+    yield put({ type: LOADER_CLOSE });
+  } catch (error) {
+    yield put({ type: LOADER_CLOSE });
+    if (error.status === 422) {
+      return false;
+    }
+    // yield put({type: SNACKBAR_OPEN, open: true, message: error.data.error.message, alertSeverity: 'error', variant: 'alert'});
+  }
+}
+
+//Function generator (watcher )
+export function* viewReleaseLogReq() {
+  yield takeLatest(types.RELEASE_LOG_REQUEST, viewReleaseLog);
+}
+
+// chaincode commit
+
+export function* chaincodeCommit(action) {
+  // history.push(`category/list`)
+  try {
+    yield put({ type: LOADER_OPEN });
+    // yield put({type: types.DATA_LOADED_STATUS});
+    const result = yield call(post, `chaincode/commit`, action.payload);
+    yield put({ type: LOADER_CLOSE });
+  } catch (error) {
+    yield put({ type: LOADER_CLOSE });
+    if (error.status === 422) {
+      return false;
+    }
+    // yield put({type: SNACKBAR_OPEN, open: true, message: error.data.error.message, alertSeverity: 'error', variant: 'alert'});
+  }
+}
+
+//Function generator (watcher )
+export function* chaincodeCommitReq() {
+  yield takeLatest(types.CHAINCODE_COMMIT_REQ, chaincodeCommit);
+}
+
 export default function* chainCodeSaga() {
   yield all([
     listingReq(),
@@ -175,5 +229,7 @@ export default function* chainCodeSaga() {
     releaseListingReq(),
     deleteReleaseReq(),
     createReleaseReq(),
+    viewReleaseLogReq(),
+    chaincodeCommitReq(),
   ]);
 }

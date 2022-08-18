@@ -66,6 +66,7 @@ axios.interceptors.response.use(
 
     if (error.response.status === 401) {
       //No token provided
+      LocalStorageService.clearToken();
       history.push("/authentication/sign-in");
 
       Store.dispatch({
