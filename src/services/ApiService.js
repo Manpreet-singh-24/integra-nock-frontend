@@ -10,7 +10,6 @@ export const get = (path, data = null) => {
       return response.data;
     })
     .catch((error) => {
-      // console.log("login Error block", error)
       throw error;
     });
 };

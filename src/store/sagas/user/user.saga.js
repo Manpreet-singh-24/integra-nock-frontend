@@ -19,7 +19,6 @@ export function* login(action) {
     const result = yield call(post, "user/login", action.payload);
     LocalStorageService.setToken(result.data);
     LocalStorageService.setUserRole(result.role);
-
     //yield put(saveUserData(result));
     yield put({ type: types.USER_ROLE, payload: result.role });
     yield put({ type: types.LOGIN, payload: true });
@@ -38,7 +37,7 @@ export function* login(action) {
     yield put({
       type: SNACKBAR_OPEN,
       open: true,
-      message: error?.data?.error?.message,
+      message: error?.message,
       alertSeverity: "error",
       variant: "alert",
     });
@@ -154,7 +153,6 @@ export function* disableUserReq() {
 // CREATE NEW USER
 
 export function* createNewUser(action) {
-  console.log(action, "Action");
   try {
     yield put({ type: LOADER_OPEN });
     // yield put({type: types.DATA_LOADED_STATUS});

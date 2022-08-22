@@ -44,7 +44,14 @@ import {
   setDarkMode,
 } from "context";
 
-function DashboardNavbar({ absolute, light, isMini, onUserDetail }) {
+function DashboardNavbar({
+  absolute,
+  light,
+  isMini,
+  onUserDetail,
+  isLoginSuccess,
+  user,
+}) {
   const [controller, dispatch] = useMaterialUIController();
   const [navbarType, setNavbarType] = useState();
   const [disabled, setDisabled] = useState(false);
@@ -63,8 +70,16 @@ function DashboardNavbar({ absolute, light, isMini, onUserDetail }) {
    * Get user detail
    */
   useEffect(() => {
-    onUserDetail();
-  }, []);
+    if (Object.keys(user).length === 0) {
+      onUserDetail();
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (isLoginSuccess) {
+      onUserDetail();
+    }
+  }, [isLoginSuccess]);
 
   useEffect(() => {
     // Setting the navbar type
@@ -223,6 +238,14 @@ DashboardNavbar.defaultProps = {
   isMini: false,
 };
 
+const mapStateToProps = (state) => {
+  console.log(state, "state");
+  return {
+    isLoginSuccess: state.user.isLoginSuccess,
+    user: state.user.user,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     onUserDetail: () => {
@@ -239,4 +262,4 @@ DashboardNavbar.propTypes = {
   onUserDetail: PropTypes.func,
 };
 
-export default connect(null, mapDispatchToProps)(DashboardNavbar);
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardNavbar);

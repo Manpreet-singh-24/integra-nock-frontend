@@ -51,7 +51,6 @@ export function* signOrganisationRequest() {
 export function* createOrganisation(action) {
   let formData = new FormData();
   const peers = action.payload.peers;
-  console.log(peers, "peers");
   formData.append("name", action.payload.name);
   formData.append("msp_id", action.payload.msp_id);
   formData.append("file", action.payload.file);
