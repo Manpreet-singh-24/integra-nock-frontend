@@ -35,6 +35,7 @@ const routes = [
     type: "collapse",
     name: "Chaincodes",
     key: "chaincode",
+    path: "/chaincode",
     roles: [ADMIN, CLIENT],
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/chaincode",

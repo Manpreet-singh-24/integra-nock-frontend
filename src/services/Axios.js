@@ -9,6 +9,10 @@ import { SNACKBAR_OPEN } from "store/actions/common/actions";
 //const baseURL = process.env.API_URL;
 //const baseURL = 'http://localhost:5000/';
 
+const clearToken = () => {
+  LocalStorageService.clearToken();
+};
+
 axios.interceptors.request.use(
   (config) => {
     const token = LocalStorageService.getAccessToken();
@@ -39,7 +43,7 @@ axios.interceptors.response.use(
   },
   function (error) {
     //const originalRequest = error.config;
-    if (!error.response) {
+    if (!error.response.data) {
       Store.dispatch({
         type: SNACKBAR_OPEN,
         open: true,
@@ -47,7 +51,7 @@ axios.interceptors.response.use(
         alertSeverity: "error",
         variant: "alert",
       });
-      history.push("/server-error");
+      // history.push("/server-error");
       return Promise.reject(error);
     }
     if (error.response.status === 403) {
@@ -66,9 +70,8 @@ axios.interceptors.response.use(
 
     if (error.response.status === 401) {
       //No token provided
-      LocalStorageService.clearToken();
-      history.push("/authentication/sign-in");
-
+      clearToken();
+      window.location.href = "/authentication/sign-in";
       Store.dispatch({
         type: SNACKBAR_OPEN,
         open: true,
@@ -80,8 +83,6 @@ axios.interceptors.response.use(
     }
 
     if (error.response.status === 500) {
-      history.push("/server-error");
-
       Store.dispatch({
         type: SNACKBAR_OPEN,
         open: true,

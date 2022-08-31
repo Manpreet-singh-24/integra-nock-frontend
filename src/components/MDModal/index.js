@@ -55,22 +55,25 @@ const MDModal = (props, ref) => {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Typography
-              id="transition-modal-title"
-              variant="h6"
-              component="h6"
-              align="center"
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent={"space-between"}
             >
-              Check Chaincode Update
-            </Typography>
-            <Box>
+              <Typography
+                id="transition-modal-title"
+                variant="h6"
+                component="h6"
+                align="center"
+              >
+                Check Chaincode Update
+              </Typography>
+
               <IconButton
                 aria-label="close"
                 onClick={() => setOpen(false)}
                 sx={{
-                  position: "absolute",
-                  right: 6,
-                  top: 4,
+                  position: "relative",
                 }}
               >
                 <CloseIcon />

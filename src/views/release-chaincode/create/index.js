@@ -33,9 +33,6 @@ const Create = (props) => {
   };
 
   const submitData = (data) => {
-    delete data.name;
-    delete data.label;
-    delete data.file;
     delete data.submit;
 
     console.log(" ============== Submit data ==================== ", data);

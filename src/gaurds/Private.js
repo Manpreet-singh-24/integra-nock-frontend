@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Navigate } from "react-router-dom";
 import LocalStorageService from "services/LocalStorageService";
 import jwt_decode from "jwt-decode";
@@ -21,7 +21,7 @@ const Private = ({ component: Component, roles, ...rest }) => {
 
   return (
     <>
-      {isvalidToken ? (
+      {!!AccessToken && isvalidToken ? (
         <>
           {roles.includes(userRole) ? (
             <Component />
@@ -30,7 +30,9 @@ const Private = ({ component: Component, roles, ...rest }) => {
           )}
         </>
       ) : (
-        <Navigate to="/authentication/sign-in" />
+        <>
+          <Navigate to="/authentication/sign-in" />
+        </>
       )}
     </>
   );

@@ -239,7 +239,6 @@ DashboardNavbar.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state, "state");
   return {
     isLoginSuccess: state.user.isLoginSuccess,
     user: state.user.user,

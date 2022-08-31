@@ -9,7 +9,6 @@ import {
 } from "store/actions/common/actions";
 import LocalStorageService from "services/LocalStorageService";
 import { ADMIN } from "constants/userRoles";
-import history from "store/redirect/history";
 
 ////// NOTE ====> Make sure each WATCHER FUNCTION is imported inside root-saga file
 
@@ -151,7 +150,14 @@ export function* createRelease(action) {
       `chaincode/createupdates/${chainCodeId}`,
       action.payload
     );
-    history.push(`/chaincode/release/list`);
+
+    yield put({
+      type: SNACKBAR_OPEN,
+      open: true,
+      message: result.message,
+      alertSeverity: "success",
+      variant: "alert",
+    });
     // yield put({type: types.RELEASE_LIST, payload: result.data });
     yield put({ type: LOADER_CLOSE });
   } catch (error) {
