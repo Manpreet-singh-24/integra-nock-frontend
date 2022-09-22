@@ -11,6 +11,7 @@ import ChainCode from "views/chaincode/";
 import ChaincodeEdit from "views/chaincode/edit";
 import Organisation from "views/organisation/listing";
 import Add from "views/organisation/add";
+import AddPeer from "views/organisation/addPeer";
 import UpdateChaincodeList from "views/release-chaincode/Listing";
 import ReleaseCreate from "views/release-chaincode/create";
 import UserManagement from "views/users/listing";
@@ -59,6 +60,15 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/organisation/add",
     component: <Private component={Add} roles={[ADMIN]} />,
+  },
+  {
+    // type: "collapse",
+    // name: "Organisation/Add",
+    key: "add",
+    roles: [ADMIN],
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/organisation/add-peer",
+    component: <Private component={AddPeer} roles={[ADMIN]} />,
   },
   {
     type: "collapse",

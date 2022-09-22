@@ -9,7 +9,7 @@ import Icon from "@mui/material/Icon";
  */
 import Dialog from "@mui/material/Dialog";
 import { styled } from "@mui/material/styles";
-
+import types from "store/constants/chainCodeType";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -24,7 +24,7 @@ import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 import PropTypes from "prop-types";
 
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 //import projectsTableData from "layouts/tables/data/projectsTableData";
 
 import {
@@ -56,10 +56,11 @@ const Listing = (props) => {
     commitStatus,
     requestCommit,
     releaseLogLoading,
+    commitChaincodeStatus,
   } = props;
   const [open, setOpen] = React.useState(false);
   const [selectedChainCode, setChainCode] = React.useState({});
-
+  const dispatch = useDispatch();
   const onDialogOpen = () => {
     setOpen(true);
   };
@@ -76,6 +77,16 @@ const Listing = (props) => {
     };
     getRelease(data);
   }, []);
+
+  useEffect(() => {
+    if (commitChaincodeStatus) {
+      setOpen(false);
+    }
+    dispatch({
+      type: types.COMMIT_CHAINCODE_STATUS,
+      payload: false,
+    });
+  }, [commitChaincodeStatus]);
   const rows = [];
 
   const renderList = (data) => {
@@ -145,7 +156,7 @@ const Listing = (props) => {
               color="text"
               fontWeight="medium"
             >
-              1
+              {item?.status ? item.status : "-----"}
             </MDTypography>
           ),
           action: (
@@ -249,6 +260,7 @@ const mapStateToProps = (state) => {
     releaseLogData: state.chainCode.releaseLog.list,
     commitStatus: state.chainCode.releaseLog.commit_status,
     releaseLogLoading: state.customization.isLoader,
+    commitChaincodeStatus: state.chainCode.commitChaincodeStatus,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -264,7 +276,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(viewReleaseLogReq(data));
     },
     requestCommit: (data) => {
-      dispatch(chaincodeCommitReq({ release_id: data }));
+      dispatch(chaincodeCommitReq(data));
     },
   };
 };

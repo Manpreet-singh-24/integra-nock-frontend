@@ -39,24 +39,17 @@ const ReleaseForm = (props) => {
       .max(35, "Name must be no longer than 35 characters")
       .min(5, "Name must be at least 5 character long")
       .required("Name is required"),
-    label: Yup.string()
-      .trim()
-      .matches(
-        RegexTypes.checkSpacialCharacter,
-        "Label can not contain special character"
-      )
-      .max(35, "Label must be no longer than 35 characters")
-      .min(5, "Label must be at least 5 character long")
+    sequence: Yup.number()
+      // .max(35, "Label must be no longer than 35 characters")
+      // .min(5, "Label must be at least 5 character long")
       .required("Label is required"),
     version: Yup.string()
       .trim()
       .max(35, "Version must be no longer than 35 characters")
       .min(2, "Version must be at least 2 character long")
       .required("Version is required"),
-    url: Yup.string()
-      .trim()
-      .matches(RegexTypes.UrlRegex, "Enter a valid URL ")
-      .required("URL is required"),
+    url: Yup.string().trim().matches(RegexTypes.UrlRegex, "Enter a valid URL "),
+    // .required("URL is required"),
     //file:Yup.array().min(1, 'File is required'),
   });
 
@@ -73,7 +66,7 @@ const ReleaseForm = (props) => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={validation}
+      // validationSchema={validation}
       enableReinitialize={true}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
@@ -141,15 +134,15 @@ const ReleaseForm = (props) => {
                 <MDBox mb={2}>
                   <MDInput
                     fullWidth
-                    type="text"
-                    label="Label"
-                    name="label"
-                    value={values.label || ""}
+                    type="number"
+                    label="Sequence"
+                    name="sequence"
+                    value={values.sequence || ""}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={touched.label && errors.label ? true : false}
+                    error={touched.sequence && errors.sequence ? true : false}
                   />
-                  <ErrorMessage name="label" component={MDTextError} />
+                  <ErrorMessage name="sequence" component={MDTextError} />
                 </MDBox>
               </Grid>
               <Grid item xs={6} sm={6} md={6}>
@@ -182,7 +175,7 @@ const ReleaseForm = (props) => {
                   <ErrorMessage name="url" component={MDTextError} />
                 </MDBox>
               </Grid>
-              <Grid item xs={6} sm={6} md={6}>
+              {/* <Grid item xs={6} sm={6} md={6}>
                 <MDBox mb={2}>
                   <FileUpload
                     name="file"
@@ -196,19 +189,20 @@ const ReleaseForm = (props) => {
                     }}
                   />
                 </MDBox>
+              </Grid> */}
+              <Grid item xs={12}>
+                <MDBox mt={4} mb={1} ml={2} sx={{ textAlign: "center" }}>
+                  <MDButton
+                    disableElevation
+                    variant="gradient"
+                    color="info"
+                    type="submit"
+                  >
+                    {/* Add Organisation  */}
+                    {buttonLabel}
+                  </MDButton>
+                </MDBox>
               </Grid>
-              <MDBox mt={4} mb={1} ml={2}>
-                <MDButton
-                  disableElevation
-                  variant="gradient"
-                  color="info"
-                  type="submit"
-                  fullWidth
-                >
-                  {/* Add Organisation  */}
-                  {buttonLabel}
-                </MDButton>
-              </MDBox>
             </Grid>
           </MDBox>
         </Form>

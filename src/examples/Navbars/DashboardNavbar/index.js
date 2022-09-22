@@ -6,6 +6,7 @@ import { useLocation, Link } from "react-router-dom";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 // @material-ui core components
 import AppBar from "@mui/material/AppBar";
@@ -65,6 +66,7 @@ function DashboardNavbar({
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   const handleDarkMode = () => setDarkMode(dispatch, !darkMode);
+  const currentUser = useSelector((state) => state.user);
 
   /**
    * Get user detail
@@ -73,13 +75,13 @@ function DashboardNavbar({
     if (Object.keys(user).length === 0) {
       onUserDetail();
     }
-  }, [user]);
+  }, []);
 
   useEffect(() => {
-    if (isLoginSuccess) {
+    if (isLoginSuccess && !currentUser.user) {
       onUserDetail();
     }
-  }, [isLoginSuccess]);
+  }, []);
 
   useEffect(() => {
     // Setting the navbar type

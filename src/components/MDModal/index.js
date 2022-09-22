@@ -57,7 +57,7 @@ const MDModal = (props, ref) => {
           <Box sx={style}>
             <Box
               display="flex"
-              alignItems="center"
+              alignItems={"center"}
               justifyContent={"space-between"}
             >
               <Typography

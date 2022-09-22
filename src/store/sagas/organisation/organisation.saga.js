@@ -1,5 +1,7 @@
 import types from "store/constants/organisationType";
 import { all, call, takeLatest, put } from "redux-saga/effects";
+import { useNavigate } from "react-router-dom";
+
 // import {apiFailed, allData} from './../../actions/category';
 import { get, post } from "services/ApiService";
 import {
@@ -7,7 +9,6 @@ import {
   LOADER_OPEN,
   LOADER_CLOSE,
 } from "store/actions/common/actions";
-//import history from 'store/redirect/history';
 //All category
 export function* listing(action) {
   try {
@@ -48,12 +49,13 @@ export function* signOrganisationRequest() {
 }
 
 //Create Organisation
-export function* createOrganisation(action) {
+export function* createOrganisation({ type, payload }) {
+  const navigate = payload.navigate;
+
   let formData = new FormData();
-  const peers = action.payload.peers;
-  formData.append("name", action.payload.name);
-  formData.append("msp_id", action.payload.msp_id);
-  formData.append("file", action.payload.file);
+  formData.append("name", payload.data.name);
+  formData.append("msp_id", payload.data.msp_id);
+  formData.append("file", payload.data.file);
 
   // history.push(`category/list`)
   try {
@@ -62,18 +64,14 @@ export function* createOrganisation(action) {
     const result = yield call(post, `organization`, formData, {
       "Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
     });
-
-    if (result.status === 200) {
-      const data = {
-        org_id: result.data.id,
-        org_name: result.data.name,
-        peers: peers,
-      };
-      peers.org_id = result.data.id;
-
-      const res = yield call(post, `organization/peers`, data);
-    }
-
+    yield put({
+      type: SNACKBAR_OPEN,
+      open: true,
+      message: result.message,
+      alertSeverity: "success",
+      variant: "alert",
+    });
+    navigate("/organisation");
     //yield put(saveUserData(result));
     yield put({ type: LOADER_CLOSE });
   } catch (error) {
@@ -89,6 +87,46 @@ export function* createOrganisation(action) {
 export function* createOrganisationReq() {
   yield takeLatest(types.ADD_REQUEST, createOrganisation);
 }
+
+//Create Organisation-Peer
+export function* addPeers({ type, payload }) {
+  const navigate = payload.navigate;
+
+  try {
+    yield put({ type: LOADER_OPEN });
+    const peers = payload.data;
+    const data = {
+      org_id: peers.id,
+      org_name: peers.name,
+      peers: peers.peers,
+    };
+
+    const res = yield call(post, `organization/peers`, data);
+    navigate("/organisation");
+    yield put({
+      type: SNACKBAR_OPEN,
+      open: true,
+      message: res.message,
+      alertSeverity: "success",
+      variant: "alert",
+    });
+    //yield put(saveUserData(result));
+    yield put({ type: LOADER_CLOSE });
+  } catch (error) {
+    yield put({ type: LOADER_CLOSE });
+    if (error.status === 422) {
+      return false;
+    }
+    // yield put({type: SNACKBAR_OPEN, open: true, message: error.data.error.message, alertSeverity: 'error', variant: 'alert'});
+  }
+}
+
+//Function generator (watcher )
+export function* addPeerReq() {
+  yield takeLatest(types.ADD_PEER, addPeers);
+}
+
+//
 
 export function* checkUpdate(action) {
   try {
@@ -161,6 +199,7 @@ export default function* organisationSaga() {
     listingReq(),
     signOrganisationRequest(),
     createOrganisationReq(),
+    addPeerReq(),
     checkUpdateRequest(),
     installChainCodeRequest(),
     joinChannelRequest(),

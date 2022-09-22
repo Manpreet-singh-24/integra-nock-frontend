@@ -6,6 +6,8 @@ const initialState = {
   updateList: [],
   releaseLog: {},
   releasesList: [{}],
+  chainCodeInstallStatus: false,
+  commitChaincodeStatus: false,
 };
 
 const chainCodeReducer = (state = initialState, action) => {
@@ -34,6 +36,17 @@ const chainCodeReducer = (state = initialState, action) => {
       return {
         ...state,
         releaseLog: action.payload,
+      };
+    case type.CHAINCODE_INSTALL_STATUS:
+      return {
+        ...state,
+        chainCodeInstallStatus: action.payload,
+      };
+
+    case type.COMMIT_CHAINCODE_STATUS:
+      return {
+        ...state,
+        commitChaincodeStatus: action.payload,
       };
 
     default:

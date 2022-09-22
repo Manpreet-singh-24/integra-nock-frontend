@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -11,35 +11,50 @@ import MDTypography from "components/MDTypography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import OrganisationForm from "views/organisation/organisation-form/OrganisationForm";
+import OrganisationForm from "views/organisation/organisationAddPeer-form";
 
-import { connect } from "react-redux";
-import { create } from "store/actions/organisation";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+import { AddNewPeerReq } from "store/actions/organisation";
+import Types from "store/constants/organisationType";
 
 const Add = (props) => {
   const { onSubmit } = props;
   const navigate = useNavigate();
   const [formValue, setFormValue] = useState(null);
+  const dispatch = useDispatch();
+  const addPeerStatus = useSelector(
+    (state) => state.organisation.addPeersStatus
+  );
 
   const initialValues = {
-    name: "Org3",
-    msp_id: "OrgMsp3",
-    file: [],
+    name: "",
+    msp_id: "",
     peers: [
       {
-        name: "test user",
-        url: "https://mui.com/material-ui/getting-started/installation/",
-        ip: "192.168.0.1",
-        certificate: "certificates",
+        name: "",
+        url: "",
+        ip: "",
+        certificate: "",
       },
     ],
-    submit: null,
   };
 
   const submitData = (data) => {
     onSubmit({ data: data, navigate: navigate });
   };
+
+  // useEffect(() => {
+  //   console.log(addPeerStatus, "addPeerStatus");
+  //   if (addPeerStatus === "success") {
+  //     navigate("/organisation");
+  //   }
+  //   dispatch({
+  //     type: Types.ADD_PEER_STATUS,
+  //     payload: null,
+  //   });
+  // }, [addPeerStatus]);
 
   return (
     <DashboardLayout>
@@ -59,14 +74,14 @@ const Add = (props) => {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" color="white">
-                  Add Organisation
+                  Add Peer
                 </MDTypography>
               </MDBox>
               <MDBox p={3}>
                 <OrganisationForm
                   formInitialValue={formValue || initialValues}
                   updateFormData={setFormValue}
-                  buttonLabel="Add Organisation"
+                  buttonLabel="Add Peer"
                   submitData={submitData}
                 />
               </MDBox>
@@ -79,12 +94,18 @@ const Add = (props) => {
   );
 };
 
+const mapStateToProps = (state) => {
+  console.log(state, "State");
+  return {
+    // loaded: state.category.loaded,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     onSubmit: (data) => {
-      dispatch(create(data));
+      dispatch(AddNewPeerReq(data));
     },
   };
 };
 
-export default connect(null, mapDispatchToProps)(Add);
+export default connect(mapStateToProps, mapDispatchToProps)(Add);

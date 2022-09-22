@@ -40,3 +40,10 @@ export const joinChannelRequest = () => {
     type: types.JOIN_CHANNEL_REQUEST,
   };
 };
+
+export const AddNewPeerReq = (data) => {
+  return {
+    type: types.ADD_PEER,
+    payload: data,
+  };
+};

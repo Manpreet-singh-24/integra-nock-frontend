@@ -3,6 +3,8 @@ const namespaces = "organisation";
 const Types = {
   ADD_REQUEST: `${namespaces}/ADD_REQUEST`,
   ADD: `${namespaces}/ADD`,
+
+  ADD_PEER: `${namespaces}/ADD_PEER`,
   //
   ALL_DATA_REQUEST: `${namespaces}/ALL_DATA_REQUEST`,
   ALL_DATA: `${namespaces}/ALL_DATA`,

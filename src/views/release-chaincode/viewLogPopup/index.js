@@ -97,7 +97,9 @@ const ViewLogDialog = ({
       maxWidth={"700px"}
     >
       <MDDialog id="customized-dialog-title" onClose={onDialogClose}>
-        {`Logs Detail (${selectedChainCode.name} ${selectedChainCode.version})`}
+        {`Logs Detail (${
+          selectedChainCode.name ? selectedChainCode.name : ""
+        } ${selectedChainCode?.version ? selectedChainCode.version : ""})`}
       </MDDialog>
       <DialogContent dividers>
         <TableContainer component={Paper} sx={{ boxShadow: "none" }}>

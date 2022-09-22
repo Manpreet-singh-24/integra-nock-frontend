@@ -69,9 +69,10 @@ export function* installChainCode(action) {
       `chaincode/update/${action.payload.chaincode}`
     );
     // yield put({type: types.CHECK_UPDATE, payload: result.data });
-    //yield put(saveUserData(result));
+    yield put({ type: types.CHAINCODE_INSTALL_STATUS, payload: true });
     yield put({ type: LOADER_CLOSE });
   } catch (error) {
+    yield put({ type: types.CHAINCODE_INSTALL_STATUS, payload: false });
     yield put({ type: LOADER_CLOSE });
     // yield put({type: SNACKBAR_OPEN, open: true, message: error.data.error.message, alertSeverity: 'error', variant: 'alert'});
   }
@@ -137,18 +138,21 @@ export function* deleteReleaseReq() {
 }
 
 //Releases add
-export function* createRelease(action) {
+export function* createRelease({ type, payload }) {
   // history.push(`category/list`)
-  const chainCodeId = action.payload.chaincode;
+  const navigate = payload.navigate;
+  const chainCodeId = payload.chaincode;
 
-  delete action.payload.chainCodeId;
+  delete payload.navigate;
+  delete payload.chainCodeId;
+
   try {
     yield put({ type: LOADER_OPEN });
     // yield put({type: types.DATA_LOADED_STATUS});
     const result = yield call(
       post,
       `chaincode/createupdates/${chainCodeId}`,
-      action.payload
+      payload
     );
 
     yield put({
@@ -160,6 +164,7 @@ export function* createRelease(action) {
     });
     // yield put({type: types.RELEASE_LIST, payload: result.data });
     yield put({ type: LOADER_CLOSE });
+    navigate("/chaincode/release/list");
   } catch (error) {
     yield put({ type: LOADER_CLOSE });
     if (error.status === 422) {
@@ -212,8 +217,17 @@ export function* chaincodeCommit(action) {
     yield put({ type: LOADER_OPEN });
     // yield put({type: types.DATA_LOADED_STATUS});
     const result = yield call(post, `chaincode/commit`, action.payload);
+    yield put({ type: types.COMMIT_CHAINCODE_STATUS, payload: true });
     yield put({ type: LOADER_CLOSE });
+    yield put({
+      type: SNACKBAR_OPEN,
+      open: true,
+      message: result.message,
+      alertSeverity: "success",
+      variant: "alert",
+    });
   } catch (error) {
+    yield put({ type: types.COMMIT_CHAINCODE_STATUS, payload: false });
     yield put({ type: LOADER_CLOSE });
     if (error.status === 422) {
       return false;

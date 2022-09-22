@@ -94,16 +94,15 @@ const Organisation = (props) => {
                 >
                   Sign{" "}
                 </MDButton>
-              ) : item.join_status === 1 ? (
+              ) : (
                 <MDButton
                   variant="gradient"
                   color="dark"
                   onClick={() => joinChannel()}
+                  disabled={item.join_status === 1}
                 >
                   Join{" "}
                 </MDButton>
-              ) : (
-                "----"
               )}
             </React.Fragment>
           ),
@@ -137,16 +136,23 @@ const Organisation = (props) => {
                   </Grid>
                   {userRole === ADMIN && (
                     <Grid
-                      item
+                      container
+                      columnGap={2}
                       xs={6}
                       sm={6}
                       md={6}
-                      style={{ textAlign: "end" }}
+                      style={{ justifyContent: "end" }}
                     >
                       <Link to="/organisation/add">
                         <MDButton variant="gradient" color="dark">
                           <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                           &nbsp;Add New Organisation
+                        </MDButton>
+                      </Link>
+                      <Link to="/organisation/add-peer">
+                        <MDButton variant="gradient" color="dark">
+                          <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+                          &nbsp;Add Peers
                         </MDButton>
                       </Link>
                     </Grid>
@@ -172,6 +178,7 @@ const Organisation = (props) => {
 };
 
 const mapStateToProps = (state) => {
+  console.log(state, "State");
   return {
     // loaded: state.category.loaded,
     listData: state.organisation.listingData,

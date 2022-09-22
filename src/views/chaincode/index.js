@@ -17,9 +17,9 @@ import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 import PropTypes from "prop-types";
 
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 //import projectsTableData from "layouts/tables/data/projectsTableData";
-
+import types from "store/constants/chainCodeType";
 import { listing, checkUpdate } from "store/actions/chain-code";
 import MomentHelper from "helpers/MomentHelper";
 import LocalStorageService from "services/LocalStorageService";
@@ -35,7 +35,13 @@ const columns = [
 ];
 
 const Listing = (props) => {
-  const { listingData = [], getChainCode, onCheckUpdate } = props;
+  const {
+    listingData = [],
+    getChainCode,
+    onCheckUpdate,
+    chainCodeInstallStatus,
+  } = props;
+  const dispatch = useDispatch();
   const chainCodeModalRef = useRef(null);
   const userRole = LocalStorageService.getUserRole();
 
@@ -52,6 +58,16 @@ const Listing = (props) => {
     };
     getChainCode(data);
   }, []);
+
+  useEffect(() => {
+    if (chainCodeInstallStatus) {
+      chainCodeModalRef.current.modalClose();
+    }
+    dispatch({
+      type: types.CHAINCODE_INSTALL_STATUS,
+      payload: false,
+    });
+  }, [chainCodeInstallStatus]);
 
   const renderList = (data) => {
     return (
@@ -190,6 +206,7 @@ const Listing = (props) => {
 const mapStateToProps = (state) => {
   return {
     listingData: state.chainCode.listingData,
+    chainCodeInstallStatus: state.chainCode.chainCodeInstallStatus,
   };
 };
 const mapDispatchToProps = (dispatch) => {

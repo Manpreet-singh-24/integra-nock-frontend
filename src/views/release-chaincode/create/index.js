@@ -14,21 +14,22 @@ import Footer from "examples/Footer";
 import { addRelease, listing } from "store/actions/chain-code";
 import ChaincodeForm from "views/release-chaincode/release-form";
 import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Create = (props) => {
   const { listData, chainCodeList, onSubmit } = props;
   const [formValue, setFormValue] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     chainCodeList();
   }, []);
 
   const initialValues = {
     name: "",
-    label: "",
+    sequence: "",
     version: "",
     url: "",
-    file: [],
+    // file: [],
     submit: null,
   };
 
@@ -36,7 +37,7 @@ const Create = (props) => {
     delete data.submit;
 
     console.log(" ============== Submit data ==================== ", data);
-    onSubmit(data);
+    onSubmit({ ...data, navigate });
   };
 
   return (

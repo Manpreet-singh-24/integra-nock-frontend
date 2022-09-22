@@ -4,12 +4,13 @@ import PropTypes from "prop-types";
 import { Box } from "@mui/material";
 
 const MDSelectOption = (props) => {
-  const { name, options, ...rest } = props;
+  const { name, options, message, ...rest } = props;
   return (
     <React.Fragment>
       {options?.length < 1 ? (
         <TextField name={name} {...rest}>
           <option disabled></option>
+          <option disabled>{message ? message : "No data available"}</option>
         </TextField>
       ) : (
         <TextField name={name} {...rest}>
