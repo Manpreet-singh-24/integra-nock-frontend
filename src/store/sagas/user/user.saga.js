@@ -152,13 +152,15 @@ export function* disableUserReq() {
 
 // CREATE NEW USER
 
-export function* createNewUser(action) {
+export function* createNewUser({ type, payload }) {
+  const navigate = payload.navigate;
   try {
     yield put({ type: LOADER_OPEN });
     // yield put({type: types.DATA_LOADED_STATUS});
-    const result = yield call(post, `user/register`, action.payload);
+    const result = yield call(post, `user/register`, payload.data);
 
     yield put({ type: LOADER_CLOSE });
+    navigate("/user-management");
   } catch (error) {
     yield put({ type: LOADER_CLOSE });
     if (error.status === 422) {

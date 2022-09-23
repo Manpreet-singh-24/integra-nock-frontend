@@ -5,7 +5,7 @@ const initialState = {
   total_count: 0,
   updateList: [],
   releaseLog: {},
-  releasesList: [{}],
+  releasesList: [],
   chainCodeInstallStatus: false,
   commitChaincodeStatus: false,
 };

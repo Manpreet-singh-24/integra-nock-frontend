@@ -51,7 +51,7 @@ export const putRequest = (path, data = null) => {
 };
 
 export const deleteRequest = (path, ids = null) => {
-  return Axios.delete(`${backendURL()}/${path}`, { data: { ids } })
+  return Axios.delete(`${backendURL()}/${path}`)
     .then((response) => {
       return response.data;
     })

@@ -15,8 +15,10 @@ import { createUser } from "store/actions/user";
 import { listing as orgListing } from "store/actions/organisation";
 import AddUserForm from "views/users/add-user-form";
 import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const CreateUser = (props) => {
+  const navigate = useNavigate();
   const { listOrganizations, onSubmit, orgListData = [] } = props;
   const [formValue, setFormValue] = useState(null);
 
@@ -29,7 +31,7 @@ const CreateUser = (props) => {
   const submitData = (data) => {
     data.role = "user";
     console.log(" ============== Submit data ==================== ", data);
-    onSubmit(data);
+    onSubmit({ data: data, navigate: navigate });
   };
 
   useEffect(() => {

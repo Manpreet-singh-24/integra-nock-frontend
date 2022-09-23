@@ -134,7 +134,7 @@ const Listing = (props) => {
               color="text"
               fontWeight="medium"
             >
-              <MomentHelper date={item.created_at} />
+              <MomentHelper date={item.created_at ? item.created_at : "----"} />
             </MDTypography>
           ),
           sequence: (
@@ -180,7 +180,7 @@ const Listing = (props) => {
               <MDButton
                 variant="gradient"
                 color="dark"
-                onClick={() => onDeleteRelease()}
+                onClick={() => onDeleteRelease(item.id)}
               >
                 Delete
               </MDButton>
@@ -269,8 +269,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(releasesListing(data));
     },
 
-    onDeleteRelease: () => {
-      dispatch(deleteRelease());
+    onDeleteRelease: (data) => {
+      dispatch(deleteRelease(data));
     },
     viewReleaseLog: (data) => {
       dispatch(viewReleaseLogReq(data));

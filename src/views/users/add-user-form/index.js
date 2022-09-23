@@ -62,9 +62,10 @@ const AddNewUserForm = (props) => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={validation}
+      // validationSchema={validation}
       enableReinitialize={true}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+        console.log(values, "valuesss");
         try {
           if (scriptedRef.current) {
             setStatus({ success: true });
@@ -144,7 +145,7 @@ const AddNewUserForm = (props) => {
                   disableElevation
                   variant="gradient"
                   color="info"
-                  type="submit"
+                  type="button"
                   //   fullWidth
                   onClick={() => genratePassword(setFieldValue)}
                 >

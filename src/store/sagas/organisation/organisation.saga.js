@@ -126,8 +126,6 @@ export function* addPeerReq() {
   yield takeLatest(types.ADD_PEER, addPeers);
 }
 
-//
-
 export function* checkUpdate(action) {
   try {
     yield put({ type: LOADER_OPEN });

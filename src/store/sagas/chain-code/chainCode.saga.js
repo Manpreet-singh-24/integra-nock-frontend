@@ -1,7 +1,7 @@
 import types from "store/constants/chainCodeType";
 import { all, call, takeLatest, put } from "redux-saga/effects";
 // import {apiFailed, allData} from './../../actions/category';
-import { get, post } from "services/ApiService";
+import { get, post, deleteRequest } from "services/ApiService";
 import {
   SNACKBAR_OPEN,
   LOADER_OPEN,
@@ -115,14 +115,25 @@ export function* releaseListingReq() {
 
 //Releases Listing
 export function* deleteRelease(action) {
+  console.log(action.payload);
   // history.push(`category/list`)
   try {
     yield put({ type: LOADER_OPEN });
     // yield put({type: types.DATA_LOADED_STATUS});
-    const result = yield call(get, `chaincode/list`);
+    const result = yield call(
+      deleteRequest,
+      `releases/delete/${action.payload}`
+    );
     //yield put(saveUserData(result));
-    yield put({ type: types.RELEASE_LIST, payload: result.data });
+    yield put({
+      type: SNACKBAR_OPEN,
+      open: true,
+      message: result.message,
+      alertSeverity: "success",
+      variant: "alert",
+    });
     yield put({ type: LOADER_CLOSE });
+    yield put({ type: types.RELEASE_LIST });
   } catch (error) {
     yield put({ type: LOADER_CLOSE });
     if (error.status === 422) {
