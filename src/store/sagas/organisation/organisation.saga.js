@@ -177,7 +177,10 @@ export function* joinChannel(action) {
   try {
     yield put({ type: LOADER_OPEN });
     // yield put({type: types.DATA_LOADED_STATUS});
-    const result = yield call(post, `organization/joinChannel`);
+    const result = yield call(
+      post,
+      `organization/joinChannel/${action.payload}`
+    );
     // yield put({type: types.CHECK_UPDATE, payload: result.data });
     //yield put(saveUserData(result));
     yield put({ type: LOADER_CLOSE });

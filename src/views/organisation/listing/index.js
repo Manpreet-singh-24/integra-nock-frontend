@@ -29,6 +29,7 @@ import {
 
 import LocalStorageService from "services/LocalStorageService";
 import { ADMIN } from "constants/userRoles";
+import { CLIENT } from "constants/userRoles";
 
 const Organisation = (props) => {
   const { organisationList, listData, signOrganisation, joinChannel } = props;
@@ -41,6 +42,8 @@ const Organisation = (props) => {
     { Header: "Created At", accessor: "Created_at", align: "center" },
     { Header: "action", accessor: "action", align: "center" },
   ];
+
+  const join_status = 0;
 
   useEffect(() => {
     organisationList();
@@ -86,22 +89,43 @@ const Organisation = (props) => {
           ),
           action: (
             <React.Fragment>
-              {item.signedby_org === false ? (
+              {userRole === ADMIN ? (
                 <MDButton
                   variant="gradient"
                   color="dark"
-                  onClick={() => signOrganisation(item.org_id)}
+                  disabled={
+                    item.join_status === 0 ||
+                    item.join_status === 2 ||
+                    item.join_status === 3
+                  }
+                  onClick={() => joinChannel(item.org_id)}
                 >
-                  Sign{" "}
+                  {item.join_status === 0
+                    ? "Save"
+                    : item.join_status === 1
+                    ? "Save"
+                    : item.join_status === 2
+                    ? "Join"
+                    : "Joined"}
                 </MDButton>
               ) : (
                 <MDButton
                   variant="gradient"
                   color="dark"
-                  onClick={() => joinChannel()}
-                  disabled={item.join_status === 1}
+                  disabled={
+                    item.join_status === 1 ||
+                    item.join_status === 2 ||
+                    item.join_status === 3
+                  }
+                  onClick={() => signOrganisation(item.org_id)}
                 >
-                  Join{" "}
+                  {item.join_status === 0
+                    ? "Sign"
+                    : item.join_status === 1
+                    ? "Signed"
+                    : item.join_status === 2
+                    ? "Join"
+                    : "Joined"}
                 </MDButton>
               )}
             </React.Fragment>
@@ -192,8 +216,8 @@ const mapDispatchToProps = (dispatch) => {
     signOrganisation: (id) => {
       dispatch(signChainCodeReq(id));
     },
-    joinChannel: () => {
-      dispatch(joinChannelRequest());
+    joinChannel: (data) => {
+      dispatch(joinChannelRequest(data));
     },
   };
 };

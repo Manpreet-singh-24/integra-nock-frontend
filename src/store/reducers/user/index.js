@@ -30,6 +30,12 @@ const userReducer = (state = initialState, action) => {
         ...state,
         listingData: action.payload,
       };
+    case type.RESET_USER_STATE:
+      return {
+        ...state,
+        user: {},
+        isLoginSuccess: false,
+      };
 
     default:
       return state;

@@ -72,7 +72,8 @@ function DashboardNavbar({
    * Get user detail
    */
   useEffect(() => {
-    if (Object.keys(user).length === 0) {
+    console.log(Object.keys(user)?.length, "Object.keys(user)?.length");
+    if (Object.keys(user)?.length === 0) {
       onUserDetail();
     }
   }, []);

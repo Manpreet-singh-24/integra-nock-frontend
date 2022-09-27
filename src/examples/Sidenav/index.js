@@ -151,7 +151,10 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const onLogout = () => {
     LocalStorageService.clearToken();
     navigate("/authentication/sign-in");
-    ReduxDispatch({ type: types.LOGIN, payload: false });
+    // ReduxDispatch({ type: types.LOGIN, payload: false });
+    ReduxDispatch({
+      type: types.RESET_USER_STATE,
+    });
   };
 
   return (

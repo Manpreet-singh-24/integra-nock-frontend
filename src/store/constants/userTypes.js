@@ -11,6 +11,7 @@ const Types = {
   ENABLE_USER: `${namespaces}/ENABLE_USER`,
   DISABLE_USER: `${namespaces}/DISABLE_USER`,
   ADD_REQUEST: `${namespaces}/ADD_REQUEST`,
+  RESET_USER_STATE: `${namespaces}/RESET_USER_STATE`,
 };
 
 export default Types;
