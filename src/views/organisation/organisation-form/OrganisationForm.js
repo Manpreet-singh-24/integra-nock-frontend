@@ -44,6 +44,7 @@ const OrganisationForm = (props) => {
       .max(35, "MSP ID must be no longer than 35 characters")
       .min(3, "MSP ID must be at least 3 character long")
       .required("MSP ID is required"),
+    peers_count: Yup.number().required("PEERS COUNT is required"),
   });
 
   const setFileData = (allFieldValue, data) => {
@@ -121,6 +122,19 @@ const OrganisationForm = (props) => {
                 error={touched.msp_id && errors.msp_id ? true : false}
               />
               <ErrorMessage name="msp_id" component={MDTextError} />
+            </MDBox>
+            <MDBox mb={2}>
+              <MDInput
+                fullWidth
+                type="NUMBER"
+                label="PEERS COUNT"
+                name="peers_count"
+                value={values.peers_count || ""}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                error={touched.peers_count && errors.peers_count ? true : false}
+              />
+              <ErrorMessage name="peers_count" component={MDTextError} />
             </MDBox>
             <MDBox mb={2}>
               {/* <MDInput

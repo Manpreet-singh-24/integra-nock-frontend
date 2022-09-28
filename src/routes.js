@@ -45,7 +45,7 @@ const routes = [
 
   {
     type: "collapse",
-    name: "Organisation",
+    name: "Organization",
     key: "organisation",
     roles: [ADMIN, CLIENT],
     icon: <Icon fontSize="small">table_view</Icon>,

@@ -30,7 +30,8 @@ const Add = (props) => {
 
   const initialValues = {
     name: "",
-    msp_id: "",
+    // msp_id: "",
+    OrgId: "",
     peers: [
       {
         name: "",

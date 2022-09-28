@@ -34,15 +34,15 @@ const OrganisationForm = (props) => {
       .max(35, "Name must be no longer than 35 characters")
       .min(3, "Name must be at least 3 character long")
       .required("Name is required"),
-    msp_id: Yup.string()
-      .trim()
-      .matches(
-        RegexTypes.checkSpacialCharacter,
-        "MSP ID can not contain special character"
-      )
-      .max(35, "MSP ID must be no longer than 35 characters")
-      .min(3, "MSP ID must be at least 3 character long")
-      .required("MSP ID is required"),
+    // msp_id: Yup.string()
+    //   .trim()
+    //   .matches(
+    //     RegexTypes.checkSpacialCharacter,
+    //     "MSP ID can not contain special character"
+    //   )
+    //   .max(35, "MSP ID must be no longer than 35 characters")
+    //   .min(3, "MSP ID must be at least 3 character long")
+    //   .required("MSP ID is required"),
     // peers_count: Yup.number()
     //   .integer()
     //   .typeError("Please enter only numeric value")
@@ -59,6 +59,7 @@ const OrganisationForm = (props) => {
         certificate: Yup.string().required("Certificate is required"),
       })
     ),
+    OrgId: Yup.number().required("Organization id is required"),
   });
 
   const setFileData = (allFieldValue, data) => {
@@ -115,7 +116,7 @@ const OrganisationForm = (props) => {
             <MDBox mb={2}>
               <MDInput
                 type="text"
-                label="Organisation Name"
+                label="Organization Name"
                 name="name"
                 value={values.name || ""}
                 onBlur={handleBlur}
@@ -125,7 +126,7 @@ const OrganisationForm = (props) => {
               />
               <ErrorMessage name="name" component={MDTextError} />
             </MDBox>
-            <MDBox mb={2}>
+            {/* <MDBox mb={2}>
               <MDInput
                 fullWidth
                 type="text"
@@ -137,6 +138,19 @@ const OrganisationForm = (props) => {
                 error={touched.msp_id && errors.msp_id ? true : false}
               />
               <ErrorMessage name="msp_id" component={MDTextError} />
+            </MDBox> */}
+            <MDBox mb={2}>
+              <MDInput
+                fullWidth
+                type="text"
+                label="Organization Id"
+                name="OrgId"
+                value={values.OrgId || ""}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                error={touched.OrgId && errors.OrgId ? true : false}
+              />
+              <ErrorMessage name="OrgId" component={MDTextError} />
             </MDBox>
             <MDBox mb={2}>
               {/* <MDInput

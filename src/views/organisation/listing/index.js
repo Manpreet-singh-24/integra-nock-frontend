@@ -170,7 +170,7 @@ const Organisation = (props) => {
                       <Link to="/organisation/add">
                         <MDButton variant="gradient" color="dark">
                           <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                          &nbsp;Add New Organisation
+                          &nbsp;Add New Organization
                         </MDButton>
                       </Link>
                       <Link to="/organisation/add-peer">

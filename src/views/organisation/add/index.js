@@ -25,6 +25,7 @@ const Add = (props) => {
   const initialValues = {
     name: "Org3",
     msp_id: "OrgMsp3",
+    peers_count: "",
     file: [],
     peers: [
       {
