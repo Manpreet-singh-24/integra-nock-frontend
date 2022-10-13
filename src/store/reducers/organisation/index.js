@@ -1,9 +1,10 @@
+import Types from "store/constants/chainCodeType";
 import type from "store/constants/organisationType";
 
 const initialState = {
-    listingData: [],
-    total_count: 0,
-    updateList: [],
+  listingData: [],
+  total_count: 0,
+  updateList: [],
 };
 
 const organisationReducer = (state = initialState, action) => {
@@ -21,7 +22,11 @@ const organisationReducer = (state = initialState, action) => {
         loading: false,
         errors: [],
       };
-
+    case Types.ADD_ORG_STATUS:
+      return {
+        ...state,
+        addOrgStatus: action.payload,
+      };
     default:
       return state;
   }

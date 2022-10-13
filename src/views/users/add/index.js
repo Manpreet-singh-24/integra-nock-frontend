@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-// @mui material components
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 
@@ -11,36 +10,33 @@ import MDTypography from "components/MDTypography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import OrganisationForm from "views/organisation/organisation-form/OrganisationForm";
 
+import { createUser } from "store/actions/user";
+import { listing as orgListing } from "store/actions/organisation";
+import AddUserForm from "views/users/add-user-form";
 import { connect } from "react-redux";
-import { create } from "store/actions/organisation";
 import { useNavigate } from "react-router-dom";
 
-const Add = (props) => {
-  const { onSubmit } = props;
+const CreateUser = (props) => {
   const navigate = useNavigate();
+  const { listOrganizations, onSubmit, orgListData = [] } = props;
   const [formValue, setFormValue] = useState(null);
 
   const initialValues = {
-    name: "Org3",
-    msp_id: "OrgMsp3",
-    peers_count: "",
-    file: [],
-    peers: [
-      {
-        name: "test user",
-        url: "https://mui.com/material-ui/getting-started/installation/",
-        ip: "192.168.0.1",
-        certificate: "certificates",
-      },
-    ],
-    submit: null,
+    username: "",
+    password: "",
+    confirmPassword: "",
   };
 
   const submitData = (data) => {
+    data.role = "user";
+    console.log(" ============== Submit data ==================== ", data);
     onSubmit({ data: data, navigate: navigate });
   };
+
+  useEffect(() => {
+    listOrganizations();
+  }, []);
 
   return (
     <DashboardLayout>
@@ -60,14 +56,14 @@ const Add = (props) => {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" color="white">
-                  Add Organisation
+                  Add New User
                 </MDTypography>
               </MDBox>
               <MDBox p={3}>
-                <OrganisationForm
+                <AddUserForm
                   formInitialValue={formValue || initialValues}
-                  updateFormData={setFormValue}
-                  buttonLabel="Add Organisation"
+                  buttonLabel="Create User"
+                  orgList={orgListData}
                   submitData={submitData}
                 />
               </MDBox>
@@ -79,13 +75,23 @@ const Add = (props) => {
     </DashboardLayout>
   );
 };
+const mapStateToProps = (state) => {
+  return {
+    orgListData: state.organisation.listingData,
+    // loaded: state.category.loaded,
+    // listData: state.chainCode.listingData,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    listOrganizations: (data) => {
+      dispatch(orgListing(data));
+    },
     onSubmit: (data) => {
-      dispatch(create(data));
+      dispatch(createUser(data));
     },
   };
 };
 
-export default connect(null, mapDispatchToProps)(Add);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateUser);

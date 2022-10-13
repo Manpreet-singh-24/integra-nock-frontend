@@ -6,6 +6,7 @@ import { useLocation, Link } from "react-router-dom";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 // @material-ui core components
 import AppBar from "@mui/material/AppBar";
@@ -24,7 +25,7 @@ import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
 
 //Action
-import { userDetail } from 'store/actions/user'
+import { userDetail } from "store/actions/user";
 
 // Custom styles for DashboardNavbar
 import {
@@ -44,22 +45,44 @@ import {
   setDarkMode,
 } from "context";
 
-function DashboardNavbar({ absolute, light, isMini, onUserDetail }) {
-  
+function DashboardNavbar({
+  absolute,
+  light,
+  isMini,
+  onUserDetail,
+  isLoginSuccess,
+  user,
+}) {
   const [controller, dispatch] = useMaterialUIController();
-  const [navbarType, setNavbarType] = useState(); 
+  const [navbarType, setNavbarType] = useState();
   const [disabled, setDisabled] = useState(false);
-  const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
+  const {
+    miniSidenav,
+    transparentNavbar,
+    fixedNavbar,
+    openConfigurator,
+    darkMode,
+  } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   const handleDarkMode = () => setDarkMode(dispatch, !darkMode);
+  const currentUser = useSelector((state) => state.user);
 
-  /** 
+  /**
    * Get user detail
    */
-  useEffect(() => { 
-    onUserDetail()
-  }, [])
+  useEffect(() => {
+    console.log(Object.keys(user)?.length, "Object.keys(user)?.length");
+    if (Object.keys(user)?.length === 0) {
+      onUserDetail();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isLoginSuccess && !currentUser.user) {
+      onUserDetail();
+    }
+  }, []);
 
   useEffect(() => {
     // Setting the navbar type
@@ -71,7 +94,10 @@ function DashboardNavbar({ absolute, light, isMini, onUserDetail }) {
 
     // A function that sets the transparent state of the navbar.
     function handleTransparentNavbar() {
-      setTransparentNavbar(dispatch, (fixedNavbar && window.scrollY === 0) || !fixedNavbar);
+      setTransparentNavbar(
+        dispatch,
+        (fixedNavbar && window.scrollY === 0) || !fixedNavbar
+      );
     }
 
     /** 
@@ -87,9 +113,9 @@ function DashboardNavbar({ absolute, light, isMini, onUserDetail }) {
     return () => window.removeEventListener("scroll", handleTransparentNavbar);
   }, [dispatch, fixedNavbar]);
 
-
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+  const handleConfiguratorOpen = () =>
+    setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
 
@@ -107,13 +133,22 @@ function DashboardNavbar({ absolute, light, isMini, onUserDetail }) {
       sx={{ mt: 2 }}
     >
       <NotificationItem icon={<Icon>email</Icon>} title="Check new messages" />
-      <NotificationItem icon={<Icon>podcasts</Icon>} title="Manage Podcast sessions" />
-      <NotificationItem icon={<Icon>shopping_cart</Icon>} title="Payment successfully completed" />
+      <NotificationItem
+        icon={<Icon>podcasts</Icon>}
+        title="Manage Podcast sessions"
+      />
+      <NotificationItem
+        icon={<Icon>shopping_cart</Icon>}
+        title="Payment successfully completed"
+      />
     </Menu>
   );
 
   // Styles for the navbar icons
-  const iconsStyle = ({ palette: { dark, white, text }, functions: { rgba } }) => ({
+  const iconsStyle = ({
+    palette: { dark, white, text },
+    functions: { rgba },
+  }) => ({
     color: () => {
       let colorValue = light || darkMode ? white.main : dark.main;
 
@@ -129,17 +164,28 @@ function DashboardNavbar({ absolute, light, isMini, onUserDetail }) {
     <AppBar
       position={absolute ? "absolute" : navbarType}
       color="inherit"
-      sx={(theme) => navbar(theme, { transparentNavbar, absolute, light, darkMode })}
+      sx={(theme) =>
+        navbar(theme, { transparentNavbar, absolute, light, darkMode })
+      }
     >
       <Toolbar sx={(theme) => navbarContainer(theme)}>
-        <MDBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-          <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+        <MDBox
+          color="inherit"
+          mb={{ xs: 1, md: 0 }}
+          sx={(theme) => navbarRow(theme, { isMini })}
+        >
+          <Breadcrumbs
+            icon="home"
+            title={route[route.length - 1]}
+            route={route}
+            light={light}
+          />
         </MDBox>
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <MDBox pr={1}>
+            {/* <MDBox pr={1}>
               <MDInput label="Search here" />
-            </MDBox>
+            </MDBox> */}
             <MDBox color={light ? "white" : "inherit"}>
               <Link to="/authentication/sign-in/basic">
                 <IconButton sx={navbarIconButton} size="small" disableRipple>
@@ -157,7 +203,7 @@ function DashboardNavbar({ absolute, light, isMini, onUserDetail }) {
                   {miniSidenav ? "menu_open" : "menu"}
                 </Icon>
               </IconButton>
-              <IconButton
+              {/* <IconButton
                 size="small"
                 disableRipple
                 color="inherit"
@@ -165,8 +211,8 @@ function DashboardNavbar({ absolute, light, isMini, onUserDetail }) {
                 onClick={handleConfiguratorOpen}
               >
                 <Icon sx={iconsStyle}>settings</Icon>
-              </IconButton>
-              <IconButton
+              </IconButton> */}
+              {/* <IconButton
                 size="small"
                 disableRipple
                 color="inherit"
@@ -177,7 +223,7 @@ function DashboardNavbar({ absolute, light, isMini, onUserDetail }) {
                 onClick={handleOpenMenu}
               >
                 <Icon sx={iconsStyle}>notifications</Icon>
-              </IconButton>
+              </IconButton> */}
               {renderMenu()}
               <Switch checked={darkMode} onChange={handleDarkMode} />
             </MDBox>
@@ -193,6 +239,13 @@ DashboardNavbar.defaultProps = {
   absolute: false,
   light: false,
   isMini: false,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    isLoginSuccess: state.user.isLoginSuccess,
+    user: state.user.user,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -211,4 +264,4 @@ DashboardNavbar.propTypes = {
   onUserDetail: PropTypes.func,
 };
 
-export default connect(null, mapDispatchToProps)(DashboardNavbar);
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardNavbar);

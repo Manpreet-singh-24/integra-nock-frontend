@@ -21,49 +21,119 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 //import projectsTableData from "layouts/tables/data/projectsTableData";
 
-import { listing, signChainCodeReq } from "store/actions/organisation";
+import {
+  listing,
+  signChainCodeReq,
+  joinChannelRequest,
+} from "store/actions/organisation";
+
+import LocalStorageService from "services/LocalStorageService";
+import { ADMIN } from "constants/userRoles";
+import { CLIENT } from "constants/userRoles";
 
 const Organisation = (props) => {
-  const { organisationList, listData, signOrganisation } = props;
+  const { organisationList, listData, signOrganisation, joinChannel } = props;
+  const userRole = LocalStorageService.getUserRole();
+
   // const { columns: pColumns, rows: pRows } = projectsTableData();
   const tableHeading = [
     { Header: "Name", accessor: "name", align: "left" },
     { Header: "MSP ID", accessor: "mspId", align: "left" },
     { Header: "Created At", accessor: "Created_at", align: "center" },
     { Header: "action", accessor: "action", align: "center" },
-  ]
+  ];
+
+  const join_status = 0;
 
   useEffect(() => {
     organisationList();
   }, []);
 
-
   const renderList = (data) => {
-    return data && data.map((item, index) => {
-      return {
-        name: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            {item.org_name}
-          </MDTypography>
-        ),
-        mspId: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            {item.org_msp}
-          </MDTypography>
-        ),
-        Created_at: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            23/04/18
-          </MDTypography>
-        ),
-        action: (<React.Fragment>
-          {item.signedby_org === false ? <MDButton variant="gradient" color="dark" onClick={() => signOrganisation(item.org_id)}>
-        Sign </MDButton> : "----" } 
-        </React.Fragment>)
-      }
-      
-    })
-  }
+    return (
+      data &&
+      data.map((item, index) => {
+        return {
+          name: (
+            <MDTypography
+              component="a"
+              href="#"
+              variant="caption"
+              color="text"
+              fontWeight="medium"
+            >
+              {item.org_name || item.name}
+            </MDTypography>
+          ),
+          mspId: (
+            <MDTypography
+              component="a"
+              href="#"
+              variant="caption"
+              color="text"
+              fontWeight="medium"
+            >
+              {item.org_msp || item.msp_id}
+            </MDTypography>
+          ),
+          Created_at: (
+            <MDTypography
+              component="a"
+              href="#"
+              variant="caption"
+              color="text"
+              fontWeight="medium"
+            >
+              {item.created_at}
+            </MDTypography>
+          ),
+          action: (
+            <React.Fragment>
+              {userRole === ADMIN ? (
+                <MDButton
+                  variant="gradient"
+                  color="dark"
+                  disabled={
+                    item.join_status === 0 ||
+                    item.join_status === 2 ||
+                    item.join_status === 3
+                  }
+                  onClick={() => joinChannel(item.Id)}
+                >
+                  {item.join_status === 0
+                    ? "Save"
+                    : item.join_status === 1
+                    ? "Save"
+                    : item.join_status === 2
+                    ? "Join"
+                    : "Joined"}
+                </MDButton>
+              ) : (
+                <MDButton
+                  variant="gradient"
+                  color="dark"
+                  disabled={
+                    item.join_status === 1 ||
+                    item.join_status === 2 ||
+                    item.join_status === 3
+                  }
+                  onClick={() => signOrganisation(item.org_id)}
+                >
+                  {item.join_status === 0
+                    ? "Sign"
+                    : item.join_status === 1
+                    ? "Signed"
+                    : item.join_status === 2
+                    ? "Join"
+                    : "Joined"}
+                </MDButton>
+              )}
+            </React.Fragment>
+          ),
+        };
+      })
+    );
+  };
 
   return (
     <DashboardLayout>
@@ -88,18 +158,29 @@ const Organisation = (props) => {
                       Organisation Table
                     </MDTypography>
                   </Grid>
-                  <Grid item xs={6} sm={6} md={6} style={{ textAlign: "end" }}>
-                    <Link to="/organisation/add">
-                      <MDButton variant="gradient" color="dark">
-                        <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                        &nbsp;Add New Organisation
-                      </MDButton>
-
-                      {/* <MDTypography variant="h6" color="white">
-                        Add New Organisation
-                </MDTypography> */}
-                    </Link>
-                  </Grid>
+                  {userRole === ADMIN && (
+                    <Grid
+                      container
+                      columnGap={2}
+                      xs={6}
+                      sm={6}
+                      md={6}
+                      style={{ justifyContent: "end" }}
+                    >
+                      <Link to="/organisation/add">
+                        <MDButton variant="gradient" color="dark">
+                          <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+                          &nbsp;Add New Organization
+                        </MDButton>
+                      </Link>
+                      <Link to="/organisation/add-peer">
+                        <MDButton variant="gradient" color="dark">
+                          <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+                          &nbsp;Add Peers
+                        </MDButton>
+                      </Link>
+                    </Grid>
+                  )}
                 </Grid>
               </MDBox>
               <MDBox pt={3}>
@@ -132,8 +213,11 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(listing(data));
     },
     signOrganisation: (id) => {
-      dispatch(signChainCodeReq(id))
-    }
+      dispatch(signChainCodeReq(id));
+    },
+    joinChannel: (data) => {
+      dispatch(joinChannelRequest(data));
+    },
   };
 };
 

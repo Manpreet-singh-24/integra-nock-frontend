@@ -1,14 +1,14 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import Icon from "@mui/material/Icon";
+import { Link } from "react-router-dom";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import MDBadge from "components/MDBadge";
 import MDButton from "components/MDButton";
-import MDModal from "components/MDModal";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -17,57 +17,39 @@ import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 import PropTypes from "prop-types";
 
-import { connect, useDispatch } from "react-redux";
+import { listing, enableUser, disableUser } from "store/actions/user";
+
+// Data
+import { connect } from "react-redux";
 //import projectsTableData from "layouts/tables/data/projectsTableData";
-import types from "store/constants/chainCodeType";
-import { listing, checkUpdate } from "store/actions/chain-code";
-import MomentHelper from "helpers/MomentHelper";
+
 import LocalStorageService from "services/LocalStorageService";
-import { CLIENT } from "constants/userRoles";
+import { ADMIN } from "constants/userRoles";
+import { DISABLED } from "constants/userStatus";
 
-const columns = [
-  { Header: "Name", accessor: "name", align: "left" },
-  { Header: "Label", accessor: "label", align: "left" },
-  { Header: "Version", accessor: "version", align: "center" },
-  { Header: "Sequence", accessor: "sequence", align: "center" },
-  { Header: "Created At", accessor: "created_at", align: "center" },
-  // { Header: "action", accessor: "action", align: "center" },
-];
-
-const Listing = (props) => {
+const UserManagemenet = (props) => {
   const {
-    listingData = [],
-    getChainCode,
-    onCheckUpdate,
-    chainCodeInstallStatus,
+    listUsers,
+    enable,
+    disable,
+    usersList = [],
+    signOrganisation,
   } = props;
-  const dispatch = useDispatch();
-  const chainCodeModalRef = useRef(null);
+
   const userRole = LocalStorageService.getUserRole();
 
-  const onModalOpen = () => {
-    onCheckUpdate();
-    chainCodeModalRef.current.modalOpen();
-  };
+  // const { columns: pColumns, rows: pRows } = projectsTableData();
+  const tableHeading = [
+    { Header: "Name", accessor: "name", align: "left" },
+    { Header: "Role", accessor: "user_role", align: "left" },
+    { Header: "Organization Name", accessor: "org_name", align: "left" },
+    { Header: "Organization MSP", accessor: "org_msp", align: "center" },
+    { Header: "action", accessor: "action", align: "center" },
+  ];
 
   useEffect(() => {
-    const data = {
-      per_page: 10,
-      page_no: 1,
-      search_by: "ffffff",
-    };
-    getChainCode(data);
+    listUsers();
   }, []);
-
-  useEffect(() => {
-    if (chainCodeInstallStatus) {
-      chainCodeModalRef.current.modalClose();
-    }
-    dispatch({
-      type: types.CHAINCODE_INSTALL_STATUS,
-      payload: false,
-    });
-  }, [chainCodeInstallStatus]);
 
   const renderList = (data) => {
     return (
@@ -82,10 +64,10 @@ const Listing = (props) => {
               color="text"
               fontWeight="medium"
             >
-              {item.name}
+              {item.user_name}
             </MDTypography>
           ),
-          label: (
+          user_role: (
             <MDTypography
               component="a"
               href="#"
@@ -93,20 +75,10 @@ const Listing = (props) => {
               color="text"
               fontWeight="medium"
             >
-              {item.label}
+              {item.role}
             </MDTypography>
           ),
-          version: (
-            <MDBox ml={-1}>
-              <MDBadge
-                badgeContent={item.version}
-                color="success"
-                variant="gradient"
-                size="sm"
-              />
-            </MDBox>
-          ),
-          created_at: (
+          org_name: (
             <MDTypography
               component="a"
               href="#"
@@ -114,10 +86,10 @@ const Listing = (props) => {
               color="text"
               fontWeight="medium"
             >
-              <MomentHelper date={item.created_at} />
+              {item.org_name}
             </MDTypography>
           ),
-          sequence: (
+          org_msp: (
             <MDTypography
               component="a"
               href="#"
@@ -125,14 +97,31 @@ const Listing = (props) => {
               color="text"
               fontWeight="medium"
             >
-              {item.sequence}
+              {item.org_msp}
             </MDTypography>
           ),
-          // action: (
-          //   <MDButton variant="gradient" color="dark" onClick={() => onModalOpen()}>
-          //     Check for update
-          //   </MDButton>
-          // ),
+
+          action: (
+            <React.Fragment>
+              {item.status === DISABLED ? (
+                <MDButton
+                  variant="gradient"
+                  color="dark"
+                  onClick={() => enable(item.id)}
+                >
+                  enable{" "}
+                </MDButton>
+              ) : (
+                <MDButton
+                  variant="gradient"
+                  color="dark"
+                  onClick={() => disable(item.id)}
+                >
+                  disable{" "}
+                </MDButton>
+              )}
+            </React.Fragment>
+          ),
         };
       })
     );
@@ -158,11 +147,10 @@ const Listing = (props) => {
                 <Grid container>
                   <Grid item xs={6} sm={6} md={6}>
                     <MDTypography variant="h6" color="white">
-                      Chaincode List
+                      Users Table
                     </MDTypography>
                   </Grid>
-
-                  {userRole === CLIENT && (
+                  {userRole === ADMIN && (
                     <Grid
                       item
                       xs={6}
@@ -170,20 +158,19 @@ const Listing = (props) => {
                       md={6}
                       style={{ textAlign: "end" }}
                     >
-                      <MDButton
-                        variant="gradient"
-                        color="dark"
-                        onClick={() => onModalOpen()}
-                      >
-                        Check for update
-                      </MDButton>
+                      <Link to="/user/create">
+                        <MDButton variant="gradient" color="dark">
+                          <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+                          &nbsp;Add New User
+                        </MDButton>
+                      </Link>
                     </Grid>
                   )}
                 </Grid>
               </MDBox>
               <MDBox pt={3}>
                 <DataTable
-                  table={{ columns, rows: renderList(listingData) }}
+                  table={{ columns: tableHeading, rows: renderList(usersList) }}
                   isSorted={false}
                   entriesPerPage={false}
                   showTotalEntries={false}
@@ -194,10 +181,6 @@ const Listing = (props) => {
           </Grid>
         </Grid>
       </MDBox>
-      {/* /*
-       * modal
-       * */}
-      <MDModal ref={chainCodeModalRef} />
       <Footer />
     </DashboardLayout>
   );
@@ -205,26 +188,25 @@ const Listing = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    listingData: state.chainCode.listingData,
-    chainCodeInstallStatus: state.chainCode.chainCodeInstallStatus,
+    usersList: state.user.listingData,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    getChainCode: (data) => {
-      dispatch(listing(data));
+    listUsers: () => {
+      dispatch(listing());
     },
-
-    onCheckUpdate: () => {
-      dispatch(checkUpdate());
+    enable: (id) => {
+      dispatch(enableUser(id));
+    },
+    disable: (id) => {
+      dispatch(disableUser(id));
     },
   };
 };
 
-Listing.propTypes = {
-  getChainCode: PropTypes.func,
-  onCheckUpdate: PropTypes.func,
-  listingData: PropTypes.any,
-};
+// UserManagemenet.propTypes = {
+//   getChainCode: PropTypes.func,
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Listing);
+export default connect(mapStateToProps, mapDispatchToProps)(UserManagemenet);

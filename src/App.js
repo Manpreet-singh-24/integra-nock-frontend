@@ -30,11 +30,15 @@ import createCache from "@emotion/cache";
 
 // Integra Nock routes
 import routes from "routes";
-import MDSnackbar from 'components/MDSnackbar';
-import MDBackdrop from 'components/MDBackdrop'
+import MDSnackbar from "components/MDSnackbar";
+import MDBackdrop from "components/MDBackdrop";
 
 // Integra Nock contexts
-import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import {
+  useMaterialUIController,
+  setMiniSidenav,
+  setOpenConfigurator,
+} from "context";
 
 // Images
 // import brandWhite from "assets/images/logo-ct.png";
@@ -42,7 +46,7 @@ import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "co
 import brandWhite from "assets/images/favicon.ico";
 import brandDark from "assets/images/favicon.ico";
 
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 import "style.css";
 
@@ -92,7 +96,8 @@ export default function App() {
   };
 
   // Change the openConfigurator state
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+  const handleConfiguratorOpen = () =>
+    setOpenConfigurator(dispatch, !openConfigurator);
 
   // Setting the dir attribute for the body element
   useEffect(() => {
@@ -112,7 +117,14 @@ export default function App() {
       }
 
       if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
+        return (
+          <Route
+            exact
+            path={route.route}
+            element={route.component}
+            key={route.key}
+          />
+        );
       }
 
       return null;
@@ -150,7 +162,11 @@ export default function App() {
           <>
             <Sidenav
               color={sidenavColor}
-              brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+              brand={
+                (transparentSidenav && !darkMode) || whiteSidenav
+                  ? brandDark
+                  : brandWhite
+              }
               brandName="Intgera Nock"
               routes={routes}
               onMouseEnter={handleOnMouseEnter}
@@ -174,7 +190,11 @@ export default function App() {
         <>
           <Sidenav
             color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+            brand={
+              (transparentSidenav && !darkMode) || whiteSidenav
+                ? brandDark
+                : brandWhite
+            }
             brandName="Intgera Nock"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
@@ -191,7 +211,7 @@ export default function App() {
       </Routes>
 
       <MDSnackbar />
-      { isBackdropOpen && <MDBackdrop /> }
+      {isBackdropOpen && <MDBackdrop />}
     </ThemeProvider>
   );
 }

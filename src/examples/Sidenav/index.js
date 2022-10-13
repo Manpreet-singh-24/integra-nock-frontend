@@ -1,5 +1,8 @@
 import { useEffect } from "react";
 
+//react-redux hooks
+import { useDispatch } from "react-redux";
+
 // react-router-dom components
 import { useLocation, NavLink, useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -33,14 +36,17 @@ import {
   setTransparentSidenav,
   setWhiteSidenav,
 } from "context";
+import types from "store/constants/userTypes";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
+  const ReduxDispatch = useDispatch();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode } =
     controller;
   const location = useLocation();
   const navigate = useNavigate();
   const collapseName = location.pathname.replace("/", "");
+  const userRole = LocalStorageService.getUserRole();
 
   let textColor = "white";
 
@@ -80,61 +86,62 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(
-    ({ type, name, icon, title, noCollapse, key, href, route }) => {
+    ({ type, name, icon, title, noCollapse, key, href, route, roles }) => {
       let returnValue;
-
-      if (type === "collapse") {
-        returnValue = href ? (
-          <Link
-            href={href}
-            key={key}
-            target="_blank"
-            rel="noreferrer"
-            sx={{ textDecoration: "none" }}
-          >
-            <SidenavCollapse
-              name={name}
-              icon={icon}
-              active={key === collapseName}
-              noCollapse={noCollapse}
+      if (roles.includes(userRole)) {
+        if (type === "collapse") {
+          returnValue = href ? (
+            <Link
+              href={href}
+              key={key}
+              target="_blank"
+              rel="noreferrer"
+              sx={{ textDecoration: "none" }}
+            >
+              <SidenavCollapse
+                name={name}
+                icon={icon}
+                active={key === collapseName}
+                noCollapse={noCollapse}
+              />
+            </Link>
+          ) : (
+            <NavLink key={key} to={route}>
+              <SidenavCollapse
+                name={name}
+                icon={icon}
+                active={key === collapseName}
+              />
+            </NavLink>
+          );
+        } else if (type === "title") {
+          returnValue = (
+            <MDTypography
+              key={key}
+              color={textColor}
+              display="block"
+              variant="caption"
+              fontWeight="bold"
+              textTransform="uppercase"
+              pl={3}
+              mt={2}
+              mb={1}
+              ml={1}
+            >
+              {title}
+            </MDTypography>
+          );
+        } else if (type === "divider") {
+          returnValue = (
+            <Divider
+              key={key}
+              light={
+                (!darkMode && !whiteSidenav && !transparentSidenav) ||
+                (darkMode && !transparentSidenav && whiteSidenav)
+              }
             />
-          </Link>
-        ) : (
-          <NavLink key={key} to={route}>
-            <SidenavCollapse
-              name={name}
-              icon={icon}
-              active={key === collapseName}
-            />
-          </NavLink>
-        );
-      } else if (type === "title") {
-        returnValue = (
-          <MDTypography
-            key={key}
-            color={textColor}
-            display="block"
-            variant="caption"
-            fontWeight="bold"
-            textTransform="uppercase"
-            pl={3}
-            mt={2}
-            mb={1}
-            ml={1}
-          >
-            {title}
-          </MDTypography>
-        );
-      } else if (type === "divider") {
-        returnValue = (
-          <Divider
-            key={key}
-            light={
-              (!darkMode && !whiteSidenav && !transparentSidenav) ||
-              (darkMode && !transparentSidenav && whiteSidenav)
-            }
-          />
-        );
+          );
+        }
       }
 
       return returnValue;
@@ -143,7 +150,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
   const onLogout = () => {
     LocalStorageService.clearToken();
-    // navigate("/authentication/sign-in");
+    navigate("/authentication/sign-in");
+    // ReduxDispatch({ type: types.LOGIN, payload: false });
+    ReduxDispatch({
+      type: types.RESET_USER_STATE,
+    });
   };
 
   return (
@@ -192,18 +203,22 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         }
       />
       <List>{renderRoutes}</List>
-      <List style={{ bottom: "0", position: "absolute", padding: "10px 30px", color:"#fff",display: "flex" }}>
-        <LogoutIcon style={{height: "26.1px"}}>
-        </LogoutIcon>
-        <MDTypography
-            variant="h6"
-            color="secondary"
-            onClick={() => onLogout()}
-            style={{ cursor: "pointer",margin: "0px 0px 0px 18px", color: "#fff" }}
-          >
-            Logout
-          </MDTypography>
-
+      <List
+        style={{
+          bottom: "0",
+          position: "absolute",
+          padding: "10px 0px",
+          color: "#fff",
+          display: "flex",
+        }}
+      >
+        <div onClick={() => onLogout()}>
+          <SidenavCollapse
+            name={"Logout"}
+            icon={<LogoutIcon style={{ height: "26.1px" }} />}
+            // active={key === collapseName}
+          />
+        </div>
       </List>
     </SidenavRoot>
   );

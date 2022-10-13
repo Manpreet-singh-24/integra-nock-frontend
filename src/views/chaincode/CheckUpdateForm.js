@@ -27,7 +27,7 @@ const CheckUpdateForm = (props) => {
 
   //  const initialValues = formInitialValue;
   const validation = Yup.object({
-    chaincode: Yup.string().required("Name is required"),
+    chaincode: Yup.number().required("Name is required"),
   });
 
   console.log(" ------------------------------ ", updateList);
@@ -67,7 +67,7 @@ const CheckUpdateForm = (props) => {
         }) => (
           <Form noValidate onSubmit={handleSubmit}>
             <MDBox mb={2}>
-              <Grid container spacing={2}>
+              <Grid container spacing={2} sx={{ alignItems: "center" }}>
                 <Grid item xs={4}>
                   <MDTypography
                     id="transition-modal-title"
@@ -90,6 +90,7 @@ const CheckUpdateForm = (props) => {
                     variant="outlined"
                     onChange={handleChange}
                     options={updateList}
+                    message={"No new update"}
                   />
                   <ErrorMessage name="chaincode" component={MDTextError} />
                 </Grid>

@@ -4,8 +4,10 @@ const initialState = {
   listingData: [],
   total_count: 0,
   updateList: [],
-
-  releasesList: [{}],
+  releaseLog: {},
+  releasesList: [],
+  chainCodeInstallStatus: false,
+  commitChaincodeStatus: false,
 };
 
 const chainCodeReducer = (state = initialState, action) => {
@@ -24,12 +26,28 @@ const chainCodeReducer = (state = initialState, action) => {
         // total_count: action.payload.total_count,
       };
 
-      case type.RELEASE_LIST:
-        return {
-          ...state,
-          rekeasesList: action.payload,
-          // total_count: action.payload.total_count,
-        };
+    case type.RELEASE_LIST:
+      return {
+        ...state,
+        releasesList: action.payload,
+        // total_count: action.payload.total_count,
+      };
+    case type.RELEASE_LOG_DATA:
+      return {
+        ...state,
+        releaseLog: action.payload,
+      };
+    case type.CHAINCODE_INSTALL_STATUS:
+      return {
+        ...state,
+        chainCodeInstallStatus: action.payload,
+      };
+
+    case type.COMMIT_CHAINCODE_STATUS:
+      return {
+        ...state,
+        commitChaincodeStatus: action.payload,
+      };
 
     default:
       return state;

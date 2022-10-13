@@ -21,7 +21,8 @@ function Breadcrumbs({ icon, title, route, light, organisationName }) {
       <MuiBreadcrumbs
         sx={{
           "& .MuiBreadcrumbs-separator": {
-            color: ({ palette: { white, grey } }) => (light ? white.main : grey[600]),
+            color: ({ palette: { white, grey } }) =>
+              light ? white.main : grey[600],
           },
         }}
       >
@@ -70,7 +71,7 @@ function Breadcrumbs({ icon, title, route, light, organisationName }) {
         noWrap
       >
         {/* {title.replace("-", " ")}  */}
-        {organisationName.org_name ? organisationName.org_name : ""}
+        {organisationName?.org_name ? organisationName.org_name : ""}
       </MDTypography>
     </MDBox>
   );
@@ -87,9 +88,8 @@ Breadcrumbs.propTypes = {
   title: PropTypes.string.isRequired,
   route: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
   light: PropTypes.bool,
-  organisationName: PropTypes.any
+  organisationName: PropTypes.any,
 };
-
 
 const mapStateToProps = (state) => {
   return {
@@ -97,5 +97,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-
-export default connect(mapStateToProps, null)(Breadcrumbs)
+export default connect(mapStateToProps, null)(Breadcrumbs);
