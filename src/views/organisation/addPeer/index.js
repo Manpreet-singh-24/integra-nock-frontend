@@ -96,7 +96,6 @@ const Add = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state, "State");
   return {
     // loaded: state.category.loaded,
   };

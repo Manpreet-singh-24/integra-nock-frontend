@@ -246,7 +246,11 @@ const Listing = (props) => {
         selectedChainCode={selectedChainCode}
         releaseLogData={releaseLogData}
         commitStatus={commitStatus}
-        requestCommit={() => requestCommit(selectedChainCode.releaseId)}
+        requestCommit={() =>
+          requestCommit({
+            release_id: selectedChainCode.releaseId,
+          })
+        }
         loading={releaseLogLoading}
       />
       <Footer />

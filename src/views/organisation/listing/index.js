@@ -98,7 +98,7 @@ const Organisation = (props) => {
                     item.join_status === 2 ||
                     item.join_status === 3
                   }
-                  onClick={() => joinChannel(item.org_id)}
+                  onClick={() => joinChannel(item.Id)}
                 >
                   {item.join_status === 0
                     ? "Save"
@@ -202,7 +202,6 @@ const Organisation = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state, "State");
   return {
     // loaded: state.category.loaded,
     listData: state.organisation.listingData,

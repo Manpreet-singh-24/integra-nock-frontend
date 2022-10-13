@@ -35,9 +35,10 @@ export const signChainCodeReq = (id) => {
   };
 };
 
-export const joinChannelRequest = () => {
+export const joinChannelRequest = (data) => {
   return {
     type: types.JOIN_CHANNEL_REQUEST,
+    payload: data,
   };
 };
 

@@ -65,7 +65,6 @@ const AddNewUserForm = (props) => {
       // validationSchema={validation}
       enableReinitialize={true}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-        console.log(values, "valuesss");
         try {
           if (scriptedRef.current) {
             setStatus({ success: true });

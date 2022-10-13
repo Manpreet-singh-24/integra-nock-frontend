@@ -115,7 +115,6 @@ export function* releaseListingReq() {
 
 //Releases Listing
 export function* deleteRelease(action) {
-  console.log(action.payload);
   // history.push(`category/list`)
   try {
     yield put({ type: LOADER_OPEN });
